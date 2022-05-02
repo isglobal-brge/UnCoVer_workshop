@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>DataSHIELD Workshop - Part 4: Data wranggling</title>
+<title>DataSHIELD Workshop - Part 3: Data wranggling</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -87,8 +87,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <script src="site_libs/quarto-search/autocomplete.umd.js"></script>
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
-<link href="./exercises.html" rel="next">
-<link href="./workshop_part3.html" rel="prev">
+<link href="./workshop_part3.html" rel="next">
+<link href="./workshop_part2.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -127,7 +127,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <header id="quarto-header" class="headroom fixed-top">
   <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
     <div class="container-fluid d-flex justify-content-between">
-      <h1 class="quarto-secondary-nav-title">Part 4: Data wranggling</h1>
+      <h1 class="quarto-secondary-nav-title">Part 3: Data wranggling</h1>
       <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
         <i class="bi bi-chevron-right"></i>
       </button>
@@ -211,12 +211,17 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./workshop_part3.html" class="sidebar-item-text sidebar-link">Part 3: Descriptive analysis</a>
+  <a href="./workshop_part4.html" class="sidebar-item-text sidebar-link active">Part 3: Data wranggling</a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./workshop_part4.html" class="sidebar-item-text sidebar-link active">Part 4: Data wranggling</a>
+  <a href="./workshop_part3.html" class="sidebar-item-text sidebar-link">Part 4: Descriptive analysis</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./workshop_part5.html" class="sidebar-item-text sidebar-link">Part 5: Statistical models</a>
   </div>
 </li>
     </ul>
@@ -247,6 +252,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <ul>
   <li><a href="#data-classes" id="toc-data-classes" class="nav-link active" data-scroll-target="#data-classes">Data classes</a></li>
   <li><a href="#complex-recoding.-number-of-comorbidities" id="toc-complex-recoding.-number-of-comorbidities" class="nav-link" data-scroll-target="#complex-recoding.-number-of-comorbidities">Complex recoding. Number of comorbidities</a></li>
+  <li><a href="#complete-cases" id="toc-complete-cases" class="nav-link" data-scroll-target="#complete-cases">Complete cases</a></li>
   <li><a href="#dates-what-to-do" id="toc-dates-what-to-do" class="nav-link" data-scroll-target="#dates-what-to-do">Dates: What to do…</a></li>
   </ul>
 <div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/ESCRI11/Workshop_uncover_06_05_22/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
@@ -256,7 +262,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title d-none d-lg-block">Part 4: Data wranggling</h1>
+<h1 class="title d-none d-lg-block">Part 3: Data wranggling</h1>
 </div>
 
 
@@ -275,10 +281,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="cell" data-hash="workshop_part4_cache/html/unnamed-chunk-2_a2c7d55f0db1289a5d90413019670d26">
 
 </div>
-<p>On the previous parts, we have seen some hints of data wranggling, here we will go into detail and propose some complex re-codings.</p>
+<p>We are now in the position to start working with the data. The first step is to learn how to manipulate it.</p>
 <section id="data-classes" class="level2">
 <h2 class="anchored" data-anchor-id="data-classes">Data classes</h2>
-<p>We have previously seen that we can convert a character variable into a factor. All the tools to perform data transformations are the following:</p>
+<p>All the tools to perform data transformations are the following:</p>
 <ul>
 <li><code>ds.asCharacter</code>: Useful to convert numerical values that we want as characters.</li>
 <li><code>ds.asDataMatrixr</code>: Useful to convert <code>data.frames</code> into matrices, as some functions do not accept data frames as inputs. Maintains the original class for all columns.</li>
@@ -443,7 +449,7 @@ $return.message
 </div>
 </div>
 <p>We can see that when we call the function <code>ds.asFactor</code> we receive the actual levels of the variable. We have said that the levels we actually want are <code>0, 1, 2, 3+</code>.</p>
-<p>To achieve this we just have to recode the levels.</p>
+<p>To achieve this we just have to re-code the levels.</p>
 <div class="cell" data-hash="workshop_part4_cache/html/unnamed-chunk-4_41bfedfbd11a54b6699667505184e090">
 <div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.recodeValues</span>(<span class="at">var.name =</span> <span class="st">"new_variable_factor"</span>, </span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>                <span class="at">values2replace.vector =</span> <span class="fu">c</span>(<span class="st">"0"</span>, <span class="st">"1"</span>, <span class="st">"2"</span>, <span class="st">"3"</span>, <span class="st">"4"</span>, <span class="st">"5"</span>, <span class="st">"6"</span>),</span>
@@ -460,6 +466,50 @@ $validity.check
 <p>Finally, we merge the new variable to our original data, and we are finished.</p>
 <div class="cell" data-hash="workshop_part4_cache/html/join_7977336981007892ec2e24e3dd0d087c">
 <div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>DSI<span class="sc">::</span><span class="fu">datashield.assign.expr</span>(connections, <span class="st">"data"</span>, <span class="st">"cbind(data, CMXCOM)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="complete-cases" class="level2">
+<h2 class="anchored" data-anchor-id="complete-cases">Complete cases</h2>
+<p>Real data tends to have missing values, however, some specific tools or functions expect complete data as input. For that reason there is a function specifically for that. Let’s suppose we want to have the complete cases for the variables <code>DMRAGEYR</code> and <code>CMXDI</code>. First we join them on a new <code>data.frame</code>.</p>
+<div class="cell" data-hash="workshop_part4_cache/html/newdf_92123d8d72ee944b2c76a5f26d8ed0b2">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.dataFrame</span>(<span class="at">x =</span> <span class="fu">c</span>(<span class="st">"data$DMRAGEYR"</span>, <span class="st">"data$CMXDI"</span>), <span class="at">newobj =</span> <span class="st">"data_subset"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$is.object.created
+[1] "A data object &lt;data_subset&gt; has been created in all specified data sources"
+
+$validity.check
+[1] "&lt;data_subset&gt; appears valid in all sources"</code></pre>
+</div>
+</div>
+<p>Now we can get the complete cases.</p>
+<div class="cell" data-hash="workshop_part4_cache/html/ccases_aafb39080d0023c98791a926452247d1">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.completeCases</span>(<span class="at">x1 =</span> <span class="st">"data_subset"</span>, <span class="at">newobj =</span> <span class="st">"data_subset_ccases"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$is.object.created
+[1] "A data object &lt;data_subset_ccases&gt; has been created in all specified data sources"
+
+$validity.check
+[1] "&lt;data_subset_ccases&gt; appears valid in all sources"</code></pre>
+</div>
+</div>
+<p>We can check the dimensions before and after.</p>
+<div class="cell" data-hash="workshop_part4_cache/html/dims_c8f8685b94e2ebf2d247cd614b86a537">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.dim</span>(<span class="st">"data_subset"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$`dimensions of data_subset in study1`
+[1] 999   2
+
+$`dimensions of data_subset in combined studies`
+[1] 999   2</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.dim</span>(<span class="st">"data_subset_ccases"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$`dimensions of data_subset_ccases in study1`
+[1] 249   2
+
+$`dimensions of data_subset_ccases in combined studies`
+[1] 249   2</code></pre>
+</div>
 </div>
 </section>
 <section id="dates-what-to-do" class="level2">
@@ -554,13 +604,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./workshop_part3.html" class="pagination-link">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Part 3: Descriptive analysis</span>
+      <a href="./workshop_part2.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Part 2: Data validation</span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./exercises.html" class="pagination-link">
-        <span class="nav-page-text">Exercises</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./workshop_part3.html" class="pagination-link">
+        <span class="nav-page-text">Part 4: Descriptive analysis</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

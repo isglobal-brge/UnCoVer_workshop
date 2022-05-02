@@ -211,12 +211,17 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./workshop_part3.html" class="sidebar-item-text sidebar-link">Part 3: Descriptive analysis</a>
+  <a href="./workshop_part4.html" class="sidebar-item-text sidebar-link">Part 3: Data wranggling</a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./workshop_part4.html" class="sidebar-item-text sidebar-link">Part 4: Data wranggling</a>
+  <a href="./workshop_part3.html" class="sidebar-item-text sidebar-link">Part 4: Descriptive analysis</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./workshop_part5.html" class="sidebar-item-text sidebar-link">Part 5: Statistical models</a>
   </div>
 </li>
     </ul>
@@ -279,7 +284,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><a href="https://github.com/datashield/DSI">DSI 1.4.0</a>: The DataSHIELD Interface (DSI) handles the connections to the databases.</li>
 <li><a href="https://github.com/datashield/DSOpal">DSOpal 1.3.0</a>: DSOpal is an extension of DSI to connect to to Opal servers.</li>
 <li><a href="https://github.com/datashield/dsBaseClient">dsBaseClient 6.1.1</a>: Implementation of the base R functions (Example: Base package function <code>as.factor</code> is implemented as <code>ds.asFactor</code>).</li>
-<li><a href="https://lifecycle-project.github.io/ds-helper/index.html">dsHelper 0.4.11</a>: dsHelper is a compedium of wrappers for <code>dsBaseClient</code> functions that simplify some common operations to maintain sanity.</li>
+<li><a href="https://lifecycle-project.github.io/ds-helper/index.html">dsHelper 0.4.12</a>: dsHelper is a compedium of wrappers for <code>dsBaseClient</code> functions that simplify some common operations to maintain sanity.</li>
 </ul>
 </section>
 <section id="install-guide" class="level2">
@@ -299,11 +304,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"devtools"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Afterwards, we can install the packages:</p>
-<div class="cell" data-hash="setup_cache/html/unnamed-chunk-4_8e9e8848fa738ab36abf7daee751d256">
+<div class="cell" data-hash="setup_cache/html/unnamed-chunk-4_61035db91d898d9a7c533f4f4e4d39c6">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">"datashield/dsBaseClient"</span>, <span class="st">"6.1.1"</span>)</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">install_version</span>(<span class="st">"DSI"</span>, <span class="at">version =</span> <span class="st">"1.4.0"</span>)</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">install_version</span>(<span class="st">"DSOpal"</span>, <span class="at">version =</span> <span class="st">"1.3.0"</span>)</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">"lifecycle-project/ds-helper"</span>, <span class="st">"0.4.11"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">"lifecycle-project/ds-helper"</span>, <span class="st">"0.4.12"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">

@@ -1,0 +1,1384 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-0.9.328">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>DataSHIELD Workshop - Part 5: Statistical models</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<link href="./exercises.html" rel="next">
+<link href="./workshop_part3.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link id="quarto-text-highlighting-styles" href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+
+</head>
+
+<body class="floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+    <div class="container-fluid d-flex justify-content-between">
+      <h1 class="quarto-secondary-nav-title">Part 5: Statistical models</h1>
+      <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
+        <i class="bi bi-chevron-right"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header sidebar-header-stacked">
+      <a href="./">
+      <img src="./logo.png" alt="" class="sidebar-logo py-0 d-lg-inline d-none">
+      </a>
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">DataSHIELD Workshop</a> 
+        <div class="sidebar-tools-main">
+    <a href="https://github.com/ESCRI11/Workshop_uncover_06_05_22" title="Source Code" class="sidebar-tool px-1"><i class="bi bi-github"></i></a>
+    <a href="" title="Share" id="sidebar-tool-dropdown-0" class="sidebar-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-share"></i></a>
+    <ul class="dropdown-menu" aria-labelledby="sidebar-tool-dropdown-0">
+        <li>
+          <a class="dropdown-item sidebar-tools-main-item" href="https://twitter.com/intent/tweet?url=|url|">
+            <i class="bi bi-bi-twitter pe-1"></i>
+          Twitter
+          </a>
+        </li>
+        <li>
+          <a class="dropdown-item sidebar-tools-main-item" href="https://www.facebook.com/sharer/sharer.php?u=|url|">
+            <i class="bi bi-bi-facebook pe-1"></i>
+          Facebook
+          </a>
+        </li>
+    </ul>
+</div>
+    </div>
+      </div>
+      <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+      </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">Introduction</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./setup.html" class="sidebar-item-text sidebar-link">Environment setup</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./help.html" class="sidebar-item-text sidebar-link">Get up to speed: Useful reads</a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+    <div class="sidebar-item-container"> 
+        <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">Workshop</a>
+      <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+        <i class="bi bi-chevron-right ms-2"></i>
+      </a>
+    </div>
+    <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./workshop_part0.html" class="sidebar-item-text sidebar-link">Part 0: Connecting to the analysis servers</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./workshop_part1.html" class="sidebar-item-text sidebar-link">Part 1: Loading the data</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./workshop_part2.html" class="sidebar-item-text sidebar-link">Part 2: Data validation</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./workshop_part4.html" class="sidebar-item-text sidebar-link">Part 3: Data wranggling</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./workshop_part3.html" class="sidebar-item-text sidebar-link">Part 4: Descriptive analysis</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./workshop_part5.html" class="sidebar-item-text sidebar-link active">Part 5: Statistical models</a>
+  </div>
+</li>
+    </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+    <div class="sidebar-item-container"> 
+        <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">Exercises</a>
+      <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+        <i class="bi bi-chevron-right ms-2"></i>
+      </a>
+    </div>
+    <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./exercises.html" class="sidebar-item-text sidebar-link">Exercises</a>
+  </div>
+</li>
+    </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#logistical-regression" id="toc-logistical-regression" class="nav-link active" data-scroll-target="#logistical-regression">Logistical regression</a>
+  <ul class="collapse">
+  <li><a href="#preparing-the-data" id="toc-preparing-the-data" class="nav-link" data-scroll-target="#preparing-the-data">Preparing the data</a></li>
+  <li><a href="#fitting-the-models" id="toc-fitting-the-models" class="nav-link" data-scroll-target="#fitting-the-models">Fitting the models</a></li>
+  </ul></li>
+  <li><a href="#piecewise-exponential-regression" id="toc-piecewise-exponential-regression" class="nav-link" data-scroll-target="#piecewise-exponential-regression">Piecewise Exponential Regression</a></li>
+  </ul>
+<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/ESCRI11/Workshop_uncover_06_05_22/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title d-none d-lg-block">Part 5: Statistical models</h1>
+</div>
+
+
+
+
+
+<div class="quarto-title-meta">
+
+    
+    
+  </div>
+  
+
+</header>
+
+<div class="cell" data-hash="workshop_part5_cache/html/unnamed-chunk-2_62d60a35473f7e59f0d750548cd7e33c">
+
+</div>
+<p>Now that we have covered the basics, we can begin to analyze the data in more depth. In this section we will go over some of the statistical models we can fit by using DataSHIELD.</p>
+<section id="logistical-regression" class="level2">
+<h2 class="anchored" data-anchor-id="logistical-regression">Logistical regression</h2>
+<p>We will perform some logistic regressions to see the association of different variables to the survival condition (<code>DSXOS</code> variable). To achieve this, we will have to apply some of the concepts we have already seen in order to prepare our data.</p>
+<section id="preparing-the-data" class="level3">
+<h3 class="anchored" data-anchor-id="preparing-the-data">Preparing the data</h3>
+<p>For the logistic regression, the variables we will use are the following:</p>
+<ul>
+<li><code>DSXOS</code>: Character variable. Outcome status encoded as <code>Deceased</code>, <code>Recovered</code> and <code>Transferred</code>. To perform a logistic regression this variable will have to be re-encoded as <code>1</code>/<code>0</code> (case/control); the case being <code>Deceased</code> and the controls being <code>Recovered</code> and <code>Transferred</code>.</li>
+<li><code>CMXCOM</code>: Factor variable. Number of comorbidities, encoded as <code>0</code>, <code>1</code>, <code>2</code> and <code>3+</code>.</li>
+<li><code>CMXCLD</code>: Character variable. Chronic liver disease, encoded as <code>Yes</code> and <code>No</code>.</li>
+<li><code>RFXONC</code>: Character variable. Oncology, encoded as <code>Yes</code> and <code>No</code>.</li>
+</ul>
+<p>We only have to do some data wrangling for the <code>DSXOS</code> variable, first we do the re-coding.</p>
+<div class="cell" data-hash="workshop_part5_cache/html/relevelkekw_263eef4bfe274ef1a2cd371ba587dbd0">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.recodeValues</span>(<span class="at">var.name =</span> <span class="st">"data$DSXOS"</span>, </span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>                <span class="at">values2replace.vector =</span> <span class="fu">c</span>(<span class="st">"Deceased"</span>, <span class="st">"Recovered"</span>, <span class="st">"Transferred"</span>), </span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>                <span class="at">new.values.vector =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>),</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>                <span class="at">newobj =</span> <span class="st">"DSXOS_recoded"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-error">
+<pre><code>Error: There are some DataSHIELD errors, list them with datashield.errors()</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">datashield.errors</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$study1
+[1] "Command 'recodeValuesDS(\"data$DSXOS\", \"Deceased,Recovered,Transferred\", \n    \"1,0,0\", NULL)' failed on 'study1': Error while evaluating 'is.null(base::assign('DSXOS_recoded', value={dsBase::recodeValuesDS(\"data$DSXOS\", \"Deceased,Recovered,Transferred\", \"1,0,0\", NULL)}))' -&gt; Error : Error: values2replace.text argument too long (see nfilter.stringShort)\n"</code></pre>
+</div>
+</div>
+<p>We can see that the DataSHIELD filter is complaining that the length of the <code>values2replace.vector</code> is too large. To overcome this issue, we can perform separate function calls for each of the levels.</p>
+<div class="cell" data-hash="workshop_part5_cache/html/relevel_ce782ebdc9ab0fd3640d9d75464239d0">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.recodeValues</span>(<span class="at">var.name =</span> <span class="st">"data$DSXOS"</span>, </span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>                <span class="at">values2replace.vector =</span> <span class="st">"Deceased"</span>, </span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>                <span class="at">new.values.vector =</span> <span class="dv">1</span>,</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>                <span class="at">newobj =</span> <span class="st">"DSXOS_recoded"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$is.object.created
+[1] "A data object &lt;DSXOS_recoded&gt; has been created in all specified data sources"
+
+$validity.check
+[1] "&lt;DSXOS_recoded&gt; appears valid in all sources"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.recodeValues</span>(<span class="at">var.name =</span> <span class="st">"DSXOS_recoded"</span>, </span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>                <span class="at">values2replace.vector =</span> <span class="st">"Recovered"</span>, </span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>                <span class="at">new.values.vector =</span> <span class="dv">0</span>,</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>                <span class="at">newobj =</span> <span class="st">"DSXOS_recoded"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$is.object.created
+[1] "A data object &lt;DSXOS_recoded&gt; has been created in all specified data sources"
+
+$validity.check
+[1] "&lt;DSXOS_recoded&gt; appears valid in all sources"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.recodeValues</span>(<span class="at">var.name =</span> <span class="st">"DSXOS_recoded"</span>, </span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>                <span class="at">values2replace.vector =</span> <span class="st">"Transferred"</span>, </span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>                <span class="at">new.values.vector =</span> <span class="dv">0</span>,</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>                <span class="at">newobj =</span> <span class="st">"DSXOS_recoded"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$is.object.created
+[1] "A data object &lt;DSXOS_recoded&gt; has been created in all specified data sources"
+
+$validity.check
+[1] "&lt;DSXOS_recoded&gt; appears valid in all sources"</code></pre>
+</div>
+</div>
+<p>By doing that we successfully created the object <code>DSXOS_recoded</code>, now we just have to convert it to numerical.</p>
+<div class="cell" data-hash="workshop_part5_cache/html/check_9c2075f9e200f83d3d2bcd36dade9a1d">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ds.table does not work, I am not sure why</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.table1D</span>(<span class="st">"DSXOS_recoded"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: 'ds.table1D' is deprecated.
+Use 'ds.table' instead.
+See help("Deprecated")</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$counts
+      DSXOS_recoded
+''              746
+0               220
+1                33
+Total           999
+
+$percentages
+      DSXOS_recoded
+''            74.67
+0             22.02
+1              3.30
+Total        100.00
+
+$validity
+[1] "All tables are valid!"</code></pre>
+</div>
+</div>
+<div class="cell" data-hash="workshop_part5_cache/html/convert_9e9b0bcb5d19f6fc1a3b5089ffa582ed">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.asNumeric</span>(<span class="at">x.name =</span> <span class="st">"DSXOS_recoded"</span>, <span class="at">newobj =</span> <span class="st">"DSXOS_recoded_num"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$is.object.created
+[1] "A data object &lt;DSXOS_recoded_num&gt; has been created in all specified data sources"
+
+$validity.check
+[1] "&lt;DSXOS_recoded_num&gt; appears valid in all sources"</code></pre>
+</div>
+</div>
+<p>Finally, we add it to our <code>data.frame</code> with the other covariates, and we are ready to perform the logistic regression.</p>
+<div class="cell" data-hash="workshop_part5_cache/html/add_1212ac33cdef43c65a8ed76527350e66">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>DSI<span class="sc">::</span><span class="fu">datashield.assign.expr</span>(connections, <span class="st">"data"</span>, <span class="st">"cbind(data, DSXOS_recoded_num)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="fitting-the-models" class="level3">
+<h3 class="anchored" data-anchor-id="fitting-the-models">Fitting the models</h3>
+<section id="pooled-analysis" class="level4">
+<h4 class="anchored" data-anchor-id="pooled-analysis">Pooled analysis</h4>
+<p>Now we can fit the models. First, we will calculate the association of the outcome status to the covariables chronic liver disease and oncology.</p>
+<div class="cell" data-hash="workshop_part5_cache/html/model1_c5278522f713362749087be169337063">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.glm</span>(<span class="at">formula =</span> <span class="st">"DSXOS_recoded_num ~ CMXCLD + RFXONC"</span>, <span class="at">data =</span> <span class="st">"data"</span>, <span class="at">family =</span> <span class="st">"binomial"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Iteration 1...</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>CURRENT DEVIANCE:      349.346179002212</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Iteration 2...</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>CURRENT DEVIANCE:      197.274454485614</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Iteration 3...</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>CURRENT DEVIANCE:      190.668047341288</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Iteration 4...</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>CURRENT DEVIANCE:      190.517887214012</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Iteration 5...</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>CURRENT DEVIANCE:      190.517748305142</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Iteration 6...</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>CURRENT DEVIANCE:      190.517748305008</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>SUMMARY OF MODEL STATE after iteration 6</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Current deviance 190.517748305008 on 249 degrees of freedom</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Convergence criterion TRUE (7.05556173129648e-13)</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+beta: -2.07436706515554 0.481163947699337 1.34712733484881</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Information matrix overall:</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>            (Intercept) CMXCLDYes RFXONCYes
+(Intercept)   27.934795 4.0369214 3.3214179
+CMXCLDYes      4.036921 4.0369214 0.2462533
+RFXONCYes      3.321418 0.2462533 3.3214179</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Score vector overall:</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>                     [,1]
+(Intercept) -5.176640e-11
+CMXCLDYes   -1.031952e-13
+RFXONCYes   -6.572520e-14</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Current deviance: 190.517748305008</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$Nvalid
+[1] 252
+
+$Nmissing
+[1] 747
+
+$Ntotal
+[1] 999
+
+$disclosure.risk
+       RISK OF DISCLOSURE
+study1                  0
+
+$errorMessage
+       ERROR MESSAGES
+study1 "No errors"   
+
+$nsubs
+[1] 252
+
+$iter
+[1] 6
+
+$family
+
+Family: binomial 
+Link function: logit 
+
+
+$formula
+[1] "DSXOS_recoded_num ~ CMXCLD + RFXONC"
+
+$coefficients
+              Estimate Std. Error    z-value      p-value low0.95CI.LP
+(Intercept) -2.0743671  0.2180219 -9.5144888 1.826085e-21   -2.5016822
+CMXCLDYes    0.4811639  0.5395664  0.8917604 3.725214e-01   -0.5763668
+RFXONCYes    1.3471273  0.5861413  2.2982979 2.154484e-02    0.1983115
+            high0.95CI.LP      P_OR low0.95CI.P_OR high0.95CI.P_OR
+(Intercept)     -1.647052 0.1116133     0.07574034       0.1615078
+CMXCLDYes        1.538695 1.6179565     0.56193629       4.6585055
+RFXONCYes        2.495943 3.8463603     1.21934216      12.1331717
+
+$dev
+[1] 190.5177
+
+$df
+[1] 249
+
+$output.information
+[1] "SEE TOP OF OUTPUT FOR INFORMATION ON MISSING DATA AND ERROR MESSAGES"</code></pre>
+</div>
+</div>
+<p>And we also calculate the association of the outcome status to the number of comorbidities.</p>
+<div class="cell" data-hash="workshop_part5_cache/html/model2_bc5b243018a4d91ed07736de7a9ba555">
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.glm</span>(<span class="at">formula =</span> <span class="st">"DSXOS_recoded_num ~ CMXCOM"</span>, <span class="at">data =</span> <span class="st">"data"</span>, <span class="at">family =</span> <span class="st">"binomial"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Iteration 1...</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>CURRENT DEVIANCE:      350.732473363332</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Iteration 2...</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>CURRENT DEVIANCE:      198.483331037372</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Iteration 3...</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>CURRENT DEVIANCE:      191.27692242333</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Iteration 4...</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>CURRENT DEVIANCE:      190.960473189413</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Iteration 5...</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>CURRENT DEVIANCE:      190.957960191484</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Iteration 6...</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>CURRENT DEVIANCE:      190.957959832379</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>SUMMARY OF MODEL STATE after iteration 6</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Current deviance 190.957959832379 on 249 degrees of freedom</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Convergence criterion TRUE (1.87955786013388e-09)</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+beta: -2.68557734525015 0.813775168348555 0.451985123743052 1.18149994847388</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Information matrix overall:</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>            (Intercept) CMXCOM1  CMXCOM2 CMXCOM3+
+(Intercept)   28.155138     5.2 5.419355 14.72727
+CMXCOM1        5.200000     5.2 0.000000  0.00000
+CMXCOM2        5.419355     0.0 5.419355  0.00000
+CMXCOM3+      14.727273     0.0 0.000000 14.72727</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Score vector overall:</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>                     [,1]
+(Intercept) -1.565667e-07
+CMXCOM1     -1.960654e-13
+CMXCOM2     -3.247187e-10
+CMXCOM3+    -6.666889e-14</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Current deviance: 190.957959832379</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$Nvalid
+[1] 253
+
+$Nmissing
+[1] 746
+
+$Ntotal
+[1] 999
+
+$disclosure.risk
+       RISK OF DISCLOSURE
+study1                  0
+
+$errorMessage
+       ERROR MESSAGES
+study1 "No errors"   
+
+$nsubs
+[1] 253
+
+$iter
+[1] 6
+
+$family
+
+Family: binomial 
+Link function: logit 
+
+
+$formula
+[1] "DSXOS_recoded_num ~ CMXCOM"
+
+$coefficients
+              Estimate Std. Error    z-value      p-value low0.95CI.LP
+(Intercept) -2.6855773  0.5967081 -4.5006549 6.774442e-06  -3.85510378
+CMXCOM1      0.8137752  0.7405189  1.0989255 2.718005e-01  -0.63761526
+CMXCOM2      0.4519851  0.7352444  0.6147413 5.387256e-01  -0.98906751
+CMXCOM3+     1.1814999  0.6511235  1.8145558 6.959220e-02  -0.09467868
+            high0.95CI.LP       P_OR low0.95CI.P_OR high0.95CI.P_OR
+(Intercept)     -1.516051 0.06382979     0.02073247       0.1800438
+CMXCOM1          2.265166 2.25641026     0.52855138       9.6327196
+CMXCOM2          1.893038 1.57142857     0.37192334       6.6395073
+CMXCOM3+         2.457679 3.25925926     0.90966518      11.6776712
+
+$dev
+[1] 190.958
+
+$df
+[1] 249
+
+$output.information
+[1] "SEE TOP OF OUTPUT FOR INFORMATION ON MISSING DATA AND ERROR MESSAGES"</code></pre>
+</div>
+</div>
+</section>
+<section id="meta-analysis" class="level4">
+<h4 class="anchored" data-anchor-id="meta-analysis">Meta-analysis</h4>
+<p>To fit the same models to be meta-analyzed, we just have to use a different function with the same structure.</p>
+<div class="cell" data-hash="workshop_part5_cache/html/model1meta_390d1d51399c6e10abbda96388ea37c8">
+<div class="sourceCode cell-code" id="cb63"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.glmSLMA</span>(<span class="at">formula =</span> <span class="st">"DSXOS_recoded_num ~ CMXCLD + RFXONC"</span>, <span class="at">dataName =</span> <span class="st">"data"</span>, <span class="at">family =</span> <span class="st">"binomial"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+
+SAVING SERVERSIDE glm OBJECT AS: &lt; new.glm.obj &gt;</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$output.summary
+$output.summary$study1
+$output.summary$study1$rank
+[1] 3
+
+$output.summary$study1$aic
+[1] 196.5177
+
+$output.summary$study1$iter
+[1] 4
+
+$output.summary$study1$converged
+[1] TRUE
+
+$output.summary$study1$boundary
+[1] FALSE
+
+$output.summary$study1$na.action
+$output.summary$study1$na.action$na.action
+[1] "na.omit"
+
+
+$output.summary$study1$call
+glm(formula = formula, family = binomial, data = data, x = TRUE)
+
+$output.summary$study1$terms
+DSXOS_recoded_num ~ CMXCLD + RFXONC
+attr(,"variables")
+list(DSXOS_recoded_num, CMXCLD, RFXONC)
+attr(,"factors")
+                  CMXCLD RFXONC
+DSXOS_recoded_num      0      0
+CMXCLD                 1      0
+RFXONC                 0      1
+attr(,"term.labels")
+[1] "CMXCLD" "RFXONC"
+attr(,"order")
+[1] 1 1
+attr(,"intercept")
+[1] 1
+attr(,"response")
+[1] 1
+attr(,".Environment")
+&lt;environment: R_GlobalEnv&gt;
+attr(,"predvars")
+list(DSXOS_recoded_num, CMXCLD, RFXONC)
+attr(,"dataClasses")
+DSXOS_recoded_num            CMXCLD            RFXONC 
+        "numeric"       "character"       "character" 
+
+$output.summary$study1$contrasts
+$output.summary$study1$contrasts$CMXCLD
+[1] "contr.treatment"
+
+$output.summary$study1$contrasts$RFXONC
+[1] "contr.treatment"
+
+
+$output.summary$study1$aliased
+(Intercept)   CMXCLDYes   RFXONCYes 
+      FALSE       FALSE       FALSE 
+
+$output.summary$study1$dispersion
+[1] 1
+
+$output.summary$study1$data
+[1] "data"
+
+$output.summary$study1$df
+[1]   3 249   3
+
+$output.summary$study1$Ntotal
+[1] 999
+
+$output.summary$study1$Nvalid
+[1] 252
+
+$output.summary$study1$Nmissing
+[1] 747
+
+$output.summary$study1$cov.unscaled
+            (Intercept)  CMXCLDYes   RFXONCYes
+(Intercept)  0.04753155 -0.0448349 -0.04420746
+CMXCLDYes   -0.04483490  0.2911297  0.02325040
+RFXONCYes   -0.04420746  0.0232504  0.34355945
+
+$output.summary$study1$cov.scaled
+            (Intercept)  CMXCLDYes   RFXONCYes
+(Intercept)  0.04753155 -0.0448349 -0.04420746
+CMXCLDYes   -0.04483490  0.2911297  0.02325040
+RFXONCYes   -0.04420746  0.0232504  0.34355945
+
+$output.summary$study1$offset
+NULL
+
+$output.summary$study1$weights
+NULL
+
+$output.summary$study1$VarCovMatrix
+            (Intercept)  CMXCLDYes   RFXONCYes
+(Intercept)  0.04753155 -0.0448349 -0.04420746
+CMXCLDYes   -0.04483490  0.2911297  0.02325040
+RFXONCYes   -0.04420746  0.0232504  0.34355945
+
+$output.summary$study1$CorrMatrix
+           [,1]        [,2]        [,3]
+[1,]  1.0000000 -0.38113777 -0.34594232
+[2,] -0.3811378  1.00000000  0.07351675
+[3,] -0.3459423  0.07351675  1.00000000
+
+$output.summary$study1$deviance.null
+[1] 195.6493
+
+$output.summary$study1$df.null
+[1] 251
+
+$output.summary$study1$deviance.resid
+[1] 190.5177
+
+$output.summary$study1$df.resid
+[1] 249
+
+$output.summary$study1$formula
+DSXOS_recoded_num ~ CMXCLD + RFXONC
+
+$output.summary$study1$family
+
+Family: binomial 
+Link function: logit 
+
+
+$output.summary$study1$coefficients
+              Estimate Std. Error    z value     Pr(&gt;|z|)
+(Intercept) -2.0743671  0.2180173 -9.5146899 1.822557e-21
+CMXCLDYes    0.4811639  0.5395643  0.8917638 3.725195e-01
+RFXONCYes    1.3471273  0.5861394  2.2983052 2.154443e-02
+
+
+$output.summary$input.beta.matrix.for.SLMA
+            betas study 1
+(Intercept)    -2.0743671
+CMXCLDYes       0.4811639
+RFXONCYes       1.3471273
+
+$output.summary$input.se.matrix.for.SLMA
+            ses study 1
+(Intercept)   0.2180173
+CMXCLDYes     0.5395643
+RFXONCYes     0.5861394
+
+
+$num.valid.studies
+[1] 1
+
+$betamatrix.all
+            betas study 1
+(Intercept)    -2.0743671
+CMXCLDYes       0.4811639
+RFXONCYes       1.3471273
+
+$sematrix.all
+            ses study 1
+(Intercept)   0.2180173
+CMXCLDYes     0.5395643
+RFXONCYes     0.5861394
+
+$betamatrix.valid
+(Intercept)   CMXCLDYes   RFXONCYes 
+ -2.0743671   0.4811639   1.3471273 
+
+$sematrix.valid
+(Intercept)   CMXCLDYes   RFXONCYes 
+  0.2180173   0.5395643   0.5861394 
+
+$SLMA.pooled.ests.matrix
+      pooled.ML     se.ML pooled.REML   se.REML  pooled.FE     se.FE
+[1,] -2.0743671 0.2180173  -2.0743671 0.2180173 -2.0743671 0.2180173
+[2,]  0.4811639 0.5395643   0.4811639 0.5395643  0.4811639 0.5395643
+[3,]  1.3471273 0.5861394   1.3471273 0.5861394  1.3471273 0.5861394
+
+$is.object.created
+[1] "A data object &lt;new.glm.obj&gt; has been created in all specified data sources"
+
+$validity.check
+[1] "&lt;new.glm.obj&gt; appears valid in all sources"</code></pre>
+</div>
+</div>
+<div class="cell" data-hash="workshop_part5_cache/html/model2meta_f5d2f2771ce48bc8593ff1e43ca2b65f">
+<div class="sourceCode cell-code" id="cb66"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.glmSLMA</span>(<span class="at">formula =</span> <span class="st">"DSXOS_recoded_num ~ CMXCOM"</span>, <span class="at">dataName =</span> <span class="st">"data"</span>, <span class="at">family =</span> <span class="st">"binomial"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+
+SAVING SERVERSIDE glm OBJECT AS: &lt; new.glm.obj &gt;</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$output.summary
+$output.summary$study1
+$output.summary$study1$rank
+[1] 4
+
+$output.summary$study1$aic
+[1] 198.958
+
+$output.summary$study1$iter
+[1] 5
+
+$output.summary$study1$converged
+[1] TRUE
+
+$output.summary$study1$boundary
+[1] FALSE
+
+$output.summary$study1$na.action
+$output.summary$study1$na.action$na.action
+[1] "na.omit"
+
+
+$output.summary$study1$call
+glm(formula = formula, family = binomial, data = data, x = TRUE)
+
+$output.summary$study1$terms
+DSXOS_recoded_num ~ CMXCOM
+attr(,"variables")
+list(DSXOS_recoded_num, CMXCOM)
+attr(,"factors")
+                  CMXCOM
+DSXOS_recoded_num      0
+CMXCOM                 1
+attr(,"term.labels")
+[1] "CMXCOM"
+attr(,"order")
+[1] 1
+attr(,"intercept")
+[1] 1
+attr(,"response")
+[1] 1
+attr(,".Environment")
+&lt;environment: R_GlobalEnv&gt;
+attr(,"predvars")
+list(DSXOS_recoded_num, CMXCOM)
+attr(,"dataClasses")
+DSXOS_recoded_num            CMXCOM 
+        "numeric"          "factor" 
+
+$output.summary$study1$contrasts
+$output.summary$study1$contrasts$CMXCOM
+[1] "contr.treatment"
+
+
+$output.summary$study1$aliased
+(Intercept)     CMXCOM1     CMXCOM2    CMXCOM3+ 
+      FALSE       FALSE       FALSE       FALSE 
+
+$output.summary$study1$dispersion
+[1] 1
+
+$output.summary$study1$data
+[1] "data"
+
+$output.summary$study1$df
+[1]   4 249   4
+
+$output.summary$study1$Ntotal
+[1] 999
+
+$output.summary$study1$Nvalid
+[1] 253
+
+$output.summary$study1$Nmissing
+[1] 746
+
+$output.summary$study1$cov.unscaled
+            (Intercept)    CMXCOM1    CMXCOM2   CMXCOM3+
+(Intercept)   0.3560569 -0.3560569 -0.3560569 -0.3560569
+CMXCOM1      -0.3560569  0.5483646  0.3560569  0.3560569
+CMXCOM2      -0.3560569  0.3560569  0.5405807  0.3560569
+CMXCOM3+     -0.3560569  0.3560569  0.3560569  0.4239581
+
+$output.summary$study1$cov.scaled
+            (Intercept)    CMXCOM1    CMXCOM2   CMXCOM3+
+(Intercept)   0.3560569 -0.3560569 -0.3560569 -0.3560569
+CMXCOM1      -0.3560569  0.5483646  0.3560569  0.3560569
+CMXCOM2      -0.3560569  0.3560569  0.5405807  0.3560569
+CMXCOM3+     -0.3560569  0.3560569  0.3560569  0.4239581
+
+$output.summary$study1$offset
+NULL
+
+$output.summary$study1$weights
+NULL
+
+$output.summary$study1$VarCovMatrix
+            (Intercept)    CMXCOM1    CMXCOM2   CMXCOM3+
+(Intercept)   0.3560569 -0.3560569 -0.3560569 -0.3560569
+CMXCOM1      -0.3560569  0.5483646  0.3560569  0.3560569
+CMXCOM2      -0.3560569  0.3560569  0.5405807  0.3560569
+CMXCOM3+     -0.3560569  0.3560569  0.3560569  0.4239581
+
+$output.summary$study1$CorrMatrix
+           [,1]       [,2]       [,3]       [,4]
+[1,]  1.0000000 -0.8057958 -0.8115764 -0.9164277
+[2,] -0.8057958  1.0000000  0.6539649  0.7384536
+[3,] -0.8115764  0.6539649  1.0000000  0.7437511
+[4,] -0.9164277  0.7384536  0.7437511  1.0000000
+
+$output.summary$study1$deviance.null
+[1] 195.9295
+
+$output.summary$study1$df.null
+[1] 252
+
+$output.summary$study1$deviance.resid
+[1] 190.958
+
+$output.summary$study1$df.resid
+[1] 249
+
+$output.summary$study1$formula
+DSXOS_recoded_num ~ CMXCOM
+
+$output.summary$study1$family
+
+Family: binomial 
+Link function: logit 
+
+
+$output.summary$study1$coefficients
+              Estimate Std. Error    z value     Pr(&gt;|z|)
+(Intercept) -2.6855773  0.5967050 -4.5006784 6.773694e-06
+CMXCOM1      0.8137752  0.7405164  1.0989293 2.717989e-01
+CMXCOM2      0.4519851  0.7352419  0.6147434 5.387242e-01
+CMXCOM3+     1.1814999  0.6511207  1.8145638 6.959098e-02
+
+
+$output.summary$input.beta.matrix.for.SLMA
+            betas study 1
+(Intercept)    -2.6855773
+CMXCOM1         0.8137752
+CMXCOM2         0.4519851
+CMXCOM3+        1.1814999
+
+$output.summary$input.se.matrix.for.SLMA
+            ses study 1
+(Intercept)   0.5967050
+CMXCOM1       0.7405164
+CMXCOM2       0.7352419
+CMXCOM3+      0.6511207
+
+
+$num.valid.studies
+[1] 1
+
+$betamatrix.all
+            betas study 1
+(Intercept)    -2.6855773
+CMXCOM1         0.8137752
+CMXCOM2         0.4519851
+CMXCOM3+        1.1814999
+
+$sematrix.all
+            ses study 1
+(Intercept)   0.5967050
+CMXCOM1       0.7405164
+CMXCOM2       0.7352419
+CMXCOM3+      0.6511207
+
+$betamatrix.valid
+(Intercept)     CMXCOM1     CMXCOM2    CMXCOM3+ 
+ -2.6855773   0.8137752   0.4519851   1.1814999 
+
+$sematrix.valid
+(Intercept)     CMXCOM1     CMXCOM2    CMXCOM3+ 
+  0.5967050   0.7405164   0.7352419   0.6511207 
+
+$SLMA.pooled.ests.matrix
+      pooled.ML     se.ML pooled.REML   se.REML  pooled.FE     se.FE
+[1,] -2.6855773 0.5967050  -2.6855773 0.5967050 -2.6855773 0.5967050
+[2,]  0.8137752 0.7405164   0.8137752 0.7405164  0.8137752 0.7405164
+[3,]  0.4519851 0.7352419   0.4519851 0.7352419  0.4519851 0.7352419
+[4,]  1.1814999 0.6511207   1.1814999 0.6511207  1.1814999 0.6511207
+
+$is.object.created
+[1] "A data object &lt;new.glm.obj&gt; has been created in all specified data sources"
+
+$validity.check
+[1] "&lt;new.glm.obj&gt; appears valid in all sources"</code></pre>
+</div>
+</div>
+<p>At this moment, the consortia is using dsBaseClient 6.1.1. In the new version 6.2, there is a function to visualize the meta-analyzed coefficients using forestplots.</p>
+</section>
+</section>
+</section>
+<section id="piecewise-exponential-regression" class="level2">
+<h2 class="anchored" data-anchor-id="piecewise-exponential-regression">Piecewise Exponential Regression</h2>
+<p>The same functions we just used to fit logistical regressions, can also fit piecewise exponential regressions. This is achieved by selecting the output family to be of type <code>poisson</code>. For the variable <code>DATLGT</code> (Length of stay in hospital), we can check that it does follow a poisson distribution.</p>
+<div class="cell" data-hash="workshop_part5_cache/html/histoDATLGT_ac7429501277b5d76a12aff928d552b6">
+<div class="sourceCode cell-code" id="cb69"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.histogram</span>(<span class="st">"data$DATLGT"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: study1: 2 invalid cells</code></pre>
+</div>
+<div class="cell-output-display">
+<p><img src="workshop_part5_files/figure-html/histoDATLGT-1.png" class="img-fluid" width="672"></p>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$breaks
+ [1]  0.9761713  7.5248075 14.0734436 20.6220798 27.1707160 33.7193522
+ [7] 40.2679884 46.8166246 53.3652608 59.9138970 66.4625332
+
+$counts
+ [1]  70 133  38   4   5   0   0   0   0   0
+
+$density
+ [1] 0.042417653 0.080593541 0.023026726 0.002423866 0.003029832 0.000000000
+ [7] 0.000000000 0.000000000 0.000000000 0.000000000
+
+$mids
+ [1]  4.250489 10.799126 17.347762 23.896398 30.445034 36.993670 43.542307
+ [8] 50.090943 56.639579 63.188215
+
+$xname
+[1] "xvect"
+
+$equidist
+[1] TRUE
+
+attr(,"class")
+[1] "histogram"</code></pre>
+</div>
+</div>
+<p>And we can fit the model.</p>
+<div class="cell" data-hash="workshop_part5_cache/html/modelpoisson_aeb505e68fd60a2f65424b739512fc5f">
+<div class="sourceCode cell-code" id="cb72"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.glm</span>(<span class="at">formula =</span> <span class="st">"DATLGT ~ CMXCOM"</span>, <span class="at">data =</span> <span class="st">"data"</span>, <span class="at">family =</span> <span class="st">"poisson"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Iteration 1...</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>CURRENT DEVIANCE:      9031.23112933584</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Iteration 2...</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>CURRENT DEVIANCE:      13445721.9254986</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Iteration 3...</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>CURRENT DEVIANCE:      4924249.82823331</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Iteration 4...</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>CURRENT DEVIANCE:      1792866.24106897</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Iteration 5...</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>CURRENT DEVIANCE:      644372.85806603</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Iteration 6...</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>CURRENT DEVIANCE:      225310.43667617</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Iteration 7...</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>CURRENT DEVIANCE:      74503.0617967646</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Iteration 8...</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>CURRENT DEVIANCE:      22166.8442228996</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Iteration 9...</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>CURRENT DEVIANCE:      5600.46871888188</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Iteration 10...</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>CURRENT DEVIANCE:      1421.16414491348</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Iteration 11...</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>CURRENT DEVIANCE:      812.345972414677</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Iteration 12...</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>CURRENT DEVIANCE:      786.436487861179</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Iteration 13...</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>CURRENT DEVIANCE:      786.356159963903</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Iteration 14...</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>CURRENT DEVIANCE:      786.35615899879</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>SUMMARY OF MODEL STATE after iteration 14</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Current deviance 786.35615899879 on 248 degrees of freedom</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Convergence criterion TRUE (1.22716669308741e-09)</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+beta: 2.23889727373679 0.204415478752375 0.158997999061583 0.202562056292276</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Information matrix overall:</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>            (Intercept) CMXCOM1 CMXCOM2 CMXCOM3+
+(Intercept)        2767     518     682     1126
+CMXCOM1             518     518       0        0
+CMXCOM2             682       0     682        0
+CMXCOM3+           1126       0       0     1126</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Score vector overall:</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>                     [,1]
+(Intercept) -4.825297e-07
+CMXCOM1     -1.853942e-07
+CMXCOM2     -4.250067e-11
+CMXCOM3+    -2.970964e-07</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Current deviance: 786.35615899879</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$Nvalid
+[1] 252
+
+$Nmissing
+[1] 747
+
+$Ntotal
+[1] 999
+
+$disclosure.risk
+       RISK OF DISCLOSURE
+study1                  0
+
+$errorMessage
+       ERROR MESSAGES
+study1 "No errors"   
+
+$nsubs
+[1] 252
+
+$iter
+[1] 14
+
+$family
+
+Family: poisson 
+Link function: log 
+
+
+$formula
+[1] "DATLGT ~ CMXCOM"
+
+$coefficients
+             Estimate Std. Error   z-value      p-value low0.95CI.LP
+(Intercept) 2.2388973 0.04761905 47.016843 0.0000000000   2.14556566
+CMXCOM1     0.2044155 0.06479256  3.154922 0.0016054093   0.07742440
+CMXCOM2     0.1589980 0.06110523  2.602036 0.0092672185   0.03923395
+CMXCOM3+    0.2025621 0.05617538  3.605887 0.0003110887   0.09246034
+            high0.95CI.LP EXPONENTIATED RR low0.95CI.EXP high0.95CI.EXP
+(Intercept)     2.3322289         9.382979      8.546874      10.300876
+CMXCOM1         0.3314066         1.226808      1.080501       1.392926
+CMXCOM2         0.2787621         1.172336      1.040014       1.321493
+CMXCOM3+        0.3126638         1.224536      1.096870       1.367062
+
+$dev
+[1] 786.3562
+
+$df
+[1] 248
+
+$output.information
+[1] "SEE TOP OF OUTPUT FOR INFORMATION ON MISSING DATA AND ERROR MESSAGES"</code></pre>
+</div>
+</div>
+<div class="cell" data-hash="workshop_part5_cache/html/unnamed-chunk-4_3dc870a847fa7271efc40789eded1c15">
+
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      let href = ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./workshop_part3.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Part 4: Descriptive analysis</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./exercises.html" class="pagination-link">
+        <span class="nav-page-text">Exercises</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+</body></html>

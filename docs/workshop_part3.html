@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>DataSHIELD Workshop - Part 3: Descriptive analysis</title>
+<title>DataSHIELD Workshop - Part 4: Descriptive analysis</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -87,8 +87,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <script src="site_libs/quarto-search/autocomplete.umd.js"></script>
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
-<link href="./workshop_part4.html" rel="next">
-<link href="./workshop_part2.html" rel="prev">
+<link href="./workshop_part5.html" rel="next">
+<link href="./workshop_part4.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -128,7 +128,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <header id="quarto-header" class="headroom fixed-top">
   <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
     <div class="container-fluid d-flex justify-content-between">
-      <h1 class="quarto-secondary-nav-title">Part 3: Descriptive analysis</h1>
+      <h1 class="quarto-secondary-nav-title">Part 4: Descriptive analysis</h1>
       <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
         <i class="bi bi-chevron-right"></i>
       </button>
@@ -212,12 +212,17 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./workshop_part3.html" class="sidebar-item-text sidebar-link active">Part 3: Descriptive analysis</a>
+  <a href="./workshop_part4.html" class="sidebar-item-text sidebar-link">Part 3: Data wranggling</a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./workshop_part4.html" class="sidebar-item-text sidebar-link">Part 4: Data wranggling</a>
+  <a href="./workshop_part3.html" class="sidebar-item-text sidebar-link active">Part 4: Descriptive analysis</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./workshop_part5.html" class="sidebar-item-text sidebar-link">Part 5: Statistical models</a>
   </div>
 </li>
     </ul>
@@ -258,6 +263,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <ul class="collapse">
   <li><a href="#fisher-test" id="toc-fisher-test" class="nav-link" data-scroll-target="#fisher-test">Fisher test</a></li>
   </ul></li>
+  <li><a href="#statistics-of-a-continuous-variable-grouped-by-a-categorical-variable" id="toc-statistics-of-a-continuous-variable-grouped-by-a-categorical-variable" class="nav-link" data-scroll-target="#statistics-of-a-continuous-variable-grouped-by-a-categorical-variable">Statistics of a continuous variable grouped by a categorical variable</a></li>
   <li><a href="#student-t-test" id="toc-student-t-test" class="nav-link" data-scroll-target="#student-t-test">Student t-test</a>
   <ul class="collapse">
   <li><a href="#pooled-t-test" id="toc-pooled-t-test" class="nav-link" data-scroll-target="#pooled-t-test">Pooled t-test</a></li>
@@ -272,7 +278,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title d-none d-lg-block">Part 3: Descriptive analysis</h1>
+<h1 class="title d-none d-lg-block">Part 4: Descriptive analysis</h1>
 </div>
 
 
@@ -470,6 +476,43 @@ alternative hypothesis: two.sided</code></pre>
 </div>
 </section>
 </section>
+<section id="statistics-of-a-continuous-variable-grouped-by-a-categorical-variable" class="level2">
+<h2 class="anchored" data-anchor-id="statistics-of-a-continuous-variable-grouped-by-a-categorical-variable">Statistics of a continuous variable grouped by a categorical variable</h2>
+<p>We may have interest on knowing the value of certain statistics of a variable when grouping with a category. As an example we will calculate the mean of the variable <code>DMRAGEYR</code> (Age) grouped by the variable <code>CMXDI</code> (Diabetes). Please note this is just an example, those two variables are not expected to be related.</p>
+<p>To compute this statistic it is important that we have the categorical variable as a factor, otherwise the grouped statistic calculation will fail. Also, we have to create separate objects for the two variables, we can’t merge them into a <code>data.frame</code> and call them using the typical formulation <code>data.frame$variable</code>, for some reason it fails (to be reported as a bug to the core DataSHIELD team).</p>
+<div class="cell" data-hash="workshop_part3_cache/html/groupedmean_59277733f4f276a71694d40b0541d4e3">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.assign</span>(<span class="at">toAssign =</span> <span class="st">"data$DMRAGEYR"</span>,</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>            <span class="at">newobj =</span>  <span class="st">"DMRAGEYR"</span>)</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.assign</span>(<span class="at">toAssign =</span> <span class="st">"data$CMXDI"</span>,</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">newobj =</span>  <span class="st">"CMXDI"</span>)</span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.asFactor</span>(<span class="at">input.var.name =</span> <span class="st">"CMXDI"</span>, <span class="at">newobj.name =</span> <span class="st">"CMXDI_factor"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$all.unique.levels
+[1] "No"  "Yes"
+
+$return.message
+[1] "Data object &lt;CMXDI_factor&gt; correctly created in all specified data sources"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.tapply</span>(<span class="at">X.name =</span> <span class="st">"DMRAGEYR"</span>, <span class="at">INDEX.names =</span> <span class="st">"CMXDI_factor"</span>, <span class="at">FUN.name =</span> <span class="st">"mean"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$study1
+$study1$Mean
+ CMXDI_factor.No CMXDI_factor.Yes 
+        63.32787         65.54545 
+
+$study1$N
+ CMXDI_factor.No CMXDI_factor.Yes 
+             183               66 </code></pre>
+</div>
+</div>
+<p>This function can take other expressions on the argument <code>FUN.name</code>, more precisely:</p>
+<ul>
+<li><code>"mean"</code></li>
+<li><code>"sd"</code></li>
+<li><code>"sum"</code></li>
+<li><code>"quantile"</code></li>
+</ul>
+</section>
 <section id="student-t-test" class="level2">
 <h2 class="anchored" data-anchor-id="student-t-test">Student t-test</h2>
 <p>We have two options to perform a t-test, and our choice will depend on whether we want to use pooled methods or we want to calculate the t-test on a single study server.</p>
@@ -485,14 +528,14 @@ alternative hypothesis: two.sided</code></pre>
 </ul>
 <p>We will use the following code to perform this operations:</p>
 <div class="cell" data-hash="workshop_part3_cache/html/pooledttest_fd929c066bc88a4c7b60564f6e561a9d">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>mean1 <span class="ot">&lt;-</span> <span class="fu">ds.mean</span>(<span class="st">"data$DMRAGEYR"</span>)<span class="sc">$</span>Mean.by.Study[<span class="dv">1</span>]</span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>mean2 <span class="ot">&lt;-</span> <span class="fu">ds.mean</span>(<span class="st">"data$LBXSC3SIHn"</span>)<span class="sc">$</span>Mean.by.Study[<span class="dv">1</span>]</span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>sd1 <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="fu">ds.var</span>(<span class="st">"data$DMRAGEYR"</span>)<span class="sc">$</span>Variance.by.Study[<span class="dv">1</span>])</span>
-<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>sd2 <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="fu">ds.var</span>(<span class="st">"data$LBXSC3SIHn"</span>)<span class="sc">$</span>Variance.by.Study[<span class="dv">1</span>])</span>
-<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>n1 <span class="ot">&lt;-</span> <span class="fu">ds.length</span>(<span class="st">"data$DMRAGEYR"</span>)[[<span class="dv">1</span>]] <span class="sc">-</span> <span class="fu">ds.numNA</span>(<span class="st">"data$DMRAGEYR"</span>)[[<span class="dv">1</span>]]</span>
-<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>n2 <span class="ot">&lt;-</span> <span class="fu">ds.length</span>(<span class="st">"data$LBXSC3SIHn"</span>)[[<span class="dv">1</span>]] <span class="sc">-</span> <span class="fu">ds.numNA</span>(<span class="st">"data$LBXSC3SIHn"</span>)[[<span class="dv">1</span>]]</span>
-<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>(mean1 <span class="sc">-</span> mean2) <span class="sc">/</span> <span class="fu">sqrt</span>(sd1<span class="sc">^</span><span class="dv">2</span><span class="sc">/</span>n1 <span class="sc">+</span> sd2<span class="sc">^</span><span class="dv">2</span><span class="sc">/</span>n2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>mean1 <span class="ot">&lt;-</span> <span class="fu">ds.mean</span>(<span class="st">"data$DMRAGEYR"</span>)<span class="sc">$</span>Mean.by.Study[<span class="dv">1</span>]</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>mean2 <span class="ot">&lt;-</span> <span class="fu">ds.mean</span>(<span class="st">"data$LBXSC3SIHn"</span>)<span class="sc">$</span>Mean.by.Study[<span class="dv">1</span>]</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>sd1 <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="fu">ds.var</span>(<span class="st">"data$DMRAGEYR"</span>)<span class="sc">$</span>Variance.by.Study[<span class="dv">1</span>])</span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>sd2 <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="fu">ds.var</span>(<span class="st">"data$LBXSC3SIHn"</span>)<span class="sc">$</span>Variance.by.Study[<span class="dv">1</span>])</span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>n1 <span class="ot">&lt;-</span> <span class="fu">ds.length</span>(<span class="st">"data$DMRAGEYR"</span>)[[<span class="dv">1</span>]] <span class="sc">-</span> <span class="fu">ds.numNA</span>(<span class="st">"data$DMRAGEYR"</span>)[[<span class="dv">1</span>]]</span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>n2 <span class="ot">&lt;-</span> <span class="fu">ds.length</span>(<span class="st">"data$LBXSC3SIHn"</span>)[[<span class="dv">1</span>]] <span class="sc">-</span> <span class="fu">ds.numNA</span>(<span class="st">"data$LBXSC3SIHn"</span>)[[<span class="dv">1</span>]]</span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>(mean1 <span class="sc">-</span> mean2) <span class="sc">/</span> <span class="fu">sqrt</span>(sd1<span class="sc">^</span><span class="dv">2</span><span class="sc">/</span>n1 <span class="sc">+</span> sd2<span class="sc">^</span><span class="dv">2</span><span class="sc">/</span>n2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 46.00566</code></pre>
 </div>
@@ -503,7 +546,7 @@ alternative hypothesis: two.sided</code></pre>
 <h3 class="anchored" data-anchor-id="single-study-t-test">Single study t-test</h3>
 <p>If we are not interested on using pooled functionalities, it is much simpler to perform a t-test.</p>
 <div class="cell" data-hash="workshop_part3_cache/html/singlettest_f421eb0e869b7a7a482af4f6534c60bb">
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>DSI<span class="sc">::</span><span class="fu">datashield.aggregate</span>(connections, <span class="st">"t.test(data$DMRAGEYR, data$LBXSC3SIHn)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>DSI<span class="sc">::</span><span class="fu">datashield.aggregate</span>(connections, <span class="st">"t.test(data$DMRAGEYR, data$LBXSC3SIHn)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>$study1
 
@@ -613,13 +656,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./workshop_part2.html" class="pagination-link">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Part 2: Data validation</span>
+      <a href="./workshop_part4.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Part 3: Data wranggling</span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./workshop_part4.html" class="pagination-link">
-        <span class="nav-page-text">Part 4: Data wranggling</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./workshop_part5.html" class="pagination-link">
+        <span class="nav-page-text">Part 5: Statistical models</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
