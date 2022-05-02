@@ -1,0 +1,184 @@
+[
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "DataSHIELD Workshop",
+    "section": "",
+    "text": "This website has been created to host the materials and exercises for the ‘Utilization of the unCoVer toolbox for covidー19 data analysis’, hosted at the UPM-Montegancedo Campus the 6th of May, 2022.\nOn it you will find reading materials, setup tutorials, the workshop indications and practical exercises.\n\n\nBefore the workshop we suggest the atendants to take a look at the “Envrionment setup” and “Get up to speed” sections. This way they will have their computers with the right software installed to follow the workshop.\n\n\n\n[TABLE OF THE WORKSHOP SCHEDULE]\n\n\n\nDeveloped at ISGlobal-Barcelona by Juan R. González and Xavier Escribà Montagut"
+  },
+  {
+    "objectID": "setup.html",
+    "href": "setup.html",
+    "title": "Environment setup",
+    "section": "",
+    "text": "Along this section, we will go over the R packages (and versions) required to navigate through the workshop. We recommend to use RStudio as the integrated development environment (IDE) to use R, although any other IDE can be used. We suggest to use R version > 4.0."
+  },
+  {
+    "objectID": "setup.html#r-packages",
+    "href": "setup.html#r-packages",
+    "title": "Environment setup",
+    "section": "R packages",
+    "text": "R packages\nThe required R packages are the following:\n\nDSI 1.4.0: The DataSHIELD Interface (DSI) handles the connections to the databases.\nDSOpal 1.3.0: DSOpal is an extension of DSI to connect to to Opal servers.\ndsBaseClient 6.1.1: Implementation of the base R functions (Example: Base package function as.factor is implemented as ds.asFactor).\ndsHelper 0.4.11: dsHelper is a compedium of wrappers for dsBaseClient functions that simplify some common operations to maintain sanity."
+  },
+  {
+    "objectID": "setup.html#install-guide",
+    "href": "setup.html#install-guide",
+    "title": "Environment setup",
+    "section": "Install guide",
+    "text": "Install guide\n\n\n\n\n\n\nThe proposed install guide has been tested on a clean installation with R 4.0.4 and RStudio 2022.02.2 Build 485; if any errors occur, please consider using a clean install or refer to the official R documentation regarding the errors you are getting. If you are facing permissions issues, contact your system administrator.\n\n\n\nTo install the required packages we will need the devtools package.\n\ninstall.packages(\"devtools\")\n\nAfterwards, we can install the packages:\n\ndevtools::install_github(\"datashield/dsBaseClient\", \"6.1.1\")\ndevtools::install_version(\"DSI\", version = \"1.4.0\")\ndevtools::install_version(\"DSOpal\", version = \"1.3.0\")\ndevtools::install_github(\"lifecycle-project/ds-helper\", \"0.4.11\")\n\n\n\n\nInstall console"
+  },
+  {
+    "objectID": "help.html",
+    "href": "help.html",
+    "title": "Get up to speed: Useful reads",
+    "section": "",
+    "text": "Along this workshop, there are some details regarding DataSHIELD and “resources” that are not explained in detail, it is expected that the reader is familiar with them. If that is not the case, there are other free online books/papers with that knowledge.\n\nDataSHIELD paper: Description of what is DataSHIELD.\nDataSHIELD wiki: Materials about DataSHIELD including:\n\nBeginner material\nRecorded DataSHIELD workshops\nInformation on current release of DataSHIELD\n\nresource book: In this book you will find information about:\n\nDataSHIELD (Section 5)\nWhat are resources (Section 6/7)"
+  },
+  {
+    "objectID": "help.html#opal",
+    "href": "help.html#opal",
+    "title": "Get up to speed: Useful reads",
+    "section": "Opal",
+    "text": "Opal\nWe will be interacting with DataSHIELD through a data warehouse called Opal. This is the server that will handle the authentication of our credentials, storage of data and “resources” and will provide an R server where the non-disclosive analysis will be conducted. Information about it can also be foun online:\n\nOpal papers 1; 2\nOpal documentation"
+  },
+  {
+    "objectID": "help.html#resources-a-very-simple-explanation-without-any-technicalities",
+    "href": "help.html#resources-a-very-simple-explanation-without-any-technicalities",
+    "title": "Get up to speed: Useful reads",
+    "section": "“resources”: A very simple explanation without any technicalities",
+    "text": "“resources”: A very simple explanation without any technicalities\nIt is quite important to have a solid understanding of what are the “resources” and how we work with them, since we will be using them to load our data on the R sessions. For that reason we included a very brief description of them without using technicalities.\nThe “resources” can be imagined as a data structure that contains the information about where to find a data set and the access credentials to it; we as DataSHIELD users are not able to look at this information (it is privately stored on the Opal server), but we can load it into our remote R session to make use of it. Following that, the next step comes naturally.\nOnce we have in an R session the information to access a dataset (an table for example) we have to actually retrieve it on the remote R session to analyze it. This step is called resolving the resource.\nThose two steps can be identified on the code we provide as the following:\nLoading the information of a “resource”:\n\nDSI::datashield.assign.resource(conns, \"resource\", \"resource.path.in.opal.server\")\n\nResolving the “resource”:\n\nDSI::datashield.assign.expr(conns, \"resource.resolved\", expr = as.symbol(\"as.resource.data.frame(resource)\"))\n\nThis toy code would first load the “resource” on a variable called resource and it would retrieve the information it contains and assign it to a variable called resource.resolved."
+  },
+  {
+    "objectID": "workshop_part0.html",
+    "href": "workshop_part0.html",
+    "title": "Part 0: Connecting to the analysis servers",
+    "section": "",
+    "text": "To begin, we will load the libraries that will allow us to connect to the Opal analysis servers.\n\nlibrary(DSI)\nlibrary(DSOpal)\nlibrary(dsBaseClient)"
+  },
+  {
+    "objectID": "workshop_part0.html#log-in-to-the-study-servers",
+    "href": "workshop_part0.html#log-in-to-the-study-servers",
+    "title": "Part 0: Connecting to the analysis servers",
+    "section": "Log in to the study servers",
+    "text": "Log in to the study servers\nWe begin by creating the connection object, to do that we will use the DSI package. It is at this stage that we can decide whether only connect to a single study server or to multiple. If we connect to multiple study servers we can make use of the pooled functionalities of some DataSHIELD functions.\n\nbuilder <- DSI::newDSLoginBuilder()\nbuilder$append(server = \"study1\",\n               url = \"https://192.168.1.200:8005\",\n               user = \"user_analisis\", password = \"Ekfl07UUgz\")\nlogindata <- builder$build()\n\nWe just created the logindata object, which contains all the login information, the next step is to use this information and actually connect to the servers.\n\nconnections <- DSI::datashield.login(logins = logindata)\n\n\nLogging into the collaborating servers\n\n\nError in curl::curl_fetch_memory(url, handle = handle): schannel: next InitializeSecurityContext failed: SEC_E_UNTRUSTED_ROOT (0x80090325) - La cadena de certificación fue emitida por una entidad en la que no se confía.\n\n\nThe error we are getting is due the study server having no SSL certificate, by default R refuses to connect to endpoints without SSL certificates. We do not need to know what an SSL certificate is or why is it important.\nWe can maually disable this limitation of R so that it accepts to connect.\n\nlibrary(httr);set_config(config(ssl_verifypeer = 0L))\n\nAnd now we successfully connect to the study servers.\n\nconnections <- DSI::datashield.login(logins = logindata)\n\n\nLogging into the collaborating servers"
+  },
+  {
+    "objectID": "workshop_part1.html",
+    "href": "workshop_part1.html",
+    "title": "Part 1: Loading the data",
+    "section": "",
+    "text": "Now that we are connected to the study servers, we have to load the data on the remote R sessions."
+  },
+  {
+    "objectID": "workshop_part1.html#loading-the-resources",
+    "href": "workshop_part1.html#loading-the-resources",
+    "title": "Part 1: Loading the data",
+    "section": "Loading the resources",
+    "text": "Loading the resources\nWe will begin by loading the resources. If we are not sure which resources has each study server, we can go to the user interface of the Opals. To do that, just go to your browser of choice and navigate to the server URL. Login with the same credentials you are using for DataSHIELD.\n\n\n\nOpal UI lading page\n\n\nOnce we login, we have to navigate to the Projects tab, there we will find the available projects on the Opal server, we have to write down the name of the project we are interested on using.\n\n\n\nOpal UI Projects page\n\n\nWe then click on the project of interest. On the resources tab we will see the available resources. We have to write down the resource of interest.\n\n\n\nOpal UI Available resources\n\n\nWe can therefore conclude that on the illustrated example, the information of interest is:\n\nURL: https://192.168.1.200:8005\nProject name: UMF_Cluj\nResource name: Romania\n\nWith this information, we can go back to the RStudio and load the resources in the remote R sessions.\n\nDSI::datashield.assign.resource(connections, \"resource\", \"UMF_Cluj.Romania\")"
+  },
+  {
+    "objectID": "workshop_part1.html#resolving-the-resources",
+    "href": "workshop_part1.html#resolving-the-resources",
+    "title": "Part 1: Loading the data",
+    "section": "Resolving the resources",
+    "text": "Resolving the resources\nUp to this point we have created an object called resource that contains all the information required to load the data to the R session. In order do so, we just have to “resolve” this object. We do that with the following function.\n\nDSI::datashield.assign.expr(conns = connections, symbol = \"data\", \n                            expr = \"as.resource.data.frame(resource)\")\n\nNow we have created an object called data. This object contains a dataframe with the data we will use to perform our analysis. We can check if that is true and the dimensions of this dataframe.\n\nds.class(\"data\")\n\n$study1\n[1] \"spec_tbl_df\" \"tbl_df\"      \"tbl\"         \"data.frame\" \n\nds.dim(\"data\")\n\n$`dimensions of data in study1`\n[1] 999 132\n\n$`dimensions of data in combined studies`\n[1] 999 132"
+  },
+  {
+    "objectID": "workshop_part2.html",
+    "href": "workshop_part2.html",
+    "title": "Part 2: Data validation",
+    "section": "",
+    "text": "Now that we have the data loaded, we can check if the data is compliant with the ranges described on the codebook. (IS IT PUBLIC/CAN WE LINK IT HERE?). On this step we can check that the categorical variables are properly encoded and that the numerical variables have the appropriate range. Regarding the numerical variables, we will not be checking the range, we will be looking the 5%/95% interquartile range, as there is no DataSHIELD function to output maximums and minimums."
+  },
+  {
+    "objectID": "workshop_part2.html#columns-available",
+    "href": "workshop_part2.html#columns-available",
+    "title": "Part 2: Data validation",
+    "section": "Columns available",
+    "text": "Columns available\nFirst, we check the columns available on the loaded data.\n\nds.colnames(\"data\")\n\n$study1\n  [1] \"id\"               \"DMRBORN\"          \"DMRAGEYR\"        \n  [4] \"DATAD\"            \"DATSO\"            \"SMXASAH\"         \n  [7] \"SMXRNA\"           \"SMXSTA\"           \"SMXCOA\"          \n [10] \"SMXCPA\"           \"SMXSBA\"           \"SMXWHA\"          \n [13] \"SMXFEA\"           \"SMXHEA\"           \"SMXFAA\"          \n [16] \"SMXACA\"           \"SMXSEA\"           \"SMXSLA\"          \n [19] \"SMXANA\"           \"SMXNAA\"           \"SMXDIA\"          \n [22] \"SMXAPA\"           \"SMXMYA\"           \"SMXARA\"          \n [25] \"SMXSRA\"           \"SMXBLA\"           \"CMXCVD\"          \n [28] \"CMXHT\"            \"CMXCPD\"           \"CMXASM\"          \n [31] \"CMXCKD\"           \"RFXOB\"            \"CMXCLD\"          \n [34] \"CMXAP\"            \"CMXCND\"           \"RFXONC\"          \n [37] \"RFXHIV\"           \"CMXDI\"            \"CMXRHE\"          \n [40] \"RFXTB\"            \"RFXSM\"            \"CMXPU\"           \n [43] \"CSXCOT\"           \"CSXBTPA\"          \"CSXCHRA\"         \n [46] \"CSXSYA\"           \"CSXDIA\"           \"CSXOSTA\"         \n [49] \"DATIMD\"           \"IMDXXR\"           \"IMDXCTTE\"        \n [52] \"DATLBDHn\"         \"LBXCRPHn\"         \"LBXESRHn\"        \n [55] \"LBXSPCHn\"         \"LBXFERSIHn\"       \"LBXCDDHn\"        \n [58] \"LBXPHHn\"          \"LBXPOHn\"          \"LBXPCOHn\"        \n [61] \"LBXSC3SIHn\"       \"LBXBEHn\"          \"LBXSBLHn\"        \n [64] \"TRXAC\"            \"TRXCH\"            \"TRXIS\"           \n [67] \"TRXIM\"            \"TRXAB\"            \"TRXAV\"           \n [70] \"TRXVC\"            \"TRXVD\"            \"TRXZN\"           \n [73] \"TRXCS\"            \"TRXOX\"            \"TRXIT\"           \n [76] \"TRXTR\"            \"TRXNIV\"           \"DSXIC\"           \n [79] \"DSXOS\"            \"DATLGT\"           \"SMXRNA_numeric\"  \n [82] \"SMXSTA_numeric\"   \"SMXCOA_numeric\"   \"SMXCPA_numeric\"  \n [85] \"SMXSBA_numeric\"   \"SMXWHA_numeric\"   \"SMXHEA_numeric\"  \n [88] \"SMXFAA_numeric\"   \"SMXACA_numeric\"   \"SMXSEA_numeric\"  \n [91] \"SMXSLA_numeric\"   \"SMXANA_numeric\"   \"SMXNAA_numeric\"  \n [94] \"SMXDIA_numeric\"   \"SMXAPA_numeric\"   \"SMXMYA_numeric\"  \n [97] \"SMXARA_numeric\"   \"SMXSRA_numeric\"   \"SMXBLA_numeric\"  \n[100] \"CMXCVD_numeric\"   \"CMXHT_numeric\"    \"CMXCPD_numeric\"  \n[103] \"CMXASM_numeric\"   \"CMXCKD_numeric\"   \"RFXOB_numeric\"   \n[106] \"CMXCLD_numeric\"   \"CMXAP_numeric\"    \"CMXCND_numeric\"  \n[109] \"RFXONC_numeric\"   \"RFXHIV_numeric\"   \"CMXDI_numeric\"   \n[112] \"CMXRHE_numeric\"   \"RFXTB_numeric\"    \"RFXSM_numeric\"   \n[115] \"CMXPU_numeric\"    \"IMDXCTTE_numeric\" \"TRXAC_numeric\"   \n[118] \"TRXCH_numeric\"    \"TRXIS_numeric\"    \"TRXIM_numeric\"   \n[121] \"TRXAB_numeric\"    \"TRXAV_numeric\"    \"TRXVC_numeric\"   \n[124] \"TRXVD_numeric\"    \"TRXZN_numeric\"    \"TRXCS_numeric\"   \n[127] \"TRXOX_numeric\"    \"TRXIT_numeric\"    \"TRXTR_numeric\"   \n[130] \"TRXNIV_numeric\"   \"DSXIC_numeric\"    \"DSXOS_numeric\""
+  },
+  {
+    "objectID": "workshop_part2.html#categorical-variables",
+    "href": "workshop_part2.html#categorical-variables",
+    "title": "Part 2: Data validation",
+    "section": "Categorical variables",
+    "text": "Categorical variables\nWe compare against the codebook and see that we have the SMXAPA variable, which should have the categories: 0 and 1 (plus missing).\n \nFirst, we can check the class of this variable.\n\nds.class(\"data$SMXAPA\")\n\n$study1\n[1] \"character\"\n\n\nWe might have expected to have a variable of class factor, later on this workshop we will see how to transform a variable to a factor, for the moment we do not have to worry. Having a character variable is enough for the data validation.\nFollowing that, we can extract an uni-dimensional contingency table of the variable. This way we will obtain the different categories of the variable and their counts. Aside, we will obtain the count of missings (NA) for this variable.\n\nds.table(\"data$SMXAPA\")$output.list$TABLES.COMBINED_all.sources_counts\n\n\n Data in all studies were valid \n\nStudy 1 :  No errors reported from this study\n\n\ndata$SMXAPA\n No Yes  NA \n236  16 747 \n\n\nThis variable complies with the codebook."
+  },
+  {
+    "objectID": "workshop_part2.html#numerical-variables",
+    "href": "workshop_part2.html#numerical-variables",
+    "title": "Part 2: Data validation",
+    "section": "Numerical variables",
+    "text": "Numerical variables\nFrom previously shown codebook screenshot, we can see that we also have the DMRAGEYR variable, which should be numeric. We can confirm that.\n\nds.class(\"data$DMRAGEYR\")\n\n$study1\n[1] \"numeric\"\n\n\nAs previously mentioned, we will check the 5%/95% interquartile range to see the range of the variable.\n\nds.summary(\"data$DMRAGEYR\")\n\n$study1\n$study1$class\n[1] \"numeric\"\n\n$study1$length\n[1] 999\n\n$study1$`quantiles & mean`\n    5%    10%    25%    50%    75%    90%    95%   Mean \n40.450 46.900 54.250 65.000 72.000 80.100 84.000 63.832 \n\n\nThis is not the most useful way to check the range of a variable. There is an alternative provided by the dsHelper package, which is to exatract the (noise-perturbed) variable which would be used for the scatter plot. Depending on the security parameters of the Opal server, the noise added could be too severe to be useful, but with the default settings it serves as a great alternative.\n\nvariable <- dh.getAnonPlotData(df = \"data\", var_1 = \"DMRAGEYR\")\nhead(variable)\n\n# A tibble: 6 x 2\n  cohort DMRAGEYR\n  <chr>     <dbl>\n1 study1     64.0\n2 study1     61.0\n3 study1     65.0\n4 study1     49.9\n5 study1     76.1\n6 study1     66.0\n\nrange(variable[,2])\n\n[1] 30.85094 91.79304\n\n\nFinally, we can also check the amount of missings of the numerical variable.\n\nds.numNA(\"data$DMRAGEYR\")\n\n$study1\n[1] 749"
+  },
+  {
+    "objectID": "workshop_part3.html",
+    "href": "workshop_part3.html",
+    "title": "Part 3: Descriptive analysis",
+    "section": "",
+    "text": "We have already checked that our data is compliant with the codebook. Now we can proceed with our analysis using the selected variables. To begin, we will perform a brief descriptive analysis, calculating some statistics, tables of contingence and doing some graphical visualizations."
+  },
+  {
+    "objectID": "workshop_part3.html#descriptive-statistics",
+    "href": "workshop_part3.html#descriptive-statistics",
+    "title": "Part 3: Descriptive analysis",
+    "section": "Descriptive statistics",
+    "text": "Descriptive statistics\nThere is a collection of DataSHIELD functions to get the descriptive statistics of a variable. Those are the functions ds.var, ds.mean, ds.table among others. However, there is a function from the dsHelper package that automatically performs all the function calls on the background, being a much more user-friendly alternative. The only downside is that it requires the categorical variables to be factors, we can easily create a new factor variable and add it as a new column to our data.\n\nds.asFactor(input.var.name = \"data$SMXAPA\", newobj.name = \"SMXAPA_factor\")\n\n$all.unique.levels\n[1] \"No\"  \"Yes\"\n\n$return.message\n[1] \"Data object <SMXAPA_factor> correctly created in all specified data sources\"\n\nDSI::datashield.assign.expr(connections, \"data\", \"cbind(data, SMXAPA_factor)\")\n\ndh.getStats(df = \"data\", vars = c(\"DMRAGEYR\", \"SMXAPA_factor\"))\n\n$categorical\n# A tibble: 4 x 10\n  variable      cohort   category value cohort_n valid_n missing_n perc_valid\n  <chr>         <chr>    <fct>    <int>    <int>   <int>     <int>      <dbl>\n1 SMXAPA_factor combined No         236      999     252       747      93.6 \n2 SMXAPA_factor combined Yes         16      999     252       747       6.35\n3 SMXAPA_factor study1   No         236      999     252       747      93.6 \n4 SMXAPA_factor study1   Yes         16      999     252       747       6.35\n# ... with 2 more variables: perc_missing <dbl>, perc_total <dbl>\n\n$continuous\n# A tibble: 2 x 15\n  variable cohort    mean std.dev perc_5 perc_10 perc_25 perc_50 perc_75 perc_90\n  <chr>    <chr>    <dbl>   <dbl>  <dbl>   <dbl>   <dbl>   <dbl>   <dbl>   <dbl>\n1 DMRAGEYR study1    63.8    13.0   40.4    46.9    54.2      65      72    80.1\n2 DMRAGEYR combined  63.8    13.0   40.4    46.9    54.2      65      72    80.1\n# ... with 5 more variables: perc_95 <dbl>, valid_n <dbl>, cohort_n <dbl>,\n#   missing_n <dbl>, missing_perc <dbl>"
+  },
+  {
+    "objectID": "workshop_part3.html#graphical-visualizations",
+    "href": "workshop_part3.html#graphical-visualizations",
+    "title": "Part 3: Descriptive analysis",
+    "section": "Graphical visualizations",
+    "text": "Graphical visualizations\nThere is a rich collection of functions to perform graphical visualization of the variables.\n\nBoxplot\nThe boxplot is one of the newest plots available on DataSHIELD. It uses the ggplot2 library, providing lots of customization options.\n\nds.boxPlot(x = \"data\", variables = \"DMRAGEYR\")\n\n\n\n\nThere are grouping options on the boxplot function which are very useful to have greater insights of the data. We can group using factor variables, so in this example we will use the previously created SMXAPA_factor variable.\n\nds.boxPlot(x = \"data\", variables = \"DMRAGEYR\", group = \"SMXAPA_factor\")\n\n\n\n\nWe could even perform a second grouping using the argument group2 and stating another factor variable.\n\n\nHistogram\nTo have an idea of the distribution of a variable we can use histograms.\n\nds.histogram(\"data$DMRAGEYR\")\n\nWarning: study1: 1 invalid cells\n\n\n\n\n\n$breaks\n [1] 26.35662 33.27495 40.19328 47.11160 54.02993 60.94826 67.86658 74.78491\n [9] 81.70324 88.62156 95.53989\n\n$counts\n [1]  0 11 14 36 29 54 51 31 17  5\n\n$density\n [1] 0.000000000 0.006359919 0.008094443 0.020814282 0.016767060 0.031221422\n [7] 0.029486899 0.017923409 0.009828966 0.002890872\n\n$mids\n [1] 29.81579 36.73411 43.65244 50.57077 57.48909 64.40742 71.32575 78.24407\n [9] 85.16240 92.08073\n\n$xname\n[1] \"xvect\"\n\n$equidist\n[1] TRUE\n\nattr(,\"class\")\n[1] \"histogram\"\n\n\n\n\nScatter plot\nDataSHIELD has a scatter plot functionality that outputs noise-affected data points, depending on the security configuration of the Opal, the noise levels can make this plot to be hugely distorted.\n\nds.scatterPlot(x = \"data$DMRAGEYR\", y = \"data$LBXSC3SIHn\", datasources = connections)\n\n\n\n\n[1] \"Split plot created\"\n\n\n\n\nHeatmap plot\nIn a similar fashion than the scatter plot, we can visualize a two dimensional distribution of the points but in this case by density.\n\nds.heatmapPlot(x = \"data$DMRAGEYR\", y = \"data$LBXSC3SIHn\")\n\nstudy1: Number of invalid cells (cells with counts >0 and < nfilter.tab ) is 73"
+  },
+  {
+    "objectID": "workshop_part3.html#dimensional-contingency-table",
+    "href": "workshop_part3.html#dimensional-contingency-table",
+    "title": "Part 3: Descriptive analysis",
+    "section": "2-Dimensional contingency table",
+    "text": "2-Dimensional contingency table\nOn the previous part, we have already seen that DataSHIELD has a function to calculate uni-dimensional contingency tables. This same function, can also be used for bi-dimensional contingency tables. It is important to note that this function is a little bit tricky sometimes, as it is quite common that the 2D contingency table has disclosive outputs, therefore we just get an error message.\n\nds.table(\"data$DMRAGEYR\", \"data$LBXSC3SIHn\")\n\n\n All studies failed for reasons identified below \n\n\nStudy 1 :  Failed: at least one cell has a non-zero count less than nfilter.tab i.e. 3 \n\n\n$validity.message\n[1] \"All studies failed for reasons identified below\"\n\n$error.messages\n$error.messages$study1\n[1] \"Failed: at least one cell has a non-zero count less than nfilter.tab i.e. 3\"\n\n\nThere are other variables that do produce valid non-disclosive results.\n\nctable <- ds.table(\"data$SMXCPA\", \"data$SMXSLA\")$output.list$TABLES.COMBINED_all.sources_counts\n\n\n Data in all studies were valid \n\nStudy 1 :  No errors reported from this study\n\nctable\n\n           data$SMXSLA\ndata$SMXCPA  No Yes  NA\n        No  202  21   0\n        Yes  26   3   0\n        NA    0   0 747\n\n\n\nFisher test\nGiven the calculated contingency table, we are now in the position to perform a Fisher’s exact test.\n\nstats::fisher.test(ctable)\n\n\n    Fisher's Exact Test for Count Data\n\ndata:  ctable\np-value < 2.2e-16\nalternative hypothesis: two.sided"
+  },
+  {
+    "objectID": "workshop_part3.html#student-t-test",
+    "href": "workshop_part3.html#student-t-test",
+    "title": "Part 3: Descriptive analysis",
+    "section": "Student t-test",
+    "text": "Student t-test\nWe have two options to perform a t-test, and our choice will depend on whether we want to use pooled methods or we want to calculate the t-test on a single study server.\n\nPooled t-test\nTo perform a pooled t-test, we will use a collection of DataSHIELD functions to calculate the statistic.\n\\[t = \\frac{\\bar{x}_1 - \\bar{x}_2}{\\sqrt{\\frac{s_1^2}{n_1} + \\frac{s_2^2}{n_2}}}\\]\nWhere:\n\n\\(\\bar{x}\\) is the observed mean of the sample.\n\\(s\\) is the standard devuation of the sample.\n\\(n\\) is the sample size.\n\nWe will use the following code to perform this operations:\n\nmean1 <- ds.mean(\"data$DMRAGEYR\")$Mean.by.Study[1]\nmean2 <- ds.mean(\"data$LBXSC3SIHn\")$Mean.by.Study[1]\nsd1 <- sqrt(ds.var(\"data$DMRAGEYR\")$Variance.by.Study[1])\nsd2 <- sqrt(ds.var(\"data$LBXSC3SIHn\")$Variance.by.Study[1])\nn1 <- ds.length(\"data$DMRAGEYR\")[[1]] - ds.numNA(\"data$DMRAGEYR\")[[1]]\nn2 <- ds.length(\"data$LBXSC3SIHn\")[[1]] - ds.numNA(\"data$LBXSC3SIHn\")[[1]]\n\n(mean1 - mean2) / sqrt(sd1^2/n1 + sd2^2/n2)\n\n[1] 46.00566\n\n\nYou can expect to see a wrapper for this code on a future dsHelper release (dsHelper::dh.ttest('sample1', 'sample2').\n\n\nSingle study t-test\nIf we are not interested on using pooled functionalities, it is much simpler to perform a t-test.\n\nDSI::datashield.aggregate(connections, \"t.test(data$DMRAGEYR, data$LBXSC3SIHn)\")\n\n$study1\n\n    Welch Two Sample t-test\n\ndata:  data$DMRAGEYR and data$LBXSC3SIHn\nt = 46.006, df = 312.25, p-value < 2.2e-16\nalternative hypothesis: true difference in means is not equal to 0\n95 percent confidence interval:\n 38.5088 41.9499\nsample estimates:\nmean of x mean of y \n 63.83200  23.60265"
+  },
+  {
+    "objectID": "workshop_part3.html#analysis-of-variance-anova",
+    "href": "workshop_part3.html#analysis-of-variance-anova",
+    "title": "Part 3: Descriptive analysis",
+    "section": "Analysis of variance (ANOVA)",
+    "text": "Analysis of variance (ANOVA)\nA student is developing a DataSHIELD function to perform ANOVAs. You can expect it to be available in the following months, probably as part of the dsML package."
+  },
+  {
+    "objectID": "workshop_part4.html",
+    "href": "workshop_part4.html",
+    "title": "Part 4: Data wranggling",
+    "section": "",
+    "text": "On the previous parts, we have seen some hints of data wranggling, here we will go into detail and propose some complex re-codings."
+  },
+  {
+    "objectID": "workshop_part4.html#data-classes",
+    "href": "workshop_part4.html#data-classes",
+    "title": "Part 4: Data wranggling",
+    "section": "Data classes",
+    "text": "Data classes\nWe have previously seen that we can convert a character variable into a factor. All the tools to perform data transformations are the following:\n\nds.asCharacter: Useful to convert numerical values that we want as characters.\nds.asDataMatrixr: Useful to convert data.frames into matrices, as some functions do not accept data frames as inputs. Maintains the original class for all columns.\nds.asMatrixUseful to convert data.frames into matrices, as some functions do not accept data frames as inputs. Converts all columns into character class.\nds.asFactor: May cause disclosure issues if we try to convert a continuous variable. Very useful when the loaded categorical variables are represented as character instead of factor.\nds.asInteger: Useful when we require integer values, as the class numeric can’t guarantee it.\nds.asList: Rarely used.\nds.asLogical: To have bool variables. Similar to having factor variables.\nds.asNumeric: Useful to convert columns that have been interpreted as character class but we want them as numbers.\n\nWhen we use all this functions, we will create a new object on the study servers. If we are dealing with a data.frame and want to include this new column we created into it, we can use the following code.\n\nds.asFactor(input.var.name = \"data$SMXRNA\", newobj.name = \"SMXRNA_factor\")\n\n$all.unique.levels\n[1] \"No\"  \"Yes\"\n\n$return.message\n[1] \"Data object <SMXRNA_factor> correctly created in all specified data sources\"\n\nDSI::datashield.assign.expr(connections, \"data\", \"cbind(data, SMXRNA_factor)\")\n\nWe will overwrite the input data object with an added column.\n\ntail(ds.colnames(\"data\")[[1]])\n\n[1] \"TRXIT_numeric\"  \"TRXTR_numeric\"  \"TRXNIV_numeric\" \"DSXIC_numeric\" \n[5] \"DSXOS_numeric\"  \"SMXRNA_factor\""
+  },
+  {
+    "objectID": "workshop_part4.html#complex-recoding.-number-of-comorbidities",
+    "href": "workshop_part4.html#complex-recoding.-number-of-comorbidities",
+    "title": "Part 4: Data wranggling",
+    "section": "Complex recoding. Number of comorbidities",
+    "text": "Complex recoding. Number of comorbidities\nGiven the available variables on our dataset, we might be interested on recoding variables or creating new variables as combinations of the existing ones. This is exactly what we will do here. We will take the comorbities: RFXOB, CMXDI, CMXHT, CMXCVD, CMXCPD, CMXCKD, CMXCLD and RFXONC.\nWe will create a new variable called CMXCOM that quantifies how many comorbidities an individual has. We will have four categories:\n\n0 comorbidities\n1 comorbidities\n2 comorbidities\n3+ comorbidities\n\nThe process to achieve this is not as easy as straightforward as it would be using base R functions on our computer.\nTo begin, we will take a look at how the variables are encoded. Looking at the codebook they should all be dicotomous variables encoded as \"Yes\" / \"No\". We can verify that with the functions we’ve covered at the Part 2 of this workshop.\n\nds.table(\"data$RFXOB\")$output.list$TABLES.COMBINED_all.sources_counts\n\n\n Data in all studies were valid \n\nStudy 1 :  No errors reported from this study\n\n\ndata$RFXOB\n No Yes  NA \n149 101 749 \n\n\nNow, we will recode all the variabled so they are coded as 0 / 1.\n\nvariables <- c(\"RFXOB\", \"CMXDI\", \"CMXHT\", \"CMXCVD\", \n               \"CMXCPD\", \"CMXCKD\", \"CMXCLD\", \"RFXONC\")\n\nfor (x in variables){\n  ds.recodeValues(var.name = paste0(\"data$\", x), \n                  values2replace.vector = c(\"Yes\", \"No\"), \n                  new.values.vector = c(1, 0),\n                  newobj = paste0(x, \"_recoded\"))\n}\n\nWe have created a new object for each comorbiditie. The problem we now have is that the objects are of class character, because the ds.recodeValues function does not change the class.\n\nds.class(\"RFXOB_recoded\")\n\n$study1\n[1] \"character\"\n\n\nSince we want to count the numbers of comorbidities for each individual, it is important that we have a numeric variable. As we have prevously seen we can easily obtain this.\n\nfor (x in variables){\n  ds.asNumeric(x.name = paste0(x, \"_recoded\"), \n               newobj = paste0(x, \"_recoded_num\"))\n}\n\n\nds.class(\"RFXOB_recoded_num\")\n\n$study1\n[1] \"numeric\"\n\n\nNow we have a collection of variables encoded as we want and ready to be combined. First, we will join them on a data.frame.\n\nds.dataFrame(x = paste0(variables, \"_recoded_num\"), \n             newobj = \"joint_comorbidities\")\n\n$is.object.created\n[1] \"A data object <joint_comorbidities> has been created in all specified data sources\"\n\n$validity.check\n[1] \"<joint_comorbidities> appears valid in all sources\"\n\n\nOn the server we have created a table that looks something like this:\n\n\n\n\n\n\n\n\n\n\nid\nRFXOB_recoded_num\nCMXDI_recoded_num\nCMXHT_recoded_num\n…\n\n\n\n\nIndividual 1\n0\n0\n0\n…\n\n\nIndividual 2\n1\n1\n1\n…\n\n\n…\n…\n…\n…\n…\n\n\n\nThe variable we want to create is the amount of comorbidities by individual, therefore we have to perform rowSums.\n\nds.rowColCalc(x = \"joint_comorbidities\", \n              operation = \"rowSums\", \n              newobj = \"new_variable\")\n\nWe are almost done, we will convert our new variable to be a factor.\n\nds.asFactor(input.var.name = \"new_variable\", \n            newobj.name = \"new_variable_factor\")\n\n$all.unique.levels\n[1] \"0\" \"1\" \"2\" \"3\" \"4\" \"5\" \"6\"\n\n$return.message\n[1] \"Data object <new_variable_factor> correctly created in all specified data sources\"\n\n\nWe can see that when we call the function ds.asFactor we receive the actual levels of the variable. We have said that the levels we actually want are 0, 1, 2, 3+.\nTo achieve this we just have to recode the levels.\n\nds.recodeValues(var.name = \"new_variable_factor\", \n                values2replace.vector = c(\"0\", \"1\", \"2\", \"3\", \"4\", \"5\", \"6\"),\n                new.values.vector = c(\"0\", \"1\", \"2\",\"3+\", \"3+\", \"3+\",\"3+\"), \n                newobj = \"CMXCOM\")\n\n$is.object.created\n[1] \"A data object <CMXCOM> has been created in all specified data sources\"\n\n$validity.check\n[1] \"<CMXCOM> appears valid in all sources\"\n\n\nFinally, we merge the new variable to our original data, and we are finished.\n\nDSI::datashield.assign.expr(connections, \"data\", \"cbind(data, CMXCOM)\")"
+  },
+  {
+    "objectID": "workshop_part4.html#dates-what-to-do",
+    "href": "workshop_part4.html#dates-what-to-do",
+    "title": "Part 4: Data wranggling",
+    "section": "Dates: What to do…",
+    "text": "Dates: What to do…\nThe unCoVer consortia have many variables that correspond to dates. At the moment DataSHIELD has no functions to work with dates. We could develop a package to work with them if researchers can benefit from that."
+  }
+]

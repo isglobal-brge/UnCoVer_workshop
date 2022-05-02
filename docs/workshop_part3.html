@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-0.9.328">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>DataSHIELD Workshop - Part 3: Descriptive analysis</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<link href="./workshop_part4.html" rel="next">
+<link href="./workshop_part2.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link id="quarto-text-highlighting-styles" href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+</head>
+
+<body class="floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+    <div class="container-fluid d-flex justify-content-between">
+      <h1 class="quarto-secondary-nav-title">Part 3: Descriptive analysis</h1>
+      <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
+        <i class="bi bi-chevron-right"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header sidebar-header-stacked">
+      <a href="./">
+      <img src="./logo.png" alt="" class="sidebar-logo py-0 d-lg-inline d-none">
+      </a>
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">DataSHIELD Workshop</a> 
+        <div class="sidebar-tools-main">
+    <a href="https://github.com/ESCRI11/Workshop_uncover_06_05_22" title="Source Code" class="sidebar-tool px-1"><i class="bi bi-github"></i></a>
+    <a href="" title="Share" id="sidebar-tool-dropdown-0" class="sidebar-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-share"></i></a>
+    <ul class="dropdown-menu" aria-labelledby="sidebar-tool-dropdown-0">
+        <li>
+          <a class="dropdown-item sidebar-tools-main-item" href="https://twitter.com/intent/tweet?url=|url|">
+            <i class="bi bi-bi-twitter pe-1"></i>
+          Twitter
+          </a>
+        </li>
+        <li>
+          <a class="dropdown-item sidebar-tools-main-item" href="https://www.facebook.com/sharer/sharer.php?u=|url|">
+            <i class="bi bi-bi-facebook pe-1"></i>
+          Facebook
+          </a>
+        </li>
+    </ul>
+</div>
+    </div>
+      </div>
+      <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+      </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">Introduction</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./setup.html" class="sidebar-item-text sidebar-link">Environment setup</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./help.html" class="sidebar-item-text sidebar-link">Get up to speed: Useful reads</a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+    <div class="sidebar-item-container"> 
+        <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">Workshop</a>
+      <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+        <i class="bi bi-chevron-right ms-2"></i>
+      </a>
+    </div>
+    <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./workshop_part0.html" class="sidebar-item-text sidebar-link">Part 0: Connecting to the analysis servers</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./workshop_part1.html" class="sidebar-item-text sidebar-link">Part 1: Loading the data</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./workshop_part2.html" class="sidebar-item-text sidebar-link">Part 2: Data validation</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./workshop_part3.html" class="sidebar-item-text sidebar-link active">Part 3: Descriptive analysis</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./workshop_part4.html" class="sidebar-item-text sidebar-link">Part 4: Data wranggling</a>
+  </div>
+</li>
+    </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+    <div class="sidebar-item-container"> 
+        <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">Exercises</a>
+      <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+        <i class="bi bi-chevron-right ms-2"></i>
+      </a>
+    </div>
+    <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./exercises.html" class="sidebar-item-text sidebar-link">Exercises</a>
+  </div>
+</li>
+    </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#descriptive-statistics" id="toc-descriptive-statistics" class="nav-link active" data-scroll-target="#descriptive-statistics">Descriptive statistics</a></li>
+  <li><a href="#graphical-visualizations" id="toc-graphical-visualizations" class="nav-link" data-scroll-target="#graphical-visualizations">Graphical visualizations</a>
+  <ul class="collapse">
+  <li><a href="#boxplot" id="toc-boxplot" class="nav-link" data-scroll-target="#boxplot">Boxplot</a></li>
+  <li><a href="#histogram" id="toc-histogram" class="nav-link" data-scroll-target="#histogram">Histogram</a></li>
+  <li><a href="#scatter-plot" id="toc-scatter-plot" class="nav-link" data-scroll-target="#scatter-plot">Scatter plot</a></li>
+  <li><a href="#heatmap-plot" id="toc-heatmap-plot" class="nav-link" data-scroll-target="#heatmap-plot">Heatmap plot</a></li>
+  </ul></li>
+  <li><a href="#dimensional-contingency-table" id="toc-dimensional-contingency-table" class="nav-link" data-scroll-target="#dimensional-contingency-table">2-Dimensional contingency table</a>
+  <ul class="collapse">
+  <li><a href="#fisher-test" id="toc-fisher-test" class="nav-link" data-scroll-target="#fisher-test">Fisher test</a></li>
+  </ul></li>
+  <li><a href="#student-t-test" id="toc-student-t-test" class="nav-link" data-scroll-target="#student-t-test">Student t-test</a>
+  <ul class="collapse">
+  <li><a href="#pooled-t-test" id="toc-pooled-t-test" class="nav-link" data-scroll-target="#pooled-t-test">Pooled t-test</a></li>
+  <li><a href="#single-study-t-test" id="toc-single-study-t-test" class="nav-link" data-scroll-target="#single-study-t-test">Single study t-test</a></li>
+  </ul></li>
+  <li><a href="#analysis-of-variance-anova" id="toc-analysis-of-variance-anova" class="nav-link" data-scroll-target="#analysis-of-variance-anova">Analysis of variance (ANOVA)</a></li>
+  </ul>
+<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/ESCRI11/Workshop_uncover_06_05_22/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title d-none d-lg-block">Part 3: Descriptive analysis</h1>
+</div>
+
+
+
+
+
+<div class="quarto-title-meta">
+
+    
+    
+  </div>
+  
+
+</header>
+
+<div class="cell" data-hash="workshop_part3_cache/html/unnamed-chunk-2_128209d3b54004aca5b7d86f161f4155">
+
+</div>
+<p>We have already checked that our data is compliant with the codebook. Now we can proceed with our analysis using the selected variables. To begin, we will perform a brief descriptive analysis, calculating some statistics, tables of contingence and doing some graphical visualizations.</p>
+<section id="descriptive-statistics" class="level2">
+<h2 class="anchored" data-anchor-id="descriptive-statistics">Descriptive statistics</h2>
+<p>There is a collection of DataSHIELD functions to get the descriptive statistics of a variable. Those are the functions <code>ds.var</code>, <code>ds.mean</code>, <code>ds.table</code> among others. However, there is a function from the <code>dsHelper</code> package that automatically performs all the function calls on the background, being a much more user-friendly alternative. The only downside is that it requires the categorical variables to be factors, we can easily create a new factor variable and add it as a new column to our data.</p>
+<div class="cell" data-hash="workshop_part3_cache/html/descr_stats_dshelper_4c3e867c289644ab31264b94dde54f52">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.asFactor</span>(<span class="at">input.var.name =</span> <span class="st">"data$SMXAPA"</span>, <span class="at">newobj.name =</span> <span class="st">"SMXAPA_factor"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$all.unique.levels
+[1] "No"  "Yes"
+
+$return.message
+[1] "Data object &lt;SMXAPA_factor&gt; correctly created in all specified data sources"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>DSI<span class="sc">::</span><span class="fu">datashield.assign.expr</span>(connections, <span class="st">"data"</span>, <span class="st">"cbind(data, SMXAPA_factor)"</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">dh.getStats</span>(<span class="at">df =</span> <span class="st">"data"</span>, <span class="at">vars =</span> <span class="fu">c</span>(<span class="st">"DMRAGEYR"</span>, <span class="st">"SMXAPA_factor"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$categorical
+# A tibble: 4 x 10
+  variable      cohort   category value cohort_n valid_n missing_n perc_valid
+  &lt;chr&gt;         &lt;chr&gt;    &lt;fct&gt;    &lt;int&gt;    &lt;int&gt;   &lt;int&gt;     &lt;int&gt;      &lt;dbl&gt;
+1 SMXAPA_factor combined No         236      999     252       747      93.6 
+2 SMXAPA_factor combined Yes         16      999     252       747       6.35
+3 SMXAPA_factor study1   No         236      999     252       747      93.6 
+4 SMXAPA_factor study1   Yes         16      999     252       747       6.35
+# ... with 2 more variables: perc_missing &lt;dbl&gt;, perc_total &lt;dbl&gt;
+
+$continuous
+# A tibble: 2 x 15
+  variable cohort    mean std.dev perc_5 perc_10 perc_25 perc_50 perc_75 perc_90
+  &lt;chr&gt;    &lt;chr&gt;    &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;
+1 DMRAGEYR study1    63.8    13.0   40.4    46.9    54.2      65      72    80.1
+2 DMRAGEYR combined  63.8    13.0   40.4    46.9    54.2      65      72    80.1
+# ... with 5 more variables: perc_95 &lt;dbl&gt;, valid_n &lt;dbl&gt;, cohort_n &lt;dbl&gt;,
+#   missing_n &lt;dbl&gt;, missing_perc &lt;dbl&gt;</code></pre>
+</div>
+</div>
+</section>
+<section id="graphical-visualizations" class="level2">
+<h2 class="anchored" data-anchor-id="graphical-visualizations">Graphical visualizations</h2>
+<p>There is a rich collection of functions to perform graphical visualization of the variables.</p>
+<section id="boxplot" class="level3">
+<h3 class="anchored" data-anchor-id="boxplot">Boxplot</h3>
+<p>The boxplot is one of the newest plots available on DataSHIELD. It uses the <code>ggplot2</code> library, providing lots of customization options.</p>
+<div class="cell" data-hash="workshop_part3_cache/html/boxplot1_de53cb907d5bc374d5b7879dc23c9180">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.boxPlot</span>(<span class="at">x =</span> <span class="st">"data"</span>, <span class="at">variables =</span> <span class="st">"DMRAGEYR"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="workshop_part3_files/figure-html/boxplot1-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>There are grouping options on the boxplot function which are very useful to have greater insights of the data. We can group using factor variables, so in this example we will use the previously created <code>SMXAPA_factor</code> variable.</p>
+<div class="cell" data-hash="workshop_part3_cache/html/boxplot2_8ba7320d2fac1b70be7785da1ad01bb9">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.boxPlot</span>(<span class="at">x =</span> <span class="st">"data"</span>, <span class="at">variables =</span> <span class="st">"DMRAGEYR"</span>, <span class="at">group =</span> <span class="st">"SMXAPA_factor"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="workshop_part3_files/figure-html/boxplot2-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>We could even perform a second grouping using the argument <code>group2</code> and stating another factor variable.</p>
+</section>
+<section id="histogram" class="level3">
+<h3 class="anchored" data-anchor-id="histogram">Histogram</h3>
+<p>To have an idea of the distribution of a variable we can use histograms.</p>
+<div class="cell" data-hash="workshop_part3_cache/html/histogram_28573b21955f644f15bd81731ed61bde">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.histogram</span>(<span class="st">"data$DMRAGEYR"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: study1: 1 invalid cells</code></pre>
+</div>
+<div class="cell-output-display">
+<p><img src="workshop_part3_files/figure-html/histogram-1.png" class="img-fluid" width="672"></p>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$breaks
+ [1] 26.35662 33.27495 40.19328 47.11160 54.02993 60.94826 67.86658 74.78491
+ [9] 81.70324 88.62156 95.53989
+
+$counts
+ [1]  0 11 14 36 29 54 51 31 17  5
+
+$density
+ [1] 0.000000000 0.006359919 0.008094443 0.020814282 0.016767060 0.031221422
+ [7] 0.029486899 0.017923409 0.009828966 0.002890872
+
+$mids
+ [1] 29.81579 36.73411 43.65244 50.57077 57.48909 64.40742 71.32575 78.24407
+ [9] 85.16240 92.08073
+
+$xname
+[1] "xvect"
+
+$equidist
+[1] TRUE
+
+attr(,"class")
+[1] "histogram"</code></pre>
+</div>
+</div>
+</section>
+<section id="scatter-plot" class="level3">
+<h3 class="anchored" data-anchor-id="scatter-plot">Scatter plot</h3>
+<p>DataSHIELD has a scatter plot functionality that outputs noise-affected data points, depending on the security configuration of the Opal, the noise levels can make this plot to be hugely distorted.</p>
+<div class="cell" data-hash="workshop_part3_cache/html/scaterplot_ab55ea34c166bcca76b2681712309642">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.scatterPlot</span>(<span class="at">x =</span> <span class="st">"data$DMRAGEYR"</span>, <span class="at">y =</span> <span class="st">"data$LBXSC3SIHn"</span>, <span class="at">datasources =</span> connections)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="workshop_part3_files/figure-html/scaterplot-1.png" class="img-fluid" width="672"></p>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Split plot created"</code></pre>
+</div>
+</div>
+</section>
+<section id="heatmap-plot" class="level3">
+<h3 class="anchored" data-anchor-id="heatmap-plot">Heatmap plot</h3>
+<p>In a similar fashion than the scatter plot, we can visualize a two dimensional distribution of the points but in this case by density.</p>
+<div class="cell" data-hash="workshop_part3_cache/html/heatmap_b0e5ae8ce678286f7692ae637358b3be">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.heatmapPlot</span>(<span class="at">x =</span> <span class="st">"data$DMRAGEYR"</span>, <span class="at">y =</span> <span class="st">"data$LBXSC3SIHn"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>study1: Number of invalid cells (cells with counts &gt;0 and &lt; nfilter.tab ) is 73</code></pre>
+</div>
+<div class="cell-output-display">
+<p><img src="workshop_part3_files/figure-html/heatmap-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+</section>
+<section id="dimensional-contingency-table" class="level2">
+<h2 class="anchored" data-anchor-id="dimensional-contingency-table">2-Dimensional contingency table</h2>
+<p>On the previous part, we have already seen that DataSHIELD has a function to calculate uni-dimensional contingency tables. This same function, can also be used for bi-dimensional contingency tables. It is important to note that this function is a little bit tricky sometimes, as it is quite common that the 2D contingency table has disclosive outputs, therefore we just get an error message.</p>
+<div class="cell" data-hash="workshop_part3_cache/html/2dtablefailed_0adeeb9942c4a30f6ce1bec074c47076">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.table</span>(<span class="st">"data$DMRAGEYR"</span>, <span class="st">"data$LBXSC3SIHn"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+ All studies failed for reasons identified below 
+
+
+Study 1 :  Failed: at least one cell has a non-zero count less than nfilter.tab i.e. 3 </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$validity.message
+[1] "All studies failed for reasons identified below"
+
+$error.messages
+$error.messages$study1
+[1] "Failed: at least one cell has a non-zero count less than nfilter.tab i.e. 3"</code></pre>
+</div>
+</div>
+<p>There are other variables that do produce valid non-disclosive results.</p>
+<div class="cell" data-hash="workshop_part3_cache/html/2dtable_731b4c42c27b144648ff174692ef6da8">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>ctable <span class="ot">&lt;-</span> <span class="fu">ds.table</span>(<span class="st">"data$SMXCPA"</span>, <span class="st">"data$SMXSLA"</span>)<span class="sc">$</span>output.list<span class="sc">$</span>TABLES.COMBINED_all.sources_counts</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+ Data in all studies were valid 
+
+Study 1 :  No errors reported from this study</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>ctable</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>           data$SMXSLA
+data$SMXCPA  No Yes  NA
+        No  202  21   0
+        Yes  26   3   0
+        NA    0   0 747</code></pre>
+</div>
+</div>
+<section id="fisher-test" class="level3">
+<h3 class="anchored" data-anchor-id="fisher-test">Fisher test</h3>
+<p>Given the calculated contingency table, we are now in the position to perform a Fisher’s exact test.</p>
+<div class="cell" data-hash="workshop_part3_cache/html/ftest_4442203958b11d54c7aebfeb24452bfa">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>stats<span class="sc">::</span><span class="fu">fisher.test</span>(ctable)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Fisher's Exact Test for Count Data
+
+data:  ctable
+p-value &lt; 2.2e-16
+alternative hypothesis: two.sided</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="student-t-test" class="level2">
+<h2 class="anchored" data-anchor-id="student-t-test">Student t-test</h2>
+<p>We have two options to perform a t-test, and our choice will depend on whether we want to use pooled methods or we want to calculate the t-test on a single study server.</p>
+<section id="pooled-t-test" class="level3">
+<h3 class="anchored" data-anchor-id="pooled-t-test">Pooled t-test</h3>
+<p>To perform a pooled t-test, we will use a collection of DataSHIELD functions to calculate the statistic.</p>
+<p><span class="math display">\[t = \frac{\bar{x}_1 - \bar{x}_2}{\sqrt{\frac{s_1^2}{n_1} + \frac{s_2^2}{n_2}}}\]</span></p>
+<p>Where:</p>
+<ul>
+<li><span class="math inline">\(\bar{x}\)</span> is the observed mean of the sample.</li>
+<li><span class="math inline">\(s\)</span> is the standard devuation of the sample.</li>
+<li><span class="math inline">\(n\)</span> is the sample size.</li>
+</ul>
+<p>We will use the following code to perform this operations:</p>
+<div class="cell" data-hash="workshop_part3_cache/html/pooledttest_fd929c066bc88a4c7b60564f6e561a9d">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>mean1 <span class="ot">&lt;-</span> <span class="fu">ds.mean</span>(<span class="st">"data$DMRAGEYR"</span>)<span class="sc">$</span>Mean.by.Study[<span class="dv">1</span>]</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>mean2 <span class="ot">&lt;-</span> <span class="fu">ds.mean</span>(<span class="st">"data$LBXSC3SIHn"</span>)<span class="sc">$</span>Mean.by.Study[<span class="dv">1</span>]</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>sd1 <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="fu">ds.var</span>(<span class="st">"data$DMRAGEYR"</span>)<span class="sc">$</span>Variance.by.Study[<span class="dv">1</span>])</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>sd2 <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="fu">ds.var</span>(<span class="st">"data$LBXSC3SIHn"</span>)<span class="sc">$</span>Variance.by.Study[<span class="dv">1</span>])</span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>n1 <span class="ot">&lt;-</span> <span class="fu">ds.length</span>(<span class="st">"data$DMRAGEYR"</span>)[[<span class="dv">1</span>]] <span class="sc">-</span> <span class="fu">ds.numNA</span>(<span class="st">"data$DMRAGEYR"</span>)[[<span class="dv">1</span>]]</span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>n2 <span class="ot">&lt;-</span> <span class="fu">ds.length</span>(<span class="st">"data$LBXSC3SIHn"</span>)[[<span class="dv">1</span>]] <span class="sc">-</span> <span class="fu">ds.numNA</span>(<span class="st">"data$LBXSC3SIHn"</span>)[[<span class="dv">1</span>]]</span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>(mean1 <span class="sc">-</span> mean2) <span class="sc">/</span> <span class="fu">sqrt</span>(sd1<span class="sc">^</span><span class="dv">2</span><span class="sc">/</span>n1 <span class="sc">+</span> sd2<span class="sc">^</span><span class="dv">2</span><span class="sc">/</span>n2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 46.00566</code></pre>
+</div>
+</div>
+<p>You can expect to see a wrapper for this code on a future <code>dsHelper</code> release (<code>dsHelper::dh.ttest('sample1', 'sample2'</code>).</p>
+</section>
+<section id="single-study-t-test" class="level3">
+<h3 class="anchored" data-anchor-id="single-study-t-test">Single study t-test</h3>
+<p>If we are not interested on using pooled functionalities, it is much simpler to perform a t-test.</p>
+<div class="cell" data-hash="workshop_part3_cache/html/singlettest_f421eb0e869b7a7a482af4f6534c60bb">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>DSI<span class="sc">::</span><span class="fu">datashield.aggregate</span>(connections, <span class="st">"t.test(data$DMRAGEYR, data$LBXSC3SIHn)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$study1
+
+    Welch Two Sample t-test
+
+data:  data$DMRAGEYR and data$LBXSC3SIHn
+t = 46.006, df = 312.25, p-value &lt; 2.2e-16
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ 38.5088 41.9499
+sample estimates:
+mean of x mean of y 
+ 63.83200  23.60265 </code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="analysis-of-variance-anova" class="level2">
+<h2 class="anchored" data-anchor-id="analysis-of-variance-anova">Analysis of variance (ANOVA)</h2>
+<p>A student is developing a DataSHIELD function to perform ANOVAs. You can expect it to be available in the following months, probably as part of the <a href="https://github.com/isglobal-brge/dsMLClient">dsML package</a>.</p>
+<div class="cell" data-hash="workshop_part3_cache/html/unnamed-chunk-4_3915a18ba3698628a21e3bbf06daa1e4">
+
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      let href = ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./workshop_part2.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Part 2: Data validation</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./workshop_part4.html" class="pagination-link">
+        <span class="nav-page-text">Part 4: Data wranggling</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+</body></html>
