@@ -280,10 +280,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 </header>
 
-<div class="cell" data-hash="workshop_part5_cache/html/unnamed-chunk-2_62d60a35473f7e59f0d750548cd7e33c">
+<div class="cell" data-hash="workshop_part5_cache/html/unnamed-chunk-2_541c2f84637f79bee3e439ab4492f55b">
 
 </div>
-<p>Now that we have covered the basics, we can begin to analyze the data in more depth. In this section we will go over some of the statistical models we can fit by using DataSHIELD.</p>
+<p>Now that we have covered the basics, we can begin to analyze the data in more depth. In this section we will go over some of the statistical models we can fit by using DataSHIELD. On this section we will only be using the Cluj study center.</p>
 <section id="logistical-regression" class="level2">
 <h2 class="anchored" data-anchor-id="logistical-regression">Logistical regression</h2>
 <p>We will perform some logistic regressions to see the association of different variables to the survival condition (<code>DSXOS</code> variable). To achieve this, we will have to apply some of the concepts we have already seen in order to prepare our data.</p>
@@ -307,8 +307,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">datashield.errors</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>$study1
-[1] "Command 'recodeValuesDS(\"data$DSXOS\", \"Deceased,Recovered,Transferred\", \n    \"1,0,0\", NULL)' failed on 'study1': Error while evaluating 'is.null(base::assign('DSXOS_recoded', value={dsBase::recodeValuesDS(\"data$DSXOS\", \"Deceased,Recovered,Transferred\", \"1,0,0\", NULL)}))' -&gt; Error : Error: values2replace.text argument too long (see nfilter.stringShort)\n"</code></pre>
+<pre><code>$umf_cluj
+[1] "Command 'recodeValuesDS(\"data$DSXOS\", \"Deceased,Recovered,Transferred\", \n    \"1,0,0\", NULL)' failed on 'umf_cluj': Error while evaluating 'is.null(base::assign('DSXOS_recoded', value={dsBase::recodeValuesDS(\"data$DSXOS\", \"Deceased,Recovered,Transferred\", \"1,0,0\", NULL)}))' -&gt; Error : Error: values2replace.text argument too long (see nfilter.stringShort)\n"</code></pre>
 </div>
 </div>
 <p>We can see that the DataSHIELD filter is complaining that the length of the <code>values2replace.vector</code> is too large. To overcome this issue, we can perform separate function calls for each of the levels.</p>
@@ -395,665 +395,74 @@ $validity.check
 <section id="pooled-analysis" class="level4">
 <h4 class="anchored" data-anchor-id="pooled-analysis">Pooled analysis</h4>
 <p>Now we can fit the models. First, we will calculate the association of the outcome status to the covariables chronic liver disease and oncology.</p>
-<div class="cell" data-hash="workshop_part5_cache/html/model1_c5278522f713362749087be169337063">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.glm</span>(<span class="at">formula =</span> <span class="st">"DSXOS_recoded_num ~ CMXCLD + RFXONC"</span>, <span class="at">data =</span> <span class="st">"data"</span>, <span class="at">family =</span> <span class="st">"binomial"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Iteration 1...</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>CURRENT DEVIANCE:      349.346179002212</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Iteration 2...</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>CURRENT DEVIANCE:      197.274454485614</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Iteration 3...</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>CURRENT DEVIANCE:      190.668047341288</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Iteration 4...</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>CURRENT DEVIANCE:      190.517887214012</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Iteration 5...</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>CURRENT DEVIANCE:      190.517748305142</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Iteration 6...</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>CURRENT DEVIANCE:      190.517748305008</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>SUMMARY OF MODEL STATE after iteration 6</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Current deviance 190.517748305008 on 249 degrees of freedom</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Convergence criterion TRUE (7.05556173129648e-13)</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>
-beta: -2.07436706515554 0.481163947699337 1.34712733484881</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>
-Information matrix overall:</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>            (Intercept) CMXCLDYes RFXONCYes
-(Intercept)   27.934795 4.0369214 3.3214179
-CMXCLDYes      4.036921 4.0369214 0.2462533
-RFXONCYes      3.321418 0.2462533 3.3214179</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>
-Score vector overall:</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>                     [,1]
-(Intercept) -5.176640e-11
-CMXCLDYes   -1.031952e-13
-RFXONCYes   -6.572520e-14</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>
-Current deviance: 190.517748305008</code></pre>
-</div>
+<div class="cell" data-hash="workshop_part5_cache/html/model1_4f67f1d095e7be4f704b88ec10916b35">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.glm</span>(<span class="at">formula =</span> <span class="st">"DSXOS_recoded_num ~ CMXCLD + RFXONC"</span>, </span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>       <span class="at">data =</span> <span class="st">"data"</span>, </span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>       <span class="at">family =</span> <span class="st">"binomial"</span>)<span class="sc">$</span>coefficients</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>$Nvalid
-[1] 252
-
-$Nmissing
-[1] 747
-
-$Ntotal
-[1] 999
-
-$disclosure.risk
-       RISK OF DISCLOSURE
-study1                  0
-
-$errorMessage
-       ERROR MESSAGES
-study1 "No errors"   
-
-$nsubs
-[1] 252
-
-$iter
-[1] 6
-
-$family
-
-Family: binomial 
-Link function: logit 
-
-
-$formula
-[1] "DSXOS_recoded_num ~ CMXCLD + RFXONC"
-
-$coefficients
-              Estimate Std. Error    z-value      p-value low0.95CI.LP
+<pre><code>              Estimate Std. Error    z-value      p-value low0.95CI.LP
 (Intercept) -2.0743671  0.2180219 -9.5144888 1.826085e-21   -2.5016822
 CMXCLDYes    0.4811639  0.5395664  0.8917604 3.725214e-01   -0.5763668
 RFXONCYes    1.3471273  0.5861413  2.2982979 2.154484e-02    0.1983115
             high0.95CI.LP      P_OR low0.95CI.P_OR high0.95CI.P_OR
 (Intercept)     -1.647052 0.1116133     0.07574034       0.1615078
 CMXCLDYes        1.538695 1.6179565     0.56193629       4.6585055
-RFXONCYes        2.495943 3.8463603     1.21934216      12.1331717
-
-$dev
-[1] 190.5177
-
-$df
-[1] 249
-
-$output.information
-[1] "SEE TOP OF OUTPUT FOR INFORMATION ON MISSING DATA AND ERROR MESSAGES"</code></pre>
+RFXONCYes        2.495943 3.8463603     1.21934216      12.1331717</code></pre>
 </div>
 </div>
 <p>And we also calculate the association of the outcome status to the number of comorbidities.</p>
-<div class="cell" data-hash="workshop_part5_cache/html/model2_bc5b243018a4d91ed07736de7a9ba555">
-<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.glm</span>(<span class="at">formula =</span> <span class="st">"DSXOS_recoded_num ~ CMXCOM"</span>, <span class="at">data =</span> <span class="st">"data"</span>, <span class="at">family =</span> <span class="st">"binomial"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Iteration 1...</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>CURRENT DEVIANCE:      350.732473363332</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Iteration 2...</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>CURRENT DEVIANCE:      198.483331037372</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Iteration 3...</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>CURRENT DEVIANCE:      191.27692242333</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Iteration 4...</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>CURRENT DEVIANCE:      190.960473189413</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Iteration 5...</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>CURRENT DEVIANCE:      190.957960191484</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Iteration 6...</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>CURRENT DEVIANCE:      190.957959832379</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>SUMMARY OF MODEL STATE after iteration 6</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Current deviance 190.957959832379 on 249 degrees of freedom</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Convergence criterion TRUE (1.87955786013388e-09)</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>
-beta: -2.68557734525015 0.813775168348555 0.451985123743052 1.18149994847388</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>
-Information matrix overall:</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>            (Intercept) CMXCOM1  CMXCOM2 CMXCOM3+
-(Intercept)   28.155138     5.2 5.419355 14.72727
-CMXCOM1        5.200000     5.2 0.000000  0.00000
-CMXCOM2        5.419355     0.0 5.419355  0.00000
-CMXCOM3+      14.727273     0.0 0.000000 14.72727</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>
-Score vector overall:</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>                     [,1]
-(Intercept) -1.565667e-07
-CMXCOM1     -1.960654e-13
-CMXCOM2     -3.247187e-10
-CMXCOM3+    -6.666889e-14</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>
-Current deviance: 190.957959832379</code></pre>
-</div>
+<div class="cell" data-hash="workshop_part5_cache/html/model2_2eadba73a466b6a3d1851f0da53cc730">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.glm</span>(<span class="at">formula =</span> <span class="st">"DSXOS_recoded_num ~ CMXCOM"</span>, </span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>       <span class="at">data =</span> <span class="st">"data"</span>, </span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>       <span class="at">family =</span> <span class="st">"binomial"</span>)<span class="sc">$</span>coefficients</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>$Nvalid
-[1] 253
-
-$Nmissing
-[1] 746
-
-$Ntotal
-[1] 999
-
-$disclosure.risk
-       RISK OF DISCLOSURE
-study1                  0
-
-$errorMessage
-       ERROR MESSAGES
-study1 "No errors"   
-
-$nsubs
-[1] 253
-
-$iter
-[1] 6
-
-$family
-
-Family: binomial 
-Link function: logit 
-
-
-$formula
-[1] "DSXOS_recoded_num ~ CMXCOM"
-
-$coefficients
-              Estimate Std. Error    z-value      p-value low0.95CI.LP
-(Intercept) -2.6855773  0.5967081 -4.5006549 6.774442e-06  -3.85510378
-CMXCOM1      0.8137752  0.7405189  1.0989255 2.718005e-01  -0.63761526
-CMXCOM2      0.4519851  0.7352444  0.6147413 5.387256e-01  -0.98906751
-CMXCOM3+     1.1814999  0.6511235  1.8145558 6.959220e-02  -0.09467868
-            high0.95CI.LP       P_OR low0.95CI.P_OR high0.95CI.P_OR
-(Intercept)     -1.516051 0.06382979     0.02073247       0.1800438
-CMXCOM1          2.265166 2.25641026     0.52855138       9.6327196
-CMXCOM2          1.893038 1.57142857     0.37192334       6.6395073
-CMXCOM3+         2.457679 3.25925926     0.90966518      11.6776712
-
-$dev
-[1] 190.958
-
-$df
-[1] 249
-
-$output.information
-[1] "SEE TOP OF OUTPUT FOR INFORMATION ON MISSING DATA AND ERROR MESSAGES"</code></pre>
+<pre><code>              Estimate Std. Error    z-value      p-value low0.95CI.LP
+(Intercept) -2.4680995  0.4657780 -5.2988752 1.165182e-07   -3.3810077
+CMXCOM1      0.3731538  0.5977740  0.6242389 5.324707e-01   -0.7984617
+CMXCOM2      0.5709795  0.5871345  0.9724851 3.308093e-01   -0.5797829
+CMXCOM3+     1.2824759  0.5793410  2.2136804 2.685077e-02    0.1469883
+            high0.95CI.LP     P_OR low0.95CI.P_OR high0.95CI.P_OR
+(Intercept)     -1.555191 0.078125     0.03289432       0.1743377
+CMXCOM1          1.544769 1.452308     0.45002069       4.6868904
+CMXCOM2          1.721742 1.770000     0.56001991       5.5942654
+CMXCOM3+         2.417963 3.605556     1.15834044      11.2229794</code></pre>
 </div>
 </div>
 </section>
 <section id="meta-analysis" class="level4">
 <h4 class="anchored" data-anchor-id="meta-analysis">Meta-analysis</h4>
 <p>To fit the same models to be meta-analyzed, we just have to use a different function with the same structure.</p>
-<div class="cell" data-hash="workshop_part5_cache/html/model1meta_390d1d51399c6e10abbda96388ea37c8">
-<div class="sourceCode cell-code" id="cb63"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.glmSLMA</span>(<span class="at">formula =</span> <span class="st">"DSXOS_recoded_num ~ CMXCLD + RFXONC"</span>, <span class="at">dataName =</span> <span class="st">"data"</span>, <span class="at">family =</span> <span class="st">"binomial"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-hash="workshop_part5_cache/html/model1meta_7e924d107c2ed6f2dc5a25766155e31e">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.glmSLMA</span>(<span class="at">formula =</span> <span class="st">"DSXOS_recoded_num ~ CMXCLD + RFXONC"</span>, </span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>           <span class="at">dataName =</span> <span class="st">"data"</span>, </span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">family =</span> <span class="st">"binomial"</span>)<span class="sc">$</span>output.summary<span class="sc">$</span>study1<span class="sc">$</span>coefficients</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 
 SAVING SERVERSIDE glm OBJECT AS: &lt; new.glm.obj &gt;</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
-<pre><code>$output.summary
-$output.summary$study1
-$output.summary$study1$rank
-[1] 3
-
-$output.summary$study1$aic
-[1] 196.5177
-
-$output.summary$study1$iter
-[1] 4
-
-$output.summary$study1$converged
-[1] TRUE
-
-$output.summary$study1$boundary
-[1] FALSE
-
-$output.summary$study1$na.action
-$output.summary$study1$na.action$na.action
-[1] "na.omit"
-
-
-$output.summary$study1$call
-glm(formula = formula, family = binomial, data = data, x = TRUE)
-
-$output.summary$study1$terms
-DSXOS_recoded_num ~ CMXCLD + RFXONC
-attr(,"variables")
-list(DSXOS_recoded_num, CMXCLD, RFXONC)
-attr(,"factors")
-                  CMXCLD RFXONC
-DSXOS_recoded_num      0      0
-CMXCLD                 1      0
-RFXONC                 0      1
-attr(,"term.labels")
-[1] "CMXCLD" "RFXONC"
-attr(,"order")
-[1] 1 1
-attr(,"intercept")
-[1] 1
-attr(,"response")
-[1] 1
-attr(,".Environment")
-&lt;environment: R_GlobalEnv&gt;
-attr(,"predvars")
-list(DSXOS_recoded_num, CMXCLD, RFXONC)
-attr(,"dataClasses")
-DSXOS_recoded_num            CMXCLD            RFXONC 
-        "numeric"       "character"       "character" 
-
-$output.summary$study1$contrasts
-$output.summary$study1$contrasts$CMXCLD
-[1] "contr.treatment"
-
-$output.summary$study1$contrasts$RFXONC
-[1] "contr.treatment"
-
-
-$output.summary$study1$aliased
-(Intercept)   CMXCLDYes   RFXONCYes 
-      FALSE       FALSE       FALSE 
-
-$output.summary$study1$dispersion
-[1] 1
-
-$output.summary$study1$data
-[1] "data"
-
-$output.summary$study1$df
-[1]   3 249   3
-
-$output.summary$study1$Ntotal
-[1] 999
-
-$output.summary$study1$Nvalid
-[1] 252
-
-$output.summary$study1$Nmissing
-[1] 747
-
-$output.summary$study1$cov.unscaled
-            (Intercept)  CMXCLDYes   RFXONCYes
-(Intercept)  0.04753155 -0.0448349 -0.04420746
-CMXCLDYes   -0.04483490  0.2911297  0.02325040
-RFXONCYes   -0.04420746  0.0232504  0.34355945
-
-$output.summary$study1$cov.scaled
-            (Intercept)  CMXCLDYes   RFXONCYes
-(Intercept)  0.04753155 -0.0448349 -0.04420746
-CMXCLDYes   -0.04483490  0.2911297  0.02325040
-RFXONCYes   -0.04420746  0.0232504  0.34355945
-
-$output.summary$study1$offset
-NULL
-
-$output.summary$study1$weights
-NULL
-
-$output.summary$study1$VarCovMatrix
-            (Intercept)  CMXCLDYes   RFXONCYes
-(Intercept)  0.04753155 -0.0448349 -0.04420746
-CMXCLDYes   -0.04483490  0.2911297  0.02325040
-RFXONCYes   -0.04420746  0.0232504  0.34355945
-
-$output.summary$study1$CorrMatrix
-           [,1]        [,2]        [,3]
-[1,]  1.0000000 -0.38113777 -0.34594232
-[2,] -0.3811378  1.00000000  0.07351675
-[3,] -0.3459423  0.07351675  1.00000000
-
-$output.summary$study1$deviance.null
-[1] 195.6493
-
-$output.summary$study1$df.null
-[1] 251
-
-$output.summary$study1$deviance.resid
-[1] 190.5177
-
-$output.summary$study1$df.resid
-[1] 249
-
-$output.summary$study1$formula
-DSXOS_recoded_num ~ CMXCLD + RFXONC
-
-$output.summary$study1$family
-
-Family: binomial 
-Link function: logit 
-
-
-$output.summary$study1$coefficients
-              Estimate Std. Error    z value     Pr(&gt;|z|)
+<pre><code>              Estimate Std. Error    z value     Pr(&gt;|z|)
 (Intercept) -2.0743671  0.2180173 -9.5146899 1.822557e-21
 CMXCLDYes    0.4811639  0.5395643  0.8917638 3.725195e-01
-RFXONCYes    1.3471273  0.5861394  2.2983052 2.154443e-02
-
-
-$output.summary$input.beta.matrix.for.SLMA
-            betas study 1
-(Intercept)    -2.0743671
-CMXCLDYes       0.4811639
-RFXONCYes       1.3471273
-
-$output.summary$input.se.matrix.for.SLMA
-            ses study 1
-(Intercept)   0.2180173
-CMXCLDYes     0.5395643
-RFXONCYes     0.5861394
-
-
-$num.valid.studies
-[1] 1
-
-$betamatrix.all
-            betas study 1
-(Intercept)    -2.0743671
-CMXCLDYes       0.4811639
-RFXONCYes       1.3471273
-
-$sematrix.all
-            ses study 1
-(Intercept)   0.2180173
-CMXCLDYes     0.5395643
-RFXONCYes     0.5861394
-
-$betamatrix.valid
-(Intercept)   CMXCLDYes   RFXONCYes 
- -2.0743671   0.4811639   1.3471273 
-
-$sematrix.valid
-(Intercept)   CMXCLDYes   RFXONCYes 
-  0.2180173   0.5395643   0.5861394 
-
-$SLMA.pooled.ests.matrix
-      pooled.ML     se.ML pooled.REML   se.REML  pooled.FE     se.FE
-[1,] -2.0743671 0.2180173  -2.0743671 0.2180173 -2.0743671 0.2180173
-[2,]  0.4811639 0.5395643   0.4811639 0.5395643  0.4811639 0.5395643
-[3,]  1.3471273 0.5861394   1.3471273 0.5861394  1.3471273 0.5861394
-
-$is.object.created
-[1] "A data object &lt;new.glm.obj&gt; has been created in all specified data sources"
-
-$validity.check
-[1] "&lt;new.glm.obj&gt; appears valid in all sources"</code></pre>
+RFXONCYes    1.3471273  0.5861394  2.2983052 2.154443e-02</code></pre>
 </div>
 </div>
-<div class="cell" data-hash="workshop_part5_cache/html/model2meta_f5d2f2771ce48bc8593ff1e43ca2b65f">
-<div class="sourceCode cell-code" id="cb66"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.glmSLMA</span>(<span class="at">formula =</span> <span class="st">"DSXOS_recoded_num ~ CMXCOM"</span>, <span class="at">dataName =</span> <span class="st">"data"</span>, <span class="at">family =</span> <span class="st">"binomial"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-hash="workshop_part5_cache/html/model2meta_29057de50ff5a3cf473ba441377d8b42">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.glmSLMA</span>(<span class="at">formula =</span> <span class="st">"DSXOS_recoded_num ~ CMXCOM"</span>, </span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>           <span class="at">dataName =</span> <span class="st">"data"</span>, </span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">family =</span> <span class="st">"binomial"</span>)<span class="sc">$</span>output.summary<span class="sc">$</span>study1<span class="sc">$</span>coefficients</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 
 SAVING SERVERSIDE glm OBJECT AS: &lt; new.glm.obj &gt;</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
-<pre><code>$output.summary
-$output.summary$study1
-$output.summary$study1$rank
-[1] 4
-
-$output.summary$study1$aic
-[1] 198.958
-
-$output.summary$study1$iter
-[1] 5
-
-$output.summary$study1$converged
-[1] TRUE
-
-$output.summary$study1$boundary
-[1] FALSE
-
-$output.summary$study1$na.action
-$output.summary$study1$na.action$na.action
-[1] "na.omit"
-
-
-$output.summary$study1$call
-glm(formula = formula, family = binomial, data = data, x = TRUE)
-
-$output.summary$study1$terms
-DSXOS_recoded_num ~ CMXCOM
-attr(,"variables")
-list(DSXOS_recoded_num, CMXCOM)
-attr(,"factors")
-                  CMXCOM
-DSXOS_recoded_num      0
-CMXCOM                 1
-attr(,"term.labels")
-[1] "CMXCOM"
-attr(,"order")
-[1] 1
-attr(,"intercept")
-[1] 1
-attr(,"response")
-[1] 1
-attr(,".Environment")
-&lt;environment: R_GlobalEnv&gt;
-attr(,"predvars")
-list(DSXOS_recoded_num, CMXCOM)
-attr(,"dataClasses")
-DSXOS_recoded_num            CMXCOM 
-        "numeric"          "factor" 
-
-$output.summary$study1$contrasts
-$output.summary$study1$contrasts$CMXCOM
-[1] "contr.treatment"
-
-
-$output.summary$study1$aliased
-(Intercept)     CMXCOM1     CMXCOM2    CMXCOM3+ 
-      FALSE       FALSE       FALSE       FALSE 
-
-$output.summary$study1$dispersion
-[1] 1
-
-$output.summary$study1$data
-[1] "data"
-
-$output.summary$study1$df
-[1]   4 249   4
-
-$output.summary$study1$Ntotal
-[1] 999
-
-$output.summary$study1$Nvalid
-[1] 253
-
-$output.summary$study1$Nmissing
-[1] 746
-
-$output.summary$study1$cov.unscaled
-            (Intercept)    CMXCOM1    CMXCOM2   CMXCOM3+
-(Intercept)   0.3560569 -0.3560569 -0.3560569 -0.3560569
-CMXCOM1      -0.3560569  0.5483646  0.3560569  0.3560569
-CMXCOM2      -0.3560569  0.3560569  0.5405807  0.3560569
-CMXCOM3+     -0.3560569  0.3560569  0.3560569  0.4239581
-
-$output.summary$study1$cov.scaled
-            (Intercept)    CMXCOM1    CMXCOM2   CMXCOM3+
-(Intercept)   0.3560569 -0.3560569 -0.3560569 -0.3560569
-CMXCOM1      -0.3560569  0.5483646  0.3560569  0.3560569
-CMXCOM2      -0.3560569  0.3560569  0.5405807  0.3560569
-CMXCOM3+     -0.3560569  0.3560569  0.3560569  0.4239581
-
-$output.summary$study1$offset
-NULL
-
-$output.summary$study1$weights
-NULL
-
-$output.summary$study1$VarCovMatrix
-            (Intercept)    CMXCOM1    CMXCOM2   CMXCOM3+
-(Intercept)   0.3560569 -0.3560569 -0.3560569 -0.3560569
-CMXCOM1      -0.3560569  0.5483646  0.3560569  0.3560569
-CMXCOM2      -0.3560569  0.3560569  0.5405807  0.3560569
-CMXCOM3+     -0.3560569  0.3560569  0.3560569  0.4239581
-
-$output.summary$study1$CorrMatrix
-           [,1]       [,2]       [,3]       [,4]
-[1,]  1.0000000 -0.8057958 -0.8115764 -0.9164277
-[2,] -0.8057958  1.0000000  0.6539649  0.7384536
-[3,] -0.8115764  0.6539649  1.0000000  0.7437511
-[4,] -0.9164277  0.7384536  0.7437511  1.0000000
-
-$output.summary$study1$deviance.null
-[1] 195.9295
-
-$output.summary$study1$df.null
-[1] 252
-
-$output.summary$study1$deviance.resid
-[1] 190.958
-
-$output.summary$study1$df.resid
-[1] 249
-
-$output.summary$study1$formula
-DSXOS_recoded_num ~ CMXCOM
-
-$output.summary$study1$family
-
-Family: binomial 
-Link function: logit 
-
-
-$output.summary$study1$coefficients
-              Estimate Std. Error    z value     Pr(&gt;|z|)
-(Intercept) -2.6855773  0.5967050 -4.5006784 6.773694e-06
-CMXCOM1      0.8137752  0.7405164  1.0989293 2.717989e-01
-CMXCOM2      0.4519851  0.7352419  0.6147434 5.387242e-01
-CMXCOM3+     1.1814999  0.6511207  1.8145638 6.959098e-02
-
-
-$output.summary$input.beta.matrix.for.SLMA
-            betas study 1
-(Intercept)    -2.6855773
-CMXCOM1         0.8137752
-CMXCOM2         0.4519851
-CMXCOM3+        1.1814999
-
-$output.summary$input.se.matrix.for.SLMA
-            ses study 1
-(Intercept)   0.5967050
-CMXCOM1       0.7405164
-CMXCOM2       0.7352419
-CMXCOM3+      0.6511207
-
-
-$num.valid.studies
-[1] 1
-
-$betamatrix.all
-            betas study 1
-(Intercept)    -2.6855773
-CMXCOM1         0.8137752
-CMXCOM2         0.4519851
-CMXCOM3+        1.1814999
-
-$sematrix.all
-            ses study 1
-(Intercept)   0.5967050
-CMXCOM1       0.7405164
-CMXCOM2       0.7352419
-CMXCOM3+      0.6511207
-
-$betamatrix.valid
-(Intercept)     CMXCOM1     CMXCOM2    CMXCOM3+ 
- -2.6855773   0.8137752   0.4519851   1.1814999 
-
-$sematrix.valid
-(Intercept)     CMXCOM1     CMXCOM2    CMXCOM3+ 
-  0.5967050   0.7405164   0.7352419   0.6511207 
-
-$SLMA.pooled.ests.matrix
-      pooled.ML     se.ML pooled.REML   se.REML  pooled.FE     se.FE
-[1,] -2.6855773 0.5967050  -2.6855773 0.5967050 -2.6855773 0.5967050
-[2,]  0.8137752 0.7405164   0.8137752 0.7405164  0.8137752 0.7405164
-[3,]  0.4519851 0.7352419   0.4519851 0.7352419  0.4519851 0.7352419
-[4,]  1.1814999 0.6511207   1.1814999 0.6511207  1.1814999 0.6511207
-
-$is.object.created
-[1] "A data object &lt;new.glm.obj&gt; has been created in all specified data sources"
-
-$validity.check
-[1] "&lt;new.glm.obj&gt; appears valid in all sources"</code></pre>
+<pre><code>              Estimate Std. Error    z value     Pr(&gt;|z|)
+(Intercept) -2.4680995  0.4657778 -5.2988776 1.165167e-07
+CMXCOM1      0.3731538  0.5977738  0.6242391 5.324706e-01
+CMXCOM2      0.5709795  0.5871343  0.9724853 3.308092e-01
+CMXCOM3+     1.2824759  0.5793409  2.2136810 2.685073e-02</code></pre>
 </div>
 </div>
 <p>At this moment, the consortia is using dsBaseClient 6.1.1. In the new version 6.2, there is a function to visualize the meta-analyzed coefficients using forestplots.</p>
@@ -1063,219 +472,31 @@ $validity.check
 <section id="piecewise-exponential-regression" class="level2">
 <h2 class="anchored" data-anchor-id="piecewise-exponential-regression">Piecewise Exponential Regression</h2>
 <p>The same functions we just used to fit logistical regressions, can also fit piecewise exponential regressions. This is achieved by selecting the output family to be of type <code>poisson</code>. For the variable <code>DATLGT</code> (Length of stay in hospital), we can check that it does follow a poisson distribution.</p>
-<div class="cell" data-hash="workshop_part5_cache/html/histoDATLGT_ac7429501277b5d76a12aff928d552b6">
-<div class="sourceCode cell-code" id="cb69"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.histogram</span>(<span class="st">"data$DATLGT"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-hash="workshop_part5_cache/html/histoDATLGT_14043d0611806ec279cb28fff528f22b">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>histogram <span class="ot">&lt;-</span> <span class="fu">ds.histogram</span>(<span class="st">"data$DATLGT"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Warning: study1: 2 invalid cells</code></pre>
+<pre><code>Warning: umf_cluj: 2 invalid cells</code></pre>
 </div>
 <div class="cell-output-display">
 <p><img src="workshop_part5_files/figure-html/histoDATLGT-1.png" class="img-fluid" width="672"></p>
 </div>
-<div class="cell-output cell-output-stdout">
-<pre><code>$breaks
- [1]  0.9761713  7.5248075 14.0734436 20.6220798 27.1707160 33.7193522
- [7] 40.2679884 46.8166246 53.3652608 59.9138970 66.4625332
-
-$counts
- [1]  70 133  38   4   5   0   0   0   0   0
-
-$density
- [1] 0.042417653 0.080593541 0.023026726 0.002423866 0.003029832 0.000000000
- [7] 0.000000000 0.000000000 0.000000000 0.000000000
-
-$mids
- [1]  4.250489 10.799126 17.347762 23.896398 30.445034 36.993670 43.542307
- [8] 50.090943 56.639579 63.188215
-
-$xname
-[1] "xvect"
-
-$equidist
-[1] TRUE
-
-attr(,"class")
-[1] "histogram"</code></pre>
-</div>
 </div>
 <p>And we can fit the model.</p>
-<div class="cell" data-hash="workshop_part5_cache/html/modelpoisson_aeb505e68fd60a2f65424b739512fc5f">
-<div class="sourceCode cell-code" id="cb72"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.glm</span>(<span class="at">formula =</span> <span class="st">"DATLGT ~ CMXCOM"</span>, <span class="at">data =</span> <span class="st">"data"</span>, <span class="at">family =</span> <span class="st">"poisson"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Iteration 1...</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>CURRENT DEVIANCE:      9031.23112933584</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Iteration 2...</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>CURRENT DEVIANCE:      13445721.9254986</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Iteration 3...</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>CURRENT DEVIANCE:      4924249.82823331</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Iteration 4...</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>CURRENT DEVIANCE:      1792866.24106897</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Iteration 5...</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>CURRENT DEVIANCE:      644372.85806603</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Iteration 6...</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>CURRENT DEVIANCE:      225310.43667617</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Iteration 7...</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>CURRENT DEVIANCE:      74503.0617967646</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Iteration 8...</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>CURRENT DEVIANCE:      22166.8442228996</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Iteration 9...</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>CURRENT DEVIANCE:      5600.46871888188</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Iteration 10...</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>CURRENT DEVIANCE:      1421.16414491348</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Iteration 11...</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>CURRENT DEVIANCE:      812.345972414677</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Iteration 12...</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>CURRENT DEVIANCE:      786.436487861179</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Iteration 13...</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>CURRENT DEVIANCE:      786.356159963903</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Iteration 14...</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>CURRENT DEVIANCE:      786.35615899879</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>SUMMARY OF MODEL STATE after iteration 14</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Current deviance 786.35615899879 on 248 degrees of freedom</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Convergence criterion TRUE (1.22716669308741e-09)</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>
-beta: 2.23889727373679 0.204415478752375 0.158997999061583 0.202562056292276</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>
-Information matrix overall:</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>            (Intercept) CMXCOM1 CMXCOM2 CMXCOM3+
-(Intercept)        2767     518     682     1126
-CMXCOM1             518     518       0        0
-CMXCOM2             682       0     682        0
-CMXCOM3+           1126       0       0     1126</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>
-Score vector overall:</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>                     [,1]
-(Intercept) -4.825297e-07
-CMXCOM1     -1.853942e-07
-CMXCOM2     -4.250067e-11
-CMXCOM3+    -2.970964e-07</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>
-Current deviance: 786.35615899879</code></pre>
-</div>
+<div class="cell" data-hash="workshop_part5_cache/html/modelpoisson_0e139f7bee42f37b642b0b04d9bc9ef7">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.glm</span>(<span class="at">formula =</span> <span class="st">"DATLGT ~ CMXCOM"</span>, </span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>       <span class="at">data =</span> <span class="st">"data"</span>, </span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>       <span class="at">family =</span> <span class="st">"poisson"</span>)<span class="sc">$</span>coefficients</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>$Nvalid
-[1] 252
-
-$Nmissing
-[1] 747
-
-$Ntotal
-[1] 999
-
-$disclosure.risk
-       RISK OF DISCLOSURE
-study1                  0
-
-$errorMessage
-       ERROR MESSAGES
-study1 "No errors"   
-
-$nsubs
-[1] 252
-
-$iter
-[1] 14
-
-$family
-
-Family: poisson 
-Link function: log 
-
-
-$formula
-[1] "DATLGT ~ CMXCOM"
-
-$coefficients
-             Estimate Std. Error   z-value      p-value low0.95CI.LP
-(Intercept) 2.2388973 0.04761905 47.016843 0.0000000000   2.14556566
-CMXCOM1     0.2044155 0.06479256  3.154922 0.0016054093   0.07742440
-CMXCOM2     0.1589980 0.06110523  2.602036 0.0092672185   0.03923395
-CMXCOM3+    0.2025621 0.05617538  3.605887 0.0003110887   0.09246034
+<pre><code>             Estimate Std. Error   z-value      p-value low0.95CI.LP
+(Intercept) 2.2363785 0.04085889 54.734193 0.000000e+00   2.15629656
+CMXCOM1     0.1885454 0.05368026  3.512379 4.441138e-04   0.08333405
+CMXCOM2     0.2703472 0.05355828  5.047719 4.471156e-07   0.16537487
+CMXCOM3+    0.1459219 0.06028338  2.420599 1.549495e-02   0.02776865
             high0.95CI.LP EXPONENTIATED RR low0.95CI.EXP high0.95CI.EXP
-(Intercept)     2.3322289         9.382979      8.546874      10.300876
-CMXCOM1         0.3314066         1.226808      1.080501       1.392926
-CMXCOM2         0.2787621         1.172336      1.040014       1.321493
-CMXCOM3+        0.3126638         1.224536      1.096870       1.367062
-
-$dev
-[1] 786.3562
-
-$df
-[1] 248
-
-$output.information
-[1] "SEE TOP OF OUTPUT FOR INFORMATION ON MISSING DATA AND ERROR MESSAGES"</code></pre>
+(Intercept)     2.3164605         9.359375      8.639084      10.139721
+CMXCOM1         0.2937568         1.207492      1.086905       1.341458
+CMXCOM2         0.3753195         1.310419      1.179835       1.455456
+CMXCOM3+        0.2640751         1.157106      1.028158       1.302226</code></pre>
 </div>
 </div>
 <div class="cell" data-hash="workshop_part5_cache/html/unnamed-chunk-4_3dc870a847fa7271efc40789eded1c15">

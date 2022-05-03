@@ -278,7 +278,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 </header>
 
-<div class="cell" data-hash="workshop_part4_cache/html/unnamed-chunk-2_a2c7d55f0db1289a5d90413019670d26">
+<div class="cell" data-hash="workshop_part4_cache/html/unnamed-chunk-2_4cc1a68e861e1466d8d30b9c93778e77">
 
 </div>
 <p>We are now in the position to start working with the data. The first step is to learn how to manipulate it.</p>
@@ -296,29 +296,29 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><code>ds.asNumeric</code>: Useful to convert columns that have been interpreted as <code>character</code> class but we want them as numbers.</li>
 </ul>
 <p>When we use all this functions, we will create a new object on the study servers. If we are dealing with a <code>data.frame</code> and want to include this new column we created into it, we can use the following code.</p>
-<div class="cell" data-hash="workshop_part4_cache/html/newcol_d9be40458494be814cb5b7856dbd2d82">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.asFactor</span>(<span class="at">input.var.name =</span> <span class="st">"data$SMXRNA"</span>, <span class="at">newobj.name =</span> <span class="st">"SMXRNA_factor"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-hash="workshop_part4_cache/html/newcol_b0b5719e8aa3b5f6707ae89eb217a1f0">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.asFactor</span>(<span class="at">input.var.name =</span> <span class="st">"data$CMXCVD"</span>, <span class="at">newobj.name =</span> <span class="st">"CMXCVD_factor"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>$all.unique.levels
-[1] "No"  "Yes"
+[1] "Yes" "No" 
 
 $return.message
-[1] "Data object &lt;SMXRNA_factor&gt; correctly created in all specified data sources"</code></pre>
+[1] "Data object &lt;CMXCVD_factor&gt; correctly created in all specified data sources"</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>DSI<span class="sc">::</span><span class="fu">datashield.assign.expr</span>(connections, <span class="st">"data"</span>, <span class="st">"cbind(data, SMXRNA_factor)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>DSI<span class="sc">::</span><span class="fu">datashield.assign.expr</span>(connections, <span class="st">"data"</span>, <span class="st">"cbind(data, CMXCVD_factor)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>We will overwrite the input <code>data</code> object with an added column.</p>
 <div class="cell" data-hash="workshop_part4_cache/html/seecol_fce71c9a34d0d26644b4a7df75e262d7">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tail</span>(<span class="fu">ds.colnames</span>(<span class="st">"data"</span>)[[<span class="dv">1</span>]])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] "TRXIT_numeric"  "TRXTR_numeric"  "TRXNIV_numeric" "DSXIC_numeric" 
-[5] "DSXOS_numeric"  "SMXRNA_factor" </code></pre>
+<pre><code>[1] "SMXSBA_numeric"   "SMXNAA_numeric"   "DMRGENDR_numeric" "DATAD_year"      
+[5] "DATAD_year_day"   "CMXCVD_factor"   </code></pre>
 </div>
 </div>
 </section>
 <section id="complex-recoding.-number-of-comorbidities" class="level2">
 <h2 class="anchored" data-anchor-id="complex-recoding.-number-of-comorbidities">Complex recoding. Number of comorbidities</h2>
-<p>Given the available variables on our dataset, we might be interested on recoding variables or creating new variables as combinations of the existing ones. This is exactly what we will do here. We will take the comorbities: <code>RFXOB</code>, <code>CMXDI</code>, <code>CMXHT</code>, <code>CMXCVD</code>, <code>CMXCPD</code>, <code>CMXCKD</code>, <code>CMXCLD</code> and <code>RFXONC</code>.</p>
+<p>Given the available variables on our dataset, we might be interested on recoding variables or creating new variables as combinations of the existing ones. This is exactly what we will do here. We will take the comorbities: <code>CMXHT</code>, <code>CMXCVD</code>, <code>CMXCPD</code>, <code>CMXCKD</code>, <code>CMXCLD</code> and <code>RFXONC</code>.</p>
 <p>We will create a new variable called <code>CMXCOM</code> that quantifies how many comorbidities an individual has. We will have four categories:</p>
 <ul>
 <li>0 comorbidities</li>
@@ -328,23 +328,24 @@ $return.message
 </ul>
 <p>The process to achieve this is not as easy as straightforward as it would be using base R functions on our computer.</p>
 <p>To begin, we will take a look at how the variables are encoded. Looking at the codebook they should all be dicotomous variables encoded as <code>"Yes"</code> / <code>"No"</code>. We can verify that with the functions we’ve covered at the Part 2 of this workshop.</p>
-<div class="cell" data-hash="workshop_part4_cache/html/comp_80bd9d272db4a88e66e3ce62f6a93e1c">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.table</span>(<span class="st">"data$RFXOB"</span>)<span class="sc">$</span>output.list<span class="sc">$</span>TABLES.COMBINED_all.sources_counts</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-hash="workshop_part4_cache/html/comp_503f05b6c9694d68e1ade1507552dd63">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.table</span>(<span class="st">"data$CMXHT"</span>)<span class="sc">$</span>output.list<span class="sc">$</span>TABLES.COMBINED_all.sources_counts</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
  Data in all studies were valid 
 
-Study 1 :  No errors reported from this study</code></pre>
+Study 1 :  No errors reported from this study
+Study 2 :  No errors reported from this study</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
-<pre><code>data$RFXOB
- No Yes  NA 
-149 101 749 </code></pre>
+<pre><code>data$CMXHT
+ Yes   No   NA 
+ 436  101 1977 </code></pre>
 </div>
 </div>
 <p>Now, we will recode all the variabled so they are coded as <code>0</code> / <code>1</code>.</p>
-<div class="cell" data-hash="workshop_part4_cache/html/recode_37ee9af03aa083ca54b8956ac8d3ba37">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>variables <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"RFXOB"</span>, <span class="st">"CMXDI"</span>, <span class="st">"CMXHT"</span>, <span class="st">"CMXCVD"</span>, </span>
+<div class="cell" data-hash="workshop_part4_cache/html/recode_794f17624a38c8db44c26f427a8a53ef">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>variables <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"CMXHT"</span>, <span class="st">"CMXCVD"</span>, </span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>               <span class="st">"CMXCPD"</span>, <span class="st">"CMXCKD"</span>, <span class="st">"CMXCLD"</span>, <span class="st">"RFXONC"</span>)</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (x <span class="cf">in</span> variables){</span>
@@ -355,10 +356,13 @@ Study 1 :  No errors reported from this study</code></pre>
 <span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>We have created a new object for each comorbiditie. The problem we now have is that the objects are of class <code>character</code>, because the <code>ds.recodeValues</code> function does not change the class.</p>
-<div class="cell" data-hash="workshop_part4_cache/html/type_331ba73fc83365d2334aa7954d515dee">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.class</span>(<span class="st">"RFXOB_recoded"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-hash="workshop_part4_cache/html/type_41f8bda1d1767b00df85f091d4a4b9ef">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.class</span>(<span class="st">"CMXHT_recoded"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>$study1
+<pre><code>$sc_verona
+[1] "character"
+
+$umf_cluj
 [1] "character"</code></pre>
 </div>
 </div>
@@ -369,10 +373,13 @@ Study 1 :  No errors reported from this study</code></pre>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>               <span class="at">newobj =</span> <span class="fu">paste0</span>(x, <span class="st">"_recoded_num"</span>))</span>
 <span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell" data-hash="workshop_part4_cache/html/type2_6dc87099d2d4c013ed4583818dc63dba">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.class</span>(<span class="st">"RFXOB_recoded_num"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-hash="workshop_part4_cache/html/type2_e06e976a566999e67942404a4b9ca917">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.class</span>(<span class="st">"CMXHT_recoded_num"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>$study1
+<pre><code>$sc_verona
+[1] "numeric"
+
+$umf_cluj
 [1] "numeric"</code></pre>
 </div>
 </div>
@@ -442,7 +449,7 @@ $validity.check
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>            <span class="at">newobj.name =</span> <span class="st">"new_variable_factor"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>$all.unique.levels
-[1] "0" "1" "2" "3" "4" "5" "6"
+[1] "0" "1" "2" "3" "4" "5"
 
 $return.message
 [1] "Data object &lt;new_variable_factor&gt; correctly created in all specified data sources"</code></pre>
@@ -470,9 +477,9 @@ $validity.check
 </section>
 <section id="complete-cases" class="level2">
 <h2 class="anchored" data-anchor-id="complete-cases">Complete cases</h2>
-<p>Real data tends to have missing values, however, some specific tools or functions expect complete data as input. For that reason there is a function specifically for that. Let’s suppose we want to have the complete cases for the variables <code>DMRAGEYR</code> and <code>CMXDI</code>. First we join them on a new <code>data.frame</code>.</p>
-<div class="cell" data-hash="workshop_part4_cache/html/newdf_92123d8d72ee944b2c76a5f26d8ed0b2">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.dataFrame</span>(<span class="at">x =</span> <span class="fu">c</span>(<span class="st">"data$DMRAGEYR"</span>, <span class="st">"data$CMXDI"</span>), <span class="at">newobj =</span> <span class="st">"data_subset"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Real data tends to have missing values, however, some specific tools or functions expect complete data as input. For that reason there is a function specifically for that. Let’s suppose we want to have the complete cases for the variables <code>DATAD</code> and <code>CMXHT</code>. First we join them on a new <code>data.frame</code>.</p>
+<div class="cell" data-hash="workshop_part4_cache/html/newdf_35bd13035add8da8c8af9ffb85e09e3d">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.dataFrame</span>(<span class="at">x =</span> <span class="fu">c</span>(<span class="st">"data$DATAD"</span>, <span class="st">"data$CMXHT"</span>), <span class="at">newobj =</span> <span class="st">"data_subset"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>$is.object.created
 [1] "A data object &lt;data_subset&gt; has been created in all specified data sources"
@@ -496,19 +503,25 @@ $validity.check
 <div class="cell" data-hash="workshop_part4_cache/html/dims_c8f8685b94e2ebf2d247cd614b86a537">
 <div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.dim</span>(<span class="st">"data_subset"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>$`dimensions of data_subset in study1`
+<pre><code>$`dimensions of data_subset in sc_verona`
+[1] 1515    2
+
+$`dimensions of data_subset in umf_cluj`
 [1] 999   2
 
 $`dimensions of data_subset in combined studies`
-[1] 999   2</code></pre>
+[1] 2514    2</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.dim</span>(<span class="st">"data_subset_ccases"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>$`dimensions of data_subset_ccases in study1`
-[1] 249   2
+<pre><code>$`dimensions of data_subset_ccases in sc_verona`
+[1] 269   2
+
+$`dimensions of data_subset_ccases in umf_cluj`
+[1] 252   2
 
 $`dimensions of data_subset_ccases in combined studies`
-[1] 249   2</code></pre>
+[1] 521   2</code></pre>
 </div>
 </div>
 </section>

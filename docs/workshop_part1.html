@@ -250,7 +250,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#loading-the-resources" id="toc-loading-the-resources" class="nav-link active" data-scroll-target="#loading-the-resources">Loading the resources</a></li>
+  <li><a href="#loading-the-resources" id="toc-loading-the-resources" class="nav-link active" data-scroll-target="#loading-the-resources">Loading the resources</a>
+  <ul class="collapse">
+  <li><a href="#opal-ui" id="toc-opal-ui" class="nav-link" data-scroll-target="#opal-ui">Opal UI</a></li>
+  <li><a href="#using-r-console" id="toc-using-r-console" class="nav-link" data-scroll-target="#using-r-console">Using R console</a></li>
+  <li><a href="#projects-and-resources-names" id="toc-projects-and-resources-names" class="nav-link" data-scroll-target="#projects-and-resources-names">Projects and resources names</a></li>
+  <li><a href="#loading-the-resources-in-the-remote-r-sessions" id="toc-loading-the-resources-in-the-remote-r-sessions" class="nav-link" data-scroll-target="#loading-the-resources-in-the-remote-r-sessions">Loading the resources in the remote R sessions</a></li>
+  </ul></li>
   <li><a href="#resolving-the-resources" id="toc-resolving-the-resources" class="nav-link" data-scroll-target="#resolving-the-resources">Resolving the resources</a></li>
   </ul>
 <div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/ESCRI11/Workshop_uncover_06_05_22/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
@@ -276,17 +282,20 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 </header>
 
-<div class="cell" data-hash="workshop_part1_cache/html/unnamed-chunk-2_1c6b73b967d2e71f5d6bd4c7b3097ba7">
+<div class="cell" data-hash="workshop_part1_cache/html/unnamed-chunk-2_b929b6afd3d69d3185a987bd9620d28e">
 
 </div>
 <p>Now that we are connected to the study servers, we have to load the data on the remote R sessions.</p>
 <section id="loading-the-resources" class="level2">
 <h2 class="anchored" data-anchor-id="loading-the-resources">Loading the resources</h2>
-<p>We will begin by loading the resources. If we are not sure which resources has each study server, we can go to the user interface of the Opals. To do that, just go to your browser of choice and navigate to the server URL. Login with the same credentials you are using for DataSHIELD.</p>
+<p>We will begin by loading the resources. To do so, we have to know the path to them in the Opal servers, if we do not know it, there are two different ways of finding out.</p>
+<section id="opal-ui" class="level3">
+<h3 class="anchored" data-anchor-id="opal-ui">Opal UI</h3>
+<p>We can use the web user interface of Opal. To do that, just go to your browser of choice and navigate to the server URL. Login with the same credentials you are using for DataSHIELD.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="figures/opal_ui1.png" class="img-fluid figure-img"></p>
-<p></p><figcaption aria-hidden="true" class="figure-caption">Opal UI lading page</figcaption><p></p>
+<p></p><figcaption aria-hidden="true" class="figure-caption">Opal UI landing page</figcaption><p></p>
 </figure>
 </div>
 <p>Once we login, we have to navigate to the <strong>Projects</strong> tab, there we will find the available projects on the Opal server, we have to write down the name of the project we are interested on using.</p>
@@ -303,38 +312,167 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p></p><figcaption aria-hidden="true" class="figure-caption">Opal UI Available resources</figcaption><p></p>
 </figure>
 </div>
-<p>We can therefore conclude that on the illustrated example, the information of interest is:</p>
-<ul>
-<li><p>URL: <code>https://192.168.1.200:8005</code></p></li>
-<li><p>Project name: <code>UMF_Cluj</code></p></li>
-<li><p>Resource name: <code>Romania</code></p></li>
-</ul>
-<p>With this information, we can go back to the RStudio and load the resources in the remote R sessions.</p>
-<div class="cell" data-hash="workshop_part1_cache/html/load_resource_c701b69d641223de408df4f5a2de62d1">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>DSI<span class="sc">::</span><span class="fu">datashield.assign.resource</span>(connections, <span class="st">"resource"</span>, <span class="st">"UMF_Cluj.Romania"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="using-r-console" class="level3">
+<h3 class="anchored" data-anchor-id="using-r-console">Using R console</h3>
+<p>We can use the <code>opalr</code> package to interact with the Opal server and retrieve information about it. The information we are interested on is the available projects and the resources they contain.</p>
+<p>First we login to one Opal, if we are using multiple servers, we have to perform the same procedure for each one; we will illustrate the HM Hospitals server only.</p>
+<div class="cell" data-hash="workshop_part1_cache/html/ologin_68baba67a00e05b10cbc2179bbf38f90">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>o <span class="ot">&lt;-</span> opalr<span class="sc">::</span><span class="fu">opal.login</span>(<span class="at">username =</span> <span class="st">"user_analisis"</span>, </span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>                  <span class="at">password =</span> <span class="st">"Ekfl07UUgz"</span>, </span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>                  <span class="at">url =</span> <span class="st">"https://192.168.1.50:9002"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<p>Then, we look for the available projects.</p>
+<div class="cell" data-hash="workshop_part1_cache/html/oproj_0fb0d8ea3f746ee2442de6457e3db195">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>opalr<span class="sc">::</span><span class="fu">opal.projects</span>(o)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  name title tags                  created               lastUpdate
+1 FiHM  FiHM   NA 2022-02-10T10:29:06.000Z 2022-02-10T10:29:06.000Z</code></pre>
+</div>
+</div>
+<p>And finally, we look for the available resources inside this project.</p>
+<div class="cell" data-hash="workshop_part1_cache/html/ores_8dd1c2425bcef3fe84a27521ad6ac7d5">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>opalr<span class="sc">::</span><span class="fu">opal.resources</span>(o, <span class="st">"FiHM"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>             name project
+1 harmonized_data    FiHM
+                                                                   url format
+1 opal+http://opal:8080/ws/files/projects/FiHM/HM_Harmonized_Dates.csv    csv
+               created              updated
+1 2022-04-25T09:51:27Z 2022-04-25T09:51:27Z</code></pre>
+</div>
+</div>
+<div class="cell" data-hash="workshop_part1_cache/html/ologout_72b65998a9364036c05a22dcaa17de2f">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>opalr<span class="sc">::</span><span class="fu">opal.logout</span>(o)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="projects-and-resources-names" class="level3">
+<h3 class="anchored" data-anchor-id="projects-and-resources-names">Projects and resources names</h3>
+<p>If we perform the same operations for all three study centers we are using in this workshop, we can obtain the following information:</p>
+<table class="table">
+<colgroup>
+<col style="width: 24%">
+<col style="width: 35%">
+<col style="width: 17%">
+<col style="width: 21%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Study center</th>
+<th>URL</th>
+<th>Project Name</th>
+<th>Resource Name</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>HM Hospitales</td>
+<td>https://192.168.1.50:9002</td>
+<td>FiHM</td>
+<td>harmonized_data</td>
+</tr>
+<tr class="even">
+<td>Sacrocuore Verona</td>
+<td>https://192.168.1.50:8890</td>
+<td>S_uncover</td>
+<td>verona</td>
+</tr>
+<tr class="odd">
+<td>UMF Cluj</td>
+<td>https://192.168.1.200:8005</td>
+<td>vUMF_Cluj</td>
+<td>Romania</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="loading-the-resources-in-the-remote-r-sessions" class="level3">
+<h3 class="anchored" data-anchor-id="loading-the-resources-in-the-remote-r-sessions">Loading the resources in the remote R sessions</h3>
+<p>Now we have to tell each study center to load the correspondent resource. What we have created on the previous part is a <code>connection</code> object that contains the connections to each study server. We can see how it looks.</p>
+<div class="cell" data-hash="workshop_part1_cache/html/con_cb57398daf3df064d0c7bdebc9ed8ec5">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>connections</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$hm_hospitales
+An object of class "OpalConnection"
+Slot "name":
+[1] "hm_hospitales"
+
+Slot "opal":
+url: https://192.168.1.50:9002 
+name: hm_hospitales 
+version: 4.0.3 
+username: user_analisis 
+profile:  
+
+
+$sc_verona
+An object of class "OpalConnection"
+Slot "name":
+[1] "sc_verona"
+
+Slot "opal":
+url: https://192.168.1.50:8890 
+name: sc_verona 
+version: 4.2.8 
+username: user_analisis 
+profile:  
+
+
+$umf_cluj
+An object of class "OpalConnection"
+Slot "name":
+[1] "umf_cluj"
+
+Slot "opal":
+url: https://192.168.1.200:8005 
+name: umf_cluj 
+version: 4.0.3 
+username: user_analisis 
+profile:  </code></pre>
+</div>
+</div>
+<p>It is basically a typical R list, therefore we can interact with a single server (for example the Verona one) by using <code>connections[2]</code>. We will do that to send the appropiate information to each study server. The syntaxis to specifiy the path of the resource follows the structure <code>project.resource_name</code>.</p>
+<div class="cell" data-hash="workshop_part1_cache/html/load_resource_3b8854dc420e187fb14964680281189a">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>DSI<span class="sc">::</span><span class="fu">datashield.assign.resource</span>(connections<span class="sc">$</span>hm_hospitales, <span class="st">"resource"</span>, <span class="st">"FiHM.harmonized_data"</span>)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>DSI<span class="sc">::</span><span class="fu">datashield.assign.resource</span>(connections<span class="sc">$</span>sc_verona, <span class="st">"resource"</span>, <span class="st">"S_uncover.verona"</span>)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>DSI<span class="sc">::</span><span class="fu">datashield.assign.resource</span>(connections<span class="sc">$</span>umf_cluj, <span class="st">"resource"</span>, <span class="st">"UMF_Cluj.Romania"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Now, each study server has an object called <code>resource</code> with the correspondent information. So in the following function calls we don’t have to send different information to each server.</p>
+</section>
 </section>
 <section id="resolving-the-resources" class="level2">
 <h2 class="anchored" data-anchor-id="resolving-the-resources">Resolving the resources</h2>
-<p>Up to this point we have created an object called <code>resource</code> that contains all the information required to load the data to the R session. In order do so, we just have to “resolve” this object. We do that with the following function.</p>
+<p>The next step is to use the information of the <code>resource</code> object and load the dataset that it points to. In order do so, we just have to “resolve” this object. We do that with the following function.</p>
 <div class="cell" data-hash="workshop_part1_cache/html/resolve_resource_2f97034611abad16f576e9023b39f436">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>DSI<span class="sc">::</span><span class="fu">datashield.assign.expr</span>(<span class="at">conns =</span> connections, <span class="at">symbol =</span> <span class="st">"data"</span>, </span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>                            <span class="at">expr =</span> <span class="st">"as.resource.data.frame(resource)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>DSI<span class="sc">::</span><span class="fu">datashield.assign.expr</span>(<span class="at">conns =</span> connections, <span class="at">symbol =</span> <span class="st">"data"</span>, </span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>                            <span class="at">expr =</span> <span class="st">"as.resource.data.frame(resource)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Now we have created an object called <code>data</code>. This object contains a dataframe with the data we will use to perform our analysis. We can check if that is true and the dimensions of this dataframe.</p>
+<p>We have created an object called <code>data</code>. This object contains a dataframe with the data we will use to perform our analysis. We can check if that is true and the dimensions of this dataframe.</p>
 <div class="cell" data-hash="workshop_part1_cache/html/check_class_dim_949c3aa2344f539e524f6f2ace261a0d">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.class</span>(<span class="st">"data"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.class</span>(<span class="st">"data"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>$study1
+<pre><code>$hm_hospitales
+[1] "spec_tbl_df" "tbl_df"      "tbl"         "data.frame" 
+
+$sc_verona
+[1] "spec_tbl_df" "tbl_df"      "tbl"         "data.frame" 
+
+$umf_cluj
 [1] "spec_tbl_df" "tbl_df"      "tbl"         "data.frame" </code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.dim</span>(<span class="st">"data"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.dim</span>(<span class="st">"data"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>$`dimensions of data in study1`
+<pre><code>$`dimensions of data in hm_hospitales`
+[1] 6864  219
+
+$`dimensions of data in sc_verona`
+[1] 1515   45
+
+$`dimensions of data in umf_cluj`
 [1] 999 132
 
 $`dimensions of data in combined studies`
-[1] 999 132</code></pre>
+[1] 9378  219</code></pre>
 </div>
 </div>
 <div class="cell" data-hash="workshop_part1_cache/html/unnamed-chunk-4_fa87d9bf1dda0dd0e38fda9141441329">
