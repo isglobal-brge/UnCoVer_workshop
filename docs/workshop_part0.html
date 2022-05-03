@@ -288,21 +288,24 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <section id="log-in-to-the-study-servers" class="level2">
 <h2 class="anchored" data-anchor-id="log-in-to-the-study-servers">Log in to the study servers</h2>
 <p>We begin by creating the connection object, to do that we will use the <code>DSI</code> package. It is at this stage that we can decide whether only connect to a single study server or to multiple. If we connect to multiple study servers we can make use of the pooled functionalities of some DataSHIELD functions.</p>
-<div class="cell" data-hash="workshop_part0_cache/html/create_connection_object_9e78c844807a5ce1262c5a1478a8fac2">
+<div class="cell" data-hash="workshop_part0_cache/html/create_connection_object_7ef79c185e3aaf144db238f4b29087bc">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>builder <span class="ot">&lt;-</span> DSI<span class="sc">::</span><span class="fu">newDSLoginBuilder</span>()</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>builder<span class="sc">$</span><span class="fu">append</span>(<span class="at">server =</span> <span class="st">"hm_hospitales"</span>,</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>               <span class="at">url =</span> <span class="st">"https://192.168.1.50:9002"</span>,</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>               <span class="at">user =</span> <span class="st">"user_analisis"</span>, <span class="at">password =</span> <span class="st">"Ekfl07UUgz"</span>)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>               <span class="at">user =</span> <span class="st">"user_analisis"</span>, <span class="at">password =</span> <span class="st">"**********"</span>)</span>
 <span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>builder<span class="sc">$</span><span class="fu">append</span>(<span class="at">server =</span> <span class="st">"sc_verona"</span>,</span>
 <span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>               <span class="at">url =</span> <span class="st">"https://192.168.1.50:8890"</span>,</span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>               <span class="at">user =</span> <span class="st">"user_analisis"</span>, <span class="at">password =</span> <span class="st">"Ekfl07UUgz"</span>)</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>               <span class="at">user =</span> <span class="st">"user_analisis"</span>, <span class="at">password =</span> <span class="st">"**********"</span>)</span>
 <span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>builder<span class="sc">$</span><span class="fu">append</span>(<span class="at">server =</span> <span class="st">"umf_cluj"</span>,</span>
 <span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>               <span class="at">url =</span> <span class="st">"https://192.168.1.200:8005"</span>,</span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>               <span class="at">user =</span> <span class="st">"user_analisis"</span>, <span class="at">password =</span> <span class="st">"Ekfl07UUgz"</span>)</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>               <span class="at">user =</span> <span class="st">"user_analisis"</span>, <span class="at">password =</span> <span class="st">"**********"</span>)</span>
 <span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>builder<span class="sc">$</span><span class="fu">append</span>(<span class="at">server =</span> <span class="st">"test_server"</span>, <span class="co"># This server will fail!</span></span>
 <span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>               <span class="at">url =</span> <span class="st">"https://192.168.1.1:8888"</span>,</span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>               <span class="at">user =</span> <span class="st">"test"</span>, <span class="at">password =</span> <span class="st">"pass"</span>)</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>               <span class="at">user =</span> <span class="st">"test"</span>, <span class="at">password =</span> <span class="st">"**********"</span>)</span>
 <span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>logindata <span class="ot">&lt;-</span> builder<span class="sc">$</span><span class="fu">build</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-hash="workshop_part0_cache/html/create_connection_object2_7ba7894cec992c8ba19d438236275fe6">
+
 </div>
 <p>We just created the <code>logindata</code> object, which contains all the login information, the next step is to use this information and actually connect to the servers.</p>
 <div class="cell" data-hash="workshop_part0_cache/html/server_login_e4ab06c72a3375d8cca499092fca3fc7">
