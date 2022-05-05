@@ -242,6 +242,48 @@
     "href": "exercises.html",
     "title": "Exercises",
     "section": "",
-    "text": "data validation, preguntes tipo si no - -multichoice\n1 data wranggling, que sigui literalment repetir lo que hi ha\nfer alguns plotillos\nfer un glm\npregunta de poison, numero estancies sasocie a XXX variable_==??? cancer o algo aixi"
+    "text": "ExerciseSolution\n\n\n\nBuild a connection object to a single study server: UMF Cluj (https://192.168.1.200:8005)\nLogin using the connection object\n\n\n\nlibrary(DSI)\nlibrary(DSOpal)\nlibrary(dsBaseClient)\nbuilder <- DSI::newDSLoginBuilder()\nbuilder$append(server = \"umf_cluj\",\n              url = \"https://192.168.1.200:8005\",\n              user = \"user_analisis\", password = \"Ekfl07UUgz\")\nlogindata <- builder$build()\nlibrary(httr);set_config(config(ssl_verifypeer = 0L))\nconnections <- DSI::datashield.login(logins = logindata)"
+  },
+  {
+    "objectID": "exercises.html#exercise-2-assign-data",
+    "href": "exercises.html#exercise-2-assign-data",
+    "title": "Exercises",
+    "section": "Exercise 2: Assign data",
+    "text": "Exercise 2: Assign data\nUsing the connection object from the Exercise 1:\n\nExerciseSolution\n\n\n\nFind the available projects.\nFind the available resources inside the projects.\nLoad and resolve the resouce.\n\n\n\no <- opalr::opal.login(username = \"user_analisis\",\n                  password = \"*********\",\n                  url = \"https://192.168.1.200:8005\")\nopalr::opal.projects(o)\nopalr::opal.resources(o, \"UMF_Cluj\")\nDSI::datashield.assign.resource(connections, \"resource\", \"UMF_Cluj.Romania\")\nDSI::datashield.assign.expr(conns = connections, symbol = \"data\",\n                            expr = \"as.resource.data.frame(resource)\")"
+  },
+  {
+    "objectID": "exercises.html#exercise-3-data-validation",
+    "href": "exercises.html#exercise-3-data-validation",
+    "title": "Exercises",
+    "section": "Exercise 3: Data validation",
+    "text": "Exercise 3: Data validation\nUsing the connection object from the Exercise 1 and 2:\n\nExerciseSolution\n\n\n\nWhat is the class of the variables LBXSC3SIHn and TRXTR?\nWhat is the range of the variable LBXSC3SIHn?\nWhat are the categories of the variable TRXTR?\n\n\n\nds.class(\"data$LBXSC3SIHn\")\nds.class(\"data$TRXTR\")\n\nds.table(\"data$TRXTR\")\nds.summary(\"data$LBXSC3SIHn\")"
+  },
+  {
+    "objectID": "exercises.html#exercise-4-data-wranggling",
+    "href": "exercises.html#exercise-4-data-wranggling",
+    "title": "Exercises",
+    "section": "Exercise 4: Data wranggling",
+    "text": "Exercise 4: Data wranggling\nUsing the connection object from the Exercise 1 and 2:\n\nExerciseSolution\n\n\n\nSelect 4 different categorical variables (Yes/No)\nCreate a new variable COUNTS that has the count for Yes.\nRecode the variable with the levels 1, 2+.\nAdd the new variable to the original dataset.\n\n\n\nds.class(\"data$TRXIS\")\nds.class(\"data$DSXIC\")\nds.class(\"data$CMXDI\")\nds.class(\"data$CMXHT\")\nds.table(\"data$TRXIS\")\nds.table(\"data$DSXIC\")\nds.table(\"data$CMXDI\")\nds.table(\"data$CMXHT\")\n\nvariables <- c(\"TRXIS\", \"DSXIC\", \n               \"CMXDI\", \"CMXHT\")\n\nfor (x in variables){\n  ds.recodeValues(var.name = paste0(\"data$\", x), \n                  values2replace.vector = c(\"Yes\", \"No\"), \n                  new.values.vector = c(1, 0),\n                  newobj = paste0(x, \"_recoded\"))\n}\n\nfor (x in variables){\n  ds.asNumeric(x.name = paste0(x, \"_recoded\"), \n               newobj = paste0(x, \"_recoded_num\"))\n}\n\nds.dataFrame(x = paste0(variables, \"_recoded_num\"), \n             newobj = \"joint_comorbidities\")\n             \nds.rowColCalc(x = \"joint_comorbidities\", \n              operation = \"rowSums\", \n              newobj = \"new_variable\")\n              \nds.asFactor(input.var.name = \"new_variable\", \n            newobj.name = \"new_variable_factor\")\n\nds.recodeValues(var.name = \"new_variable_factor\", \n                values2replace.vector = c(\"0\", \"1\", \"2\", \"3\", \"4\"),\n                new.values.vector = c(\"0\", \"1\", \"2+\", \"2+\", \"2+\"), \n                newobj = \"COUNTS\")\n                \nDSI::datashield.assign.expr(connections, \"data\", \"cbind(data, COUNTS)\")"
+  },
+  {
+    "objectID": "exercises.html#exercise-5-descriptive-analysis",
+    "href": "exercises.html#exercise-5-descriptive-analysis",
+    "title": "Exercises",
+    "section": "Exercise 5: Descriptive analysis",
+    "text": "Exercise 5: Descriptive analysis\nUsing the connection object from the Exercise 1 and 2:\n\nExerciseSolution\n\n\n\nPerform a boxplot of the variable LBXSC3SIHn.\nPerform a boxplot of the variable LBXSC3SIHn grouped by TRXIS.\nPerform a boxplot of the variable LBXSC3SIHn grouped by TRXIS and DSXIC.\nCalculate contingency table of the variables TRXIS and DSXIC.\n\n\n\nds.boxPlot(\"data$LBXSC3SIHn\")\n\nds.asFactor(input.var.name = \"data$DSXIC\", newobj.name = \"DSXIC_factor\")\nDSI::datashield.assign.expr(connections, \"data\", \"cbind(data, DSXIC_factor)\")\nds.asFactor(input.var.name = \"data$TRXIS\", newobj.name = \"TRXIS_factor\")\nDSI::datashield.assign.expr(connections, \"data\", \"cbind(data, TRXIS_factor)\")\n\nds.boxPlot(x = \"data\", variables = \"LBXSC3SIHn\", group = \"TRXIS_factor\")\nds.boxPlot(x = \"data\", variables = \"LBXSC3SIHn\", group = \"TRXIS_factor\", group2 = \"DSXIC_factor\")\n\nds.table(\"data$TRXIS\", \"data$DSXIC\")"
+  },
+  {
+    "objectID": "exercises.html#exercise-6-statistical-models",
+    "href": "exercises.html#exercise-6-statistical-models",
+    "title": "Exercises",
+    "section": "Exercise 6: Statistical models",
+    "text": "Exercise 6: Statistical models\nUsing the connection object from the Exercise 1 and 2:\n\nExerciseSolution\n\n\n\nFit a GLM (gaussian) with the model LBXSC3SIHn ~ TRXIS. (Model for illustrating purpose, not to answer any cientific question)\nFit a GLM (Poisson) with the model DATLGT ~ COUNTS (COUNTS is the variable created on the exercise 4)\n\n\n\nds.glm(formula = \"LBXSC3SIHn ~ TRXIS\", data = \"data\", family = \"gaussian\")\nds.glm(formula = \"DATLGT ~ COUNTS\", data = \"data\", family = \"poisson\")"
+  },
+  {
+    "objectID": "exercises.html#exercise-7-extra",
+    "href": "exercises.html#exercise-7-extra",
+    "title": "Exercises",
+    "section": "Exercise 7: Extra",
+    "text": "Exercise 7: Extra\nUsing the connection object from the Exercise 1 and 2:\n\nExerciseSolution\n\n\n\nDo a variable selection (Lasso regression) without the date variables.\nDo a survival analysis with the variables of the Lasso regression.\n\n\n\nNA"
   }
 ]
