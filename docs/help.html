@@ -145,7 +145,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <div class="sidebar-title mb-0 py-0">
       <a href="./">DataSHIELD Workshop</a> 
         <div class="sidebar-tools-main">
-    <a href="https://github.com/ESCRI11/Workshop_uncover_06_05_22" title="Source Code" class="sidebar-tool px-1"><i class="bi bi-github"></i></a>
+    <a href="https://github.com/isglobal-brge/UnCoVer_workshop" title="Source Code" class="sidebar-tool px-1"><i class="bi bi-github"></i></a>
     <a href="" title="Share" id="sidebar-tool-dropdown-0" class="sidebar-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-share"></i></a>
     <ul class="dropdown-menu" aria-labelledby="sidebar-tool-dropdown-0">
         <li>
@@ -254,7 +254,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <li><a href="#opal" id="toc-opal" class="nav-link" data-scroll-target="#opal">Opal</a></li>
   <li><a href="#resources-a-very-simple-explanation-without-any-technicalities" id="toc-resources-a-very-simple-explanation-without-any-technicalities" class="nav-link" data-scroll-target="#resources-a-very-simple-explanation-without-any-technicalities">“resources”: A very simple explanation without any technicalities</a></li>
   </ul>
-<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/ESCRI11/Workshop_uncover_06_05_22/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
+<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/isglobal-brge/UnCoVer_workshop/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -310,11 +310,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Once we have in an R session the information to access a dataset (an table for example) we have to actually retrieve it on the remote R session to analyze it. This step is called resolving the resource.</p>
 <p>Those two steps can be identified on the code we provide as the following:</p>
 <p>Loading the information of a “resource”:</p>
-<div class="cell" data-hash="help_cache/html/unnamed-chunk-2_9d858531288230866a2a14c6b4241ee5">
+<div class="cell" data-hash="help_cache/html/unnamed-chunk-1_fffa32e32bfcb21d037af7949b83318d">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>DSI<span class="sc">::</span><span class="fu">datashield.assign.resource</span>(conns, <span class="st">"resource"</span>, <span class="st">"resource.path.in.opal.server"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Resolving the “resource”:</p>
-<div class="cell" data-hash="help_cache/html/unnamed-chunk-4_86d266cacda2b8fda3291c0a612f5eb4">
+<div class="cell" data-hash="help_cache/html/unnamed-chunk-2_aa7e4386eed7b970797a64c91ed52093">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>DSI<span class="sc">::</span><span class="fu">datashield.assign.expr</span>(conns, <span class="st">"resource.resolved"</span>, <span class="at">expr =</span> <span class="fu">as.symbol</span>(<span class="st">"as.resource.data.frame(resource)"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>This toy code would first load the “resource” on a variable called <code>resource</code> and it would retrieve the information it contains and assign it to a variable called <code>resource.resolved</code>.</p>

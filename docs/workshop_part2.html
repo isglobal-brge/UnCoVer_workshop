@@ -145,7 +145,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <div class="sidebar-title mb-0 py-0">
       <a href="./">DataSHIELD Workshop</a> 
         <div class="sidebar-tools-main">
-    <a href="https://github.com/ESCRI11/Workshop_uncover_06_05_22" title="Source Code" class="sidebar-tool px-1"><i class="bi bi-github"></i></a>
+    <a href="https://github.com/isglobal-brge/UnCoVer_workshop" title="Source Code" class="sidebar-tool px-1"><i class="bi bi-github"></i></a>
     <a href="" title="Share" id="sidebar-tool-dropdown-0" class="sidebar-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-share"></i></a>
     <ul class="dropdown-menu" aria-labelledby="sidebar-tool-dropdown-0">
         <li>
@@ -255,7 +255,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <li><a href="#categorical-variables" id="toc-categorical-variables" class="nav-link" data-scroll-target="#categorical-variables">Categorical variables</a></li>
   <li><a href="#numerical-variables" id="toc-numerical-variables" class="nav-link" data-scroll-target="#numerical-variables">Numerical variables</a></li>
   </ul>
-<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/ESCRI11/Workshop_uncover_06_05_22/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
+<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/isglobal-brge/UnCoVer_workshop/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -278,7 +278,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 </header>
 
-<div class="cell" data-hash="workshop_part2_cache/html/unnamed-chunk-2_b391295545ddf7ae082950a434fa0b66">
+<div class="cell" data-hash="workshop_part2_cache/html/unnamed-chunk-1_6bacffc541b7ee05bf62426ea10ce571">
 
 </div>
 <p>Now that we have the data loaded, we can check if the data is compliant with the ranges described on the codebook. (IS IT PUBLIC/CAN WE LINK IT HERE?). On this step we can check that the categorical variables are properly encoded and that the numerical variables have the appropriate range. Regarding the numerical variables, we will not be checking the range, we will be looking the 5%/95% interquartile range, as there is no DataSHIELD function to output maximums and minimums.</p>
@@ -314,7 +314,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="cell" data-hash="workshop_part2_cache/html/classdis_bed2c36fb537061e397995c7e53f660e">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>dsHelper<span class="sc">::</span><span class="fu">dh.classDiscrepancy</span>(<span class="at">df =</span> <span class="st">"data"</span>, <span class="at">vars =</span> <span class="fu">c</span>(<span class="st">"DSXOS"</span>, <span class="st">"CMXCLD"</span>, <span class="st">"RFXONC"</span>), <span class="at">conns =</span> connections)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 3 x 5
+<pre><code># A tibble: 3 × 5
   variable discrepancy hm_hospitales sc_verona umf_cluj 
   &lt;chr&gt;    &lt;chr&gt;       &lt;chr&gt;         &lt;chr&gt;     &lt;chr&gt;    
 1 DSXOS    yes         character     NULL      character
@@ -410,7 +410,7 @@ $umf_cluj
 <div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>variable <span class="ot">&lt;-</span> <span class="fu">dh.getAnonPlotData</span>(<span class="at">df =</span> <span class="st">"data"</span>, <span class="at">var_1 =</span> <span class="st">"DMRAGEYR"</span>)</span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(variable)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 6 x 2
+<pre><code># A tibble: 6 × 2
   cohort    DMRAGEYR
   &lt;chr&gt;        &lt;dbl&gt;
 1 sc_verona     70.0
@@ -424,7 +424,7 @@ $umf_cluj
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">group_by</span>(cohort) <span class="sc">%&gt;%</span> </span>
 <span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">summarise</span>(<span class="at">range =</span> <span class="fu">paste</span>(<span class="fu">round</span>(<span class="fu">range</span>(DMRAGEYR)), <span class="at">collapse =</span> <span class="st">", "</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 3 x 2
+<pre><code># A tibble: 3 × 2
   cohort    range 
   &lt;chr&gt;     &lt;chr&gt; 
 1 combined  10, 94
@@ -443,7 +443,7 @@ $umf_cluj
 [1] 749</code></pre>
 </div>
 </div>
-<div class="cell" data-hash="workshop_part2_cache/html/unnamed-chunk-4_97b9a17cddbdefb19e1addbbac621496">
+<div class="cell" data-hash="workshop_part2_cache/html/unnamed-chunk-2_e47877cf955ef8a80c094ae19e1511de">
 
 </div>
 

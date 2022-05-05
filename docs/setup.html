@@ -145,7 +145,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <div class="sidebar-title mb-0 py-0">
       <a href="./">DataSHIELD Workshop</a> 
         <div class="sidebar-tools-main">
-    <a href="https://github.com/ESCRI11/Workshop_uncover_06_05_22" title="Source Code" class="sidebar-tool px-1"><i class="bi bi-github"></i></a>
+    <a href="https://github.com/isglobal-brge/UnCoVer_workshop" title="Source Code" class="sidebar-tool px-1"><i class="bi bi-github"></i></a>
     <a href="" title="Share" id="sidebar-tool-dropdown-0" class="sidebar-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-share"></i></a>
     <ul class="dropdown-menu" aria-labelledby="sidebar-tool-dropdown-0">
         <li>
@@ -253,7 +253,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <li><a href="#r-packages" id="toc-r-packages" class="nav-link active" data-scroll-target="#r-packages">R packages</a></li>
   <li><a href="#install-guide" id="toc-install-guide" class="nav-link" data-scroll-target="#install-guide">Install guide</a></li>
   </ul>
-<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/ESCRI11/Workshop_uncover_06_05_22/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
+<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/isglobal-brge/UnCoVer_workshop/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -276,7 +276,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 </header>
 
-<p>Along this section, we will go over the R packages (and versions) required to navigate through the workshop. We recommend to use <a href="https://www.rstudio.com/products/rstudio/download/">RStudio</a> as the integrated development environment (IDE) to use R, although any other IDE can be used. We suggest to use R version &gt; 4.0.</p>
+<p>Along this section, we will go over the R packages (and versions) required to navigate through the workshop. We recommend to use <a href="https://www.rstudio.com/products/rstudio/download/">RStudio</a> as the integrated development environment (IDE) to use R, although any other IDE can be used. We suggest to use R version &gt; 4.1.</p>
 <section id="r-packages" class="level2">
 <h2 class="anchored" data-anchor-id="r-packages">R packages</h2>
 <p>The required R packages are the following:</p>
@@ -286,6 +286,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><a href="https://github.com/datashield/DSOpal">DSOpal 1.3.0</a>: DSOpal is an extension of DSI to connect to to Opal servers.</li>
 <li><a href="https://github.com/datashield/dsBaseClient">dsBaseClient 6.1.1</a>: Implementation of the base R functions (Example: Base package function <code>as.factor</code> is implemented as <code>ds.asFactor</code>).</li>
 <li><a href="https://lifecycle-project.github.io/ds-helper/index.html">dsHelper 0.4.12</a>: dsHelper is a compedium of wrappers for <code>dsBaseClient</code> functions that simplify some common operations to maintain sanity.</li>
+<li><a href="https://neelsoumya.github.io/dsSurvival_bookdown/">dsSurvivalClient 1.0.0</a>: Client package to perform survival analysis. It requires <code>dsSurvival</code> on the study servers.</li>
+<li><a href="https://github.com/transbioZI/dsMTLClient">dsMTLClient 0.9</a>: Client package to perform federated multi-task learning. It requires <code>dsMTLBase</code> on the study server.</li>
 </ul>
 </section>
 <section id="install-guide" class="level2">
@@ -296,21 +298,23 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <i class="callout-icon"></i>
 </div>
 <div class="callout-body-container">
-<p>The proposed install guide has been tested on a clean installation with R 4.0.4 and RStudio 2022.02.2 Build 485; if any errors occur, please consider using a clean install or refer to the official R documentation regarding the errors you are getting. If you are facing permissions issues, contact your system administrator.</p>
+<p>The proposed install guide has been tested on a clean installation with R 4.2.0 and RStudio 2022.02.2 Build 485; if any errors occur, please consider using a clean install or refer to the official R documentation regarding the errors you are getting. If you are facing permissions issues, contact your system administrator.</p>
 </div>
 </div>
 </div>
 <p>To install the required packages we will need the <code>devtools</code> package.</p>
-<div class="cell" data-hash="setup_cache/html/unnamed-chunk-2_598cd38d05be07afd0049d890863437a">
+<div class="cell" data-hash="setup_cache/html/unnamed-chunk-1_f61e35f209dd26226ee50a84a02904e5">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"devtools"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Afterwards, we can install the packages:</p>
-<div class="cell" data-hash="setup_cache/html/unnamed-chunk-4_5b49bff3aac3e76e3b579a2cf552ecfd">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">install_version</span>(<span class="st">"opalr"</span>, <span class="at">version =</span> <span class="st">"3.1.0"</span>)</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">install_version</span>(<span class="st">"DSI"</span>, <span class="at">version =</span> <span class="st">"1.4.0"</span>)</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">install_version</span>(<span class="st">"DSOpal"</span>, <span class="at">version =</span> <span class="st">"1.3.0"</span>)</span>
+<p>Afterwards, we can install the packages, make sure to have <a href="https://cran.r-project.org/bin/windows/Rtools/">RTools</a> installed:</p>
+<div class="cell" data-hash="setup_cache/html/unnamed-chunk-2_d943ccda29e5598f7ab3e99363f7f147">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">install_version</span>(<span class="st">"opalr"</span>, <span class="at">version =</span> <span class="st">"3.1.0"</span>, <span class="at">repos =</span> <span class="st">'https://cran.r-project.org/'</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">install_version</span>(<span class="st">"DSI"</span>, <span class="at">version =</span> <span class="st">"1.4.0"</span>, <span class="at">repos =</span> <span class="st">'https://cran.r-project.org/'</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">install_version</span>(<span class="st">"DSOpal"</span>, <span class="at">version =</span> <span class="st">"1.3.0"</span>, <span class="at">repos =</span> <span class="st">'https://cran.r-project.org/'</span>)</span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">"datashield/dsBaseClient"</span>, <span class="st">"6.1.1"</span>)</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">"lifecycle-project/ds-helper"</span>, <span class="st">"0.4.12"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">"lifecycle-project/ds-helper"</span>, <span class="st">"0.4.12"</span>)</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">"neelsoumya/dsSurvivalClient"</span>)</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">"transbioZI/dsMTLClient"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">

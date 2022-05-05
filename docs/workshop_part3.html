@@ -146,7 +146,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <div class="sidebar-title mb-0 py-0">
       <a href="./">DataSHIELD Workshop</a> 
         <div class="sidebar-tools-main">
-    <a href="https://github.com/ESCRI11/Workshop_uncover_06_05_22" title="Source Code" class="sidebar-tool px-1"><i class="bi bi-github"></i></a>
+    <a href="https://github.com/isglobal-brge/UnCoVer_workshop" title="Source Code" class="sidebar-tool px-1"><i class="bi bi-github"></i></a>
     <a href="" title="Share" id="sidebar-tool-dropdown-0" class="sidebar-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-share"></i></a>
     <ul class="dropdown-menu" aria-labelledby="sidebar-tool-dropdown-0">
         <li>
@@ -271,7 +271,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   </ul></li>
   <li><a href="#analysis-of-variance-anova" id="toc-analysis-of-variance-anova" class="nav-link" data-scroll-target="#analysis-of-variance-anova">Analysis of variance (ANOVA)</a></li>
   </ul>
-<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/ESCRI11/Workshop_uncover_06_05_22/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
+<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/isglobal-brge/UnCoVer_workshop/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -294,14 +294,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 </header>
 
-<div class="cell" data-hash="workshop_part3_cache/html/unnamed-chunk-2_81a2fa295f478bde6e7babe48e0c6e65">
+<div class="cell" data-hash="workshop_part3_cache/html/unnamed-chunk-1_273d56a0f1943f1e7f92baed42beb2ca">
 
 </div>
 <p>We have already checked that our data is compliant with the codebook. Now we can proceed with our analysis using the selected variables. To begin, we will perform a brief descriptive analysis, calculating some statistics, tables of contingence and doing some graphical visualizations.</p>
 <section id="descriptive-statistics" class="level2">
 <h2 class="anchored" data-anchor-id="descriptive-statistics">Descriptive statistics</h2>
 <p>There is a collection of DataSHIELD functions to get the descriptive statistics of a variable. Those are the functions <code>ds.var</code>, <code>ds.mean</code>, <code>ds.table</code> among others. However, there is a function from the <code>dsHelper</code> package that automatically performs all the function calls on the background, being a much more user-friendly alternative. The only downside is that it requires the categorical variables to be factors, we can easily create a new factor variable and add it as a new column to our data.</p>
-<div class="cell" data-hash="workshop_part3_cache/html/descr_stats_dshelper_f28c5df713ce1d392e8fc5e2de36bf96">
+<div class="cell" data-hash="workshop_part3_cache/html/descr_stats_dshelper_f90538af575374e791a7244f93425c62">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.asFactor</span>(<span class="at">input.var.name =</span> <span class="st">"data$CMXHT"</span>, <span class="at">newobj.name =</span> <span class="st">"CMXHT_factor"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>$all.unique.levels
@@ -315,7 +315,7 @@ $return.message
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">dh.getStats</span>(<span class="at">df =</span> <span class="st">"data"</span>, <span class="at">vars =</span> <span class="fu">c</span>(<span class="st">"DMRAGEYR"</span>, <span class="st">"CMXHT_factor"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>$categorical
-# A tibble: 6 x 10
+# A tibble: 6 × 10
   variable     cohort    category value cohort_n valid_n missing_n perc_valid
   &lt;chr&gt;        &lt;chr&gt;     &lt;fct&gt;    &lt;int&gt;    &lt;int&gt;   &lt;int&gt;     &lt;int&gt;      &lt;dbl&gt;
 1 CMXHT_factor combined  Yes        436     2514     537      1977       81.2
@@ -324,25 +324,17 @@ $return.message
 4 CMXHT_factor sc_verona No           0     1515     285      1230        0  
 5 CMXHT_factor umf_cluj  Yes        151      999     252       747       59.9
 6 CMXHT_factor umf_cluj  No         101      999     252       747       40.1
-# ... with 2 more variables: perc_missing &lt;dbl&gt;, perc_total &lt;dbl&gt;
+# … with 2 more variables: perc_missing &lt;dbl&gt;, perc_total &lt;dbl&gt;
 
 $continuous
-# A tibble: 3 x 15
+# A tibble: 3 × 15
   variable cohort    mean std.dev perc_5 perc_10 perc_25 perc_50 perc_75 perc_90
   &lt;chr&gt;    &lt;chr&gt;    &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;
-1 DMRAGEYR sc_vero~  52.1    20.0   16.7    22.4    38      53      68      78  
+1 DMRAGEYR sc_vero…  52.1    20.0   16.7    22.4    38      53      68      78  
 2 DMRAGEYR umf_cluj  63.8    13.0   40.4    46.9    54.2    65      72      80.1
 3 DMRAGEYR combined  53.7    19.6   20.1    25.9    40.3    54.7    68.6    78.3
-# ... with 5 more variables: perc_95 &lt;dbl&gt;, valid_n &lt;dbl&gt;, cohort_n &lt;dbl&gt;,
+# … with 5 more variables: perc_95 &lt;dbl&gt;, valid_n &lt;dbl&gt;, cohort_n &lt;dbl&gt;,
 #   missing_n &lt;dbl&gt;, missing_perc &lt;dbl&gt;</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dh.getStats</span>(<span class="at">df =</span> <span class="st">"data"</span>, <span class="at">vars =</span> <span class="fu">c</span>(<span class="st">"SMXHEA"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>$categorical
-list()
-
-$continuous
-list()</code></pre>
 </div>
 </div>
 </section>
@@ -355,7 +347,7 @@ list()</code></pre>
 <section id="combined-plot" class="level4">
 <h4 class="anchored" data-anchor-id="combined-plot">Combined plot</h4>
 <div class="cell" data-hash="workshop_part3_cache/html/boxplot1_de53cb907d5bc374d5b7879dc23c9180">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.boxPlot</span>(<span class="at">x =</span> <span class="st">"data"</span>, <span class="at">variables =</span> <span class="st">"DMRAGEYR"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.boxPlot</span>(<span class="at">x =</span> <span class="st">"data"</span>, <span class="at">variables =</span> <span class="st">"DMRAGEYR"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="workshop_part3_files/figure-html/boxplot1-1.png" class="img-fluid" width="672"></p>
 </div>
@@ -364,7 +356,7 @@ list()</code></pre>
 <section id="study-separated-plot" class="level4">
 <h4 class="anchored" data-anchor-id="study-separated-plot">Study separated plot</h4>
 <div class="cell" data-hash="workshop_part3_cache/html/boxplot11_a24aed458b652f8f69564207c39cba8a">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.boxPlot</span>(<span class="at">x =</span> <span class="st">"data"</span>, <span class="at">variables =</span> <span class="st">"DMRAGEYR"</span>, <span class="at">type =</span> <span class="st">"split"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.boxPlot</span>(<span class="at">x =</span> <span class="st">"data"</span>, <span class="at">variables =</span> <span class="st">"DMRAGEYR"</span>, <span class="at">type =</span> <span class="st">"split"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="workshop_part3_files/figure-html/boxplot11-1.png" class="img-fluid" width="672"></p>
 </div>
@@ -380,7 +372,7 @@ list()</code></pre>
 <h4 class="anchored" data-anchor-id="groupings">Groupings</h4>
 <p>There are grouping options on the boxplot function which are very useful to have greater insights of the data. We can group using factor variables, so in this example we will use the previously created <code>SMXAPA_factor</code> variable.</p>
 <div class="cell" data-hash="workshop_part3_cache/html/boxplot2_afc97884b4ad68724766a8832227c3c6">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.boxPlot</span>(<span class="at">x =</span> <span class="st">"data"</span>, <span class="at">variables =</span> <span class="st">"DMRAGEYR"</span>, <span class="at">group =</span> <span class="st">"CMXHT_factor"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.boxPlot</span>(<span class="at">x =</span> <span class="st">"data"</span>, <span class="at">variables =</span> <span class="st">"DMRAGEYR"</span>, <span class="at">group =</span> <span class="st">"CMXHT_factor"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="workshop_part3_files/figure-html/boxplot2-1.png" class="img-fluid" width="672"></p>
 </div>
@@ -392,7 +384,7 @@ list()</code></pre>
 <h3 class="anchored" data-anchor-id="histogram">Histogram</h3>
 <p>To have an idea of the distribution of a variable we can use histograms.</p>
 <div class="cell" data-hash="workshop_part3_cache/html/histogram_805febd254921b0c53690f35f94b0a70">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>histogram <span class="ot">&lt;-</span> <span class="fu">ds.histogram</span>(<span class="st">"data$DMRAGEYR"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>histogram <span class="ot">&lt;-</span> <span class="fu">ds.histogram</span>(<span class="st">"data$DMRAGEYR"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="workshop_part3_files/figure-html/histogram-1.png" class="img-fluid" width="672"></p>
 </div>
@@ -402,7 +394,7 @@ list()</code></pre>
 <h3 class="anchored" data-anchor-id="scatter-plot">Scatter plot</h3>
 <p>DataSHIELD has a scatter plot functionality that outputs noise-affected data points, depending on the security configuration of the Opal, the noise levels can make this plot to be hugely distorted.</p>
 <div class="cell" data-hash="workshop_part3_cache/html/scaterplot_d6e631889c626b7d14d24a38c57fa144">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.scatterPlot</span>(<span class="at">x =</span> <span class="st">"data$DMRAGEYR"</span>, <span class="at">y =</span> <span class="st">"data$CSXCHRA"</span>, <span class="at">datasources =</span> connections)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.scatterPlot</span>(<span class="at">x =</span> <span class="st">"data$DMRAGEYR"</span>, <span class="at">y =</span> <span class="st">"data$CSXCHRA"</span>, <span class="at">datasources =</span> connections)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="workshop_part3_files/figure-html/scaterplot-1.png" class="img-fluid" width="672"></p>
 </div>
@@ -415,7 +407,7 @@ list()</code></pre>
 <h3 class="anchored" data-anchor-id="heatmap-plot">Heatmap plot</h3>
 <p>In a similar fashion than the scatter plot, we can visualize a two dimensional distribution of the points but in this case by density.</p>
 <div class="cell" data-hash="workshop_part3_cache/html/heatmap_d506b66d2b7b9126fef991fe09468320">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.heatmapPlot</span>(<span class="at">x =</span> <span class="st">"data$DMRAGEYR"</span>, <span class="at">y =</span> <span class="st">"data$CSXCHRA"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.heatmapPlot</span>(<span class="at">x =</span> <span class="st">"data$DMRAGEYR"</span>, <span class="at">y =</span> <span class="st">"data$CSXCHRA"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="workshop_part3_files/figure-html/heatmap-1.png" class="img-fluid" width="672"></p>
 </div>
@@ -426,7 +418,7 @@ list()</code></pre>
 <h2 class="anchored" data-anchor-id="dimensional-contingency-table">2-Dimensional contingency table</h2>
 <p>On the previous part, we have already seen that DataSHIELD has a function to calculate uni-dimensional contingency tables. This same function, can also be used for bi-dimensional contingency tables. It is important to note that this function is a little bit tricky sometimes, as it is quite common that the 2D contingency table has disclosive outputs, therefore we just get an error message.</p>
 <div class="cell" data-hash="workshop_part3_cache/html/2dtablefailed_b7197b090ce69a20031d60b85ddd6d1b">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.table</span>(<span class="st">"data$DMRAGEYR"</span>, <span class="st">"data$SMXDIA_numeric"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.table</span>(<span class="st">"data$DMRAGEYR"</span>, <span class="st">"data$SMXDIA_numeric"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
  All studies failed for reasons identified below 
@@ -450,8 +442,8 @@ $error.messages$umf_cluj
 </div>
 <p>There are other variables that do produce valid non-disclosive results.</p>
 <div class="cell" data-hash="workshop_part3_cache/html/2dtable_52f67a986665369d02e5c9e27d4ea5a4">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>ctable <span class="ot">&lt;-</span> <span class="fu">ds.table</span>(<span class="st">"data$CMXCVD"</span>, <span class="st">"data$CMXCKD"</span>)<span class="sc">$</span>output.list<span class="sc">$</span>TABLES.COMBINED_all.sources_counts</span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>ctable</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>ctable <span class="ot">&lt;-</span> <span class="fu">ds.table</span>(<span class="st">"data$CMXCVD"</span>, <span class="st">"data$CMXCKD"</span>)<span class="sc">$</span>output.list<span class="sc">$</span>TABLES.COMBINED_all.sources_counts</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>ctable</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>           data$CMXCKD
 data$CMXCVD Yes  No  NA
@@ -464,7 +456,7 @@ data$CMXCVD Yes  No  NA
 <h3 class="anchored" data-anchor-id="fisher-test">Fisher test</h3>
 <p>Given the calculated contingency table, we are now in the position to perform a Fisher’s exact test.</p>
 <div class="cell" data-hash="workshop_part3_cache/html/ftest_4442203958b11d54c7aebfeb24452bfa">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>stats<span class="sc">::</span><span class="fu">fisher.test</span>(ctable)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>stats<span class="sc">::</span><span class="fu">fisher.test</span>(ctable)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
     Fisher's Exact Test for Count Data
@@ -481,12 +473,12 @@ alternative hypothesis: two.sided</code></pre>
 <p>We may have interest on knowing the value of certain statistics of a variable when grouping with a category. As an example we will calculate the mean of the variable <code>DMRAGEYR</code> (Age) grouped by the variable <code>CMXCOM</code> (Number of comorbidities). Please note this is just an example, those two variables are not expected to be related.</p>
 <p>To compute this statistic it is important that we have the categorical variable as a factor, otherwise the grouped statistic calculation will fail. Also, we have to create separate objects for the two variables, we can’t merge them into a <code>data.frame</code> and call them using the typical formulation <code>data.frame$variable</code>, for some reason it fails (to be reported as a bug to the core DataSHIELD team).</p>
 <div class="cell" data-hash="workshop_part3_cache/html/groupedmean_3c5ea693b1c65dd60f92a612effdfedb">
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.assign</span>(<span class="at">toAssign =</span> <span class="st">"data$DMRAGEYR"</span>,</span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>            <span class="at">newobj =</span>  <span class="st">"DMRAGEYR"</span>)</span>
-<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.assign</span>(<span class="at">toAssign =</span> <span class="st">"data$CMXCOM"</span>,</span>
-<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">newobj =</span>  <span class="st">"CMXCOM"</span>)</span>
-<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.tapply</span>(<span class="at">X.name =</span> <span class="st">"DMRAGEYR"</span>, <span class="at">INDEX.names =</span> <span class="st">"CMXCOM"</span>, <span class="at">FUN.name =</span> <span class="st">"mean"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.assign</span>(<span class="at">toAssign =</span> <span class="st">"data$DMRAGEYR"</span>,</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>            <span class="at">newobj =</span>  <span class="st">"DMRAGEYR"</span>)</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.assign</span>(<span class="at">toAssign =</span> <span class="st">"data$CMXCOM"</span>,</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">newobj =</span>  <span class="st">"CMXCOM"</span>)</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.tapply</span>(<span class="at">X.name =</span> <span class="st">"DMRAGEYR"</span>, <span class="at">INDEX.names =</span> <span class="st">"CMXCOM"</span>, <span class="at">FUN.name =</span> <span class="st">"mean"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>$sc_verona
 $sc_verona$Mean
@@ -531,14 +523,14 @@ $umf_cluj$N
 </ul>
 <p>We will use the following code to perform this operations:</p>
 <div class="cell" data-hash="workshop_part3_cache/html/pooledttest_293838dfd7cb5d3d3a019818afc3f373">
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>mean1 <span class="ot">&lt;-</span> <span class="fu">ds.mean</span>(<span class="st">"data$DMRAGEYR"</span>, <span class="at">type =</span> <span class="st">"c"</span>)<span class="sc">$</span>Global.Mean[<span class="dv">1</span>]</span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>mean2 <span class="ot">&lt;-</span> <span class="fu">ds.mean</span>(<span class="st">"data$CSXOSTA"</span>, <span class="at">type =</span> <span class="st">"c"</span>)<span class="sc">$</span>Global.Mean[<span class="dv">1</span>]</span>
-<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>sd1 <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="fu">ds.var</span>(<span class="st">"data$DMRAGEYR"</span>, <span class="at">type =</span> <span class="st">"c"</span>)<span class="sc">$</span>Global.Variance[<span class="dv">1</span>])</span>
-<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>sd2 <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="fu">ds.var</span>(<span class="st">"data$CSXOSTA"</span>, <span class="at">type =</span> <span class="st">"c"</span>)<span class="sc">$</span>Global.Variance[<span class="dv">1</span>])</span>
-<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>n1 <span class="ot">&lt;-</span> <span class="fu">ds.length</span>(<span class="st">"data$DMRAGEYR"</span>)[[<span class="dv">3</span>]] <span class="sc">-</span> <span class="fu">sum</span>(<span class="fu">unlist</span>(<span class="fu">ds.numNA</span>(<span class="st">"data$DMRAGEYR"</span>)))</span>
-<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>n2 <span class="ot">&lt;-</span> <span class="fu">ds.length</span>(<span class="st">"data$CSXOSTA"</span>)[[<span class="dv">3</span>]] <span class="sc">-</span> <span class="fu">sum</span>(<span class="fu">unlist</span>(<span class="fu">ds.numNA</span>(<span class="st">"data$CSXOSTA"</span>)))</span>
-<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>(mean1 <span class="sc">-</span> mean2) <span class="sc">/</span> <span class="fu">sqrt</span>(sd1<span class="sc">^</span><span class="dv">2</span><span class="sc">/</span>n1 <span class="sc">+</span> sd2<span class="sc">^</span><span class="dv">2</span><span class="sc">/</span>n2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>mean1 <span class="ot">&lt;-</span> <span class="fu">ds.mean</span>(<span class="st">"data$DMRAGEYR"</span>, <span class="at">type =</span> <span class="st">"c"</span>)<span class="sc">$</span>Global.Mean[<span class="dv">1</span>]</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>mean2 <span class="ot">&lt;-</span> <span class="fu">ds.mean</span>(<span class="st">"data$CSXOSTA"</span>, <span class="at">type =</span> <span class="st">"c"</span>)<span class="sc">$</span>Global.Mean[<span class="dv">1</span>]</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>sd1 <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="fu">ds.var</span>(<span class="st">"data$DMRAGEYR"</span>, <span class="at">type =</span> <span class="st">"c"</span>)<span class="sc">$</span>Global.Variance[<span class="dv">1</span>])</span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>sd2 <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="fu">ds.var</span>(<span class="st">"data$CSXOSTA"</span>, <span class="at">type =</span> <span class="st">"c"</span>)<span class="sc">$</span>Global.Variance[<span class="dv">1</span>])</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>n1 <span class="ot">&lt;-</span> <span class="fu">ds.length</span>(<span class="st">"data$DMRAGEYR"</span>)[[<span class="dv">3</span>]] <span class="sc">-</span> <span class="fu">sum</span>(<span class="fu">unlist</span>(<span class="fu">ds.numNA</span>(<span class="st">"data$DMRAGEYR"</span>)))</span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>n2 <span class="ot">&lt;-</span> <span class="fu">ds.length</span>(<span class="st">"data$CSXOSTA"</span>)[[<span class="dv">3</span>]] <span class="sc">-</span> <span class="fu">sum</span>(<span class="fu">unlist</span>(<span class="fu">ds.numNA</span>(<span class="st">"data$CSXOSTA"</span>)))</span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>(mean1 <span class="sc">-</span> mean2) <span class="sc">/</span> <span class="fu">sqrt</span>(sd1<span class="sc">^</span><span class="dv">2</span><span class="sc">/</span>n1 <span class="sc">+</span> sd2<span class="sc">^</span><span class="dv">2</span><span class="sc">/</span>n2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] -91.58199</code></pre>
 </div>
@@ -549,7 +541,7 @@ $umf_cluj$N
 <h3 class="anchored" data-anchor-id="single-study-t-test">Single study t-test</h3>
 <p>If we are not interested on using pooled functionalities, it is much simpler to perform a t-test.</p>
 <div class="cell" data-hash="workshop_part3_cache/html/singlettest_75ea22e55f0c9e176a4b4657a74cb0a4">
-<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>DSI<span class="sc">::</span><span class="fu">datashield.aggregate</span>(connections, <span class="st">"t.test(data$DMRAGEYR, data$CSXOSTA)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>DSI<span class="sc">::</span><span class="fu">datashield.aggregate</span>(connections, <span class="st">"t.test(data$DMRAGEYR, data$CSXOSTA)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>$sc_verona
 
@@ -584,7 +576,7 @@ mean of x mean of y
 <section id="analysis-of-variance-anova" class="level2">
 <h2 class="anchored" data-anchor-id="analysis-of-variance-anova">Analysis of variance (ANOVA)</h2>
 <p>A student is developing a DataSHIELD function to perform ANOVAs. You can expect it to be available in the following months, probably as part of the <a href="https://github.com/isglobal-brge/dsMLClient">dsML package</a>.</p>
-<div class="cell" data-hash="workshop_part3_cache/html/unnamed-chunk-4_3915a18ba3698628a21e3bbf06daa1e4">
+<div class="cell" data-hash="workshop_part3_cache/html/unnamed-chunk-2_2bced50769db1ef14f2b1ee74138c790">
 
 </div>
 

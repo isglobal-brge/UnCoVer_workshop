@@ -145,7 +145,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <div class="sidebar-title mb-0 py-0">
       <a href="./">DataSHIELD Workshop</a> 
         <div class="sidebar-tools-main">
-    <a href="https://github.com/ESCRI11/Workshop_uncover_06_05_22" title="Source Code" class="sidebar-tool px-1"><i class="bi bi-github"></i></a>
+    <a href="https://github.com/isglobal-brge/UnCoVer_workshop" title="Source Code" class="sidebar-tool px-1"><i class="bi bi-github"></i></a>
     <a href="" title="Share" id="sidebar-tool-dropdown-0" class="sidebar-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-share"></i></a>
     <ul class="dropdown-menu" aria-labelledby="sidebar-tool-dropdown-0">
         <li>
@@ -250,14 +250,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#logistical-regression" id="toc-logistical-regression" class="nav-link active" data-scroll-target="#logistical-regression">Logistical regression</a>
+  <li><a href="#logistic-regression" id="toc-logistic-regression" class="nav-link active" data-scroll-target="#logistic-regression">Logistic regression</a>
   <ul class="collapse">
   <li><a href="#preparing-the-data" id="toc-preparing-the-data" class="nav-link" data-scroll-target="#preparing-the-data">Preparing the data</a></li>
   <li><a href="#fitting-the-models" id="toc-fitting-the-models" class="nav-link" data-scroll-target="#fitting-the-models">Fitting the models</a></li>
   </ul></li>
-  <li><a href="#piecewise-exponential-regression" id="toc-piecewise-exponential-regression" class="nav-link" data-scroll-target="#piecewise-exponential-regression">Piecewise Exponential Regression</a></li>
+  <li><a href="#poisson-regression" id="toc-poisson-regression" class="nav-link" data-scroll-target="#poisson-regression">Poisson Regression</a></li>
+  <li><a href="#survival-analysis" id="toc-survival-analysis" class="nav-link" data-scroll-target="#survival-analysis">Survival analysis</a></li>
+  <li><a href="#variable-selection-lasso" id="toc-variable-selection-lasso" class="nav-link" data-scroll-target="#variable-selection-lasso">Variable selection: Lasso</a></li>
   </ul>
-<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/ESCRI11/Workshop_uncover_06_05_22/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
+<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/isglobal-brge/UnCoVer_workshop/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -280,21 +282,42 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 </header>
 
-<div class="cell" data-hash="workshop_part5_cache/html/unnamed-chunk-2_541c2f84637f79bee3e439ab4492f55b">
+<div class="cell" data-hash="workshop_part5_cache/html/unnamed-chunk-1_85b45b08aaa19c4a31d81c7ce457c5bc">
 
 </div>
-<p>Now that we have covered the basics, we can begin to analyze the data in more depth. In this section we will go over some of the statistical models we can fit by using DataSHIELD. On this section we will only be using the Cluj study center.</p>
-<section id="logistical-regression" class="level2">
-<h2 class="anchored" data-anchor-id="logistical-regression">Logistical regression</h2>
-<p>We will perform some logistic regressions to see the association of different variables to the survival condition (<code>DSXOS</code> variable). To achieve this, we will have to apply some of the concepts we have already seen in order to prepare our data.</p>
+<p>Now that we have covered the basics, we can begin to analyze the data in more depth.</p>
+<div class="callout-note callout callout-style-simple">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>In this section we will be using the HM Hospitales and Cluj study servers. If you want to follow, make sure to close your current connections, setup the new ones, load the data (same resources loaded on the part 2) and calculate the re-coded variable <code>CMXCOM</code> (seen on the part 3).</p>
+</div>
+</div>
+</div>
+<p>In this section we will go over some of the statistical models we can fit by using DataSHIELD.</p>
+<section id="logistic-regression" class="level2">
+<h2 class="anchored" data-anchor-id="logistic-regression">Logistic regression</h2>
+<p>We will perform some logistic regressions analysis to see the association of different variables to mortality (<code>DSXOS</code> variable). To achieve this, we will have to apply some of the concepts we have already seen in order to prepare our data.</p>
 <section id="preparing-the-data" class="level3">
 <h3 class="anchored" data-anchor-id="preparing-the-data">Preparing the data</h3>
+<div class="callout-note callout callout-style-simple">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>We can use the the variables age, gender, cholesterol, etc. We are going to use arbitrary variables that are common on the HM Hospitales and Cluj study servers for illustrating purposes.</p>
+</div>
+</div>
+</div>
 <p>For the logistic regression, the variables we will use are the following:</p>
 <ul>
 <li><code>DSXOS</code>: Character variable. Outcome status encoded as <code>Deceased</code>, <code>Recovered</code> and <code>Transferred</code>. To perform a logistic regression this variable will have to be re-encoded as <code>1</code>/<code>0</code> (case/control); the case being <code>Deceased</code> and the controls being <code>Recovered</code> and <code>Transferred</code>.</li>
 <li><code>CMXCOM</code>: Factor variable. Number of comorbidities, encoded as <code>0</code>, <code>1</code>, <code>2</code> and <code>3+</code>.</li>
 <li><code>CMXCLD</code>: Character variable. Chronic liver disease, encoded as <code>Yes</code> and <code>No</code>.</li>
-<li><code>RFXONC</code>: Character variable. Oncology, encoded as <code>Yes</code> and <code>No</code>.</li>
+<li><code>CMXCPD</code>: Character variable. Chronic pulmonary disease, encoded as <code>Yes</code> and <code>No</code>.</li>
 </ul>
 <p>We only have to do some data wrangling for the <code>DSXOS</code> variable, first we do the re-coding.</p>
 <div class="cell" data-hash="workshop_part5_cache/html/relevelkekw_263eef4bfe274ef1a2cd371ba587dbd0">
@@ -308,7 +331,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">datashield.errors</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>$umf_cluj
-[1] "Command 'recodeValuesDS(\"data$DSXOS\", \"Deceased,Recovered,Transferred\", \n    \"1,0,0\", NULL)' failed on 'umf_cluj': Error while evaluating 'is.null(base::assign('DSXOS_recoded', value={dsBase::recodeValuesDS(\"data$DSXOS\", \"Deceased,Recovered,Transferred\", \"1,0,0\", NULL)}))' -&gt; Error : Error: values2replace.text argument too long (see nfilter.stringShort)\n"</code></pre>
+[1] "Command 'recodeValuesDS(\"data$DSXOS\", \"Deceased,Recovered,Transferred\", \n    \"1,0,0\", NULL)' failed on 'umf_cluj': Error while evaluating 'is.null(base::assign('DSXOS_recoded', value={dsBase::recodeValuesDS(\"data$DSXOS\", \"Deceased,Recovered,Transferred\", \"1,0,0\", NULL)}))' -&gt; Error : Error: values2replace.text argument too long (see nfilter.stringShort)\n"
+
+$hm_hospitales
+[1] "Command 'recodeValuesDS(\"data$DSXOS\", \"Deceased,Recovered,Transferred\", \n    \"1,0,0\", NULL)' failed on 'hm_hospitales': Error while evaluating 'is.null(base::assign('DSXOS_recoded', value={dsBase::recodeValuesDS(\"data$DSXOS\", \"Deceased,Recovered,Transferred\", \"1,0,0\", NULL)}))' -&gt; Error : Error: values2replace.text argument too long (see nfilter.stringShort)\n"</code></pre>
 </div>
 </div>
 <p>We can see that the DataSHIELD filter is complaining that the length of the <code>values2replace.vector</code> is too large. To overcome this issue, we can perform separate function calls for each of the levels.</p>
@@ -348,35 +374,8 @@ $validity.check
 </div>
 </div>
 <p>By doing that we successfully created the object <code>DSXOS_recoded</code>, now we just have to convert it to numerical.</p>
-<div class="cell" data-hash="workshop_part5_cache/html/check_9c2075f9e200f83d3d2bcd36dade9a1d">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ds.table does not work, I am not sure why</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.table1D</span>(<span class="st">"DSXOS_recoded"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: 'ds.table1D' is deprecated.
-Use 'ds.table' instead.
-See help("Deprecated")</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>$counts
-      DSXOS_recoded
-''              746
-0               220
-1                33
-Total           999
-
-$percentages
-      DSXOS_recoded
-''            74.67
-0             22.02
-1              3.30
-Total        100.00
-
-$validity
-[1] "All tables are valid!"</code></pre>
-</div>
-</div>
 <div class="cell" data-hash="workshop_part5_cache/html/convert_9e9b0bcb5d19f6fc1a3b5089ffa582ed">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.asNumeric</span>(<span class="at">x.name =</span> <span class="st">"DSXOS_recoded"</span>, <span class="at">newobj =</span> <span class="st">"DSXOS_recoded_num"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.asNumeric</span>(<span class="at">x.name =</span> <span class="st">"DSXOS_recoded"</span>, <span class="at">newobj =</span> <span class="st">"DSXOS_recoded_num"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>$is.object.created
 [1] "A data object &lt;DSXOS_recoded_num&gt; has been created in all specified data sources"
@@ -385,97 +384,137 @@ $validity.check
 [1] "&lt;DSXOS_recoded_num&gt; appears valid in all sources"</code></pre>
 </div>
 </div>
+<div class="cell" data-hash="workshop_part5_cache/html/checknewv_3f19d7da91fa0cc7e9bdc3e30d47b658">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.summary</span>(<span class="st">"DSXOS_recoded_num"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$umf_cluj
+$umf_cluj$class
+[1] "numeric"
+
+$umf_cluj$length
+[1] 999
+
+$umf_cluj$`quantiles &amp; mean`
+       5%       10%       25%       50%       75%       90%       95%      Mean 
+0.0000000 0.0000000 0.0000000 0.0000000 0.0000000 1.0000000 1.0000000 0.1304348 
+
+
+$hm_hospitales
+$hm_hospitales$class
+[1] "numeric"
+
+$hm_hospitales$length
+[1] 6864
+
+$hm_hospitales$`quantiles &amp; mean`
+       5%       10%       25%       50%       75%       90%       95%      Mean 
+0.0000000 0.0000000 0.0000000 0.0000000 0.0000000 1.0000000 1.0000000 0.1107903 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.numNA</span>(<span class="st">"DSXOS_recoded_num"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$umf_cluj
+[1] 746
+
+$hm_hospitales
+[1] 284</code></pre>
+</div>
+</div>
 <p>Finally, we add it to our <code>data.frame</code> with the other covariates, and we are ready to perform the logistic regression.</p>
 <div class="cell" data-hash="workshop_part5_cache/html/add_1212ac33cdef43c65a8ed76527350e66">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>DSI<span class="sc">::</span><span class="fu">datashield.assign.expr</span>(connections, <span class="st">"data"</span>, <span class="st">"cbind(data, DSXOS_recoded_num)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>DSI<span class="sc">::</span><span class="fu">datashield.assign.expr</span>(connections, <span class="st">"data"</span>, <span class="st">"cbind(data, DSXOS_recoded_num)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="fitting-the-models" class="level3">
 <h3 class="anchored" data-anchor-id="fitting-the-models">Fitting the models</h3>
 <section id="pooled-analysis" class="level4">
 <h4 class="anchored" data-anchor-id="pooled-analysis">Pooled analysis</h4>
-<p>Now we can fit the models. First, we will calculate the association of the outcome status to the covariables chronic liver disease and oncology.</p>
-<div class="cell" data-hash="workshop_part5_cache/html/model1_4f67f1d095e7be4f704b88ec10916b35">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.glm</span>(<span class="at">formula =</span> <span class="st">"DSXOS_recoded_num ~ CMXCLD + RFXONC"</span>, </span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>       <span class="at">data =</span> <span class="st">"data"</span>, </span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>       <span class="at">family =</span> <span class="st">"binomial"</span>)<span class="sc">$</span>coefficients</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Now we can fit the models. First, we will calculate whether chronic liver disease anc chronic pulmonary disease are associated with higher risk of mortality.</p>
+<div class="cell" data-hash="workshop_part5_cache/html/model1_98ada3a934b23972717573cf8a01aa50">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.glm</span>(<span class="at">formula =</span> <span class="st">"DSXOS_recoded_num ~ CMXCLD + CMXCPD"</span>, </span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>       <span class="at">data =</span> <span class="st">"data"</span>, </span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>       <span class="at">family =</span> <span class="st">"binomial"</span>)<span class="sc">$</span>coefficients</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>              Estimate Std. Error    z-value      p-value low0.95CI.LP
-(Intercept) -2.0743671  0.2180219 -9.5144888 1.826085e-21   -2.5016822
-CMXCLDYes    0.4811639  0.5395664  0.8917604 3.725214e-01   -0.5763668
-RFXONCYes    1.3471273  0.5861413  2.2982979 2.154484e-02    0.1983115
+(Intercept) -2.1789095 0.04339820 -50.207371 0.000000e+00   -2.2639684
+CMXCLDYes    0.4954367 0.49518245   1.000513 3.170621e-01   -0.4751031
+CMXCPDYes    0.5749502 0.09502311   6.050636 1.442753e-09    0.3887084
             high0.95CI.LP      P_OR low0.95CI.P_OR high0.95CI.P_OR
-(Intercept)     -1.647052 0.1116133     0.07574034       0.1615078
-CMXCLDYes        1.538695 1.6179565     0.56193629       4.6585055
-RFXONCYes        2.495943 3.8463603     1.21934216      12.1331717</code></pre>
+(Intercept)    -2.0938506 0.1016605     0.09415137        0.109696
+CMXCLDYes       1.4659764 1.6412148     0.62182095        4.331771
+CMXCPDYes       0.7611921 1.7770421     1.47507430        2.140827</code></pre>
 </div>
 </div>
 <p>And we also calculate the association of the outcome status to the number of comorbidities.</p>
 <div class="cell" data-hash="workshop_part5_cache/html/model2_2eadba73a466b6a3d1851f0da53cc730">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.glm</span>(<span class="at">formula =</span> <span class="st">"DSXOS_recoded_num ~ CMXCOM"</span>, </span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>       <span class="at">data =</span> <span class="st">"data"</span>, </span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>       <span class="at">family =</span> <span class="st">"binomial"</span>)<span class="sc">$</span>coefficients</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.glm</span>(<span class="at">formula =</span> <span class="st">"DSXOS_recoded_num ~ CMXCOM"</span>, </span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>       <span class="at">data =</span> <span class="st">"data"</span>, </span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>       <span class="at">family =</span> <span class="st">"binomial"</span>)<span class="sc">$</span>coefficients</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>              Estimate Std. Error    z-value      p-value low0.95CI.LP
-(Intercept) -2.4680995  0.4657780 -5.2988752 1.165182e-07   -3.3810077
-CMXCOM1      0.3731538  0.5977740  0.6242389 5.324707e-01   -0.7984617
-CMXCOM2      0.5709795  0.5871345  0.9724851 3.308093e-01   -0.5797829
-CMXCOM3+     1.2824759  0.5793410  2.2136804 2.685077e-02    0.1469883
-            high0.95CI.LP     P_OR low0.95CI.P_OR high0.95CI.P_OR
-(Intercept)     -1.555191 0.078125     0.03289432       0.1743377
-CMXCOM1          1.544769 1.452308     0.45002069       4.6868904
-CMXCOM2          1.721742 1.770000     0.56001991       5.5942654
-CMXCOM3+         2.417963 3.605556     1.15834044      11.2229794</code></pre>
+<pre><code>              Estimate Std. Error    z-value       p-value low0.95CI.LP
+(Intercept) -2.8013604 0.07634247 -36.694653 8.887664e-295   -2.9509889
+CMXCOM1      0.9451591 0.09699454   9.744457  1.948171e-22    0.7550533
+CMXCOM2      1.3683043 0.11142871  12.279639  1.165177e-34    1.1499080
+CMXCOM3+     1.6463952 0.15775657  10.436302  1.692779e-25    1.3371980
+            high0.95CI.LP       P_OR low0.95CI.P_OR high0.95CI.P_OR
+(Intercept)     -2.651732 0.05725071      0.0496898      0.06588235
+CMXCOM1          1.135265 2.57322286      2.1277250      3.11199795
+CMXCOM2          1.586701 3.92868299      3.1579024      4.88759571
+CMXCOM3+         1.955592 5.18824326      3.8083574      7.06810461</code></pre>
 </div>
 </div>
 </section>
 <section id="meta-analysis" class="level4">
 <h4 class="anchored" data-anchor-id="meta-analysis">Meta-analysis</h4>
 <p>To fit the same models to be meta-analyzed, we just have to use a different function with the same structure.</p>
-<div class="cell" data-hash="workshop_part5_cache/html/model1meta_7e924d107c2ed6f2dc5a25766155e31e">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.glmSLMA</span>(<span class="at">formula =</span> <span class="st">"DSXOS_recoded_num ~ CMXCLD + RFXONC"</span>, </span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>           <span class="at">dataName =</span> <span class="st">"data"</span>, </span>
-<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">family =</span> <span class="st">"binomial"</span>)<span class="sc">$</span>output.summary<span class="sc">$</span>study1<span class="sc">$</span>coefficients</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-hash="workshop_part5_cache/html/model1meta_d201d0eabbf3d4d5ededcaadb562eed9">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>mod1 <span class="ot">&lt;-</span> <span class="fu">ds.glmSLMA</span>(<span class="at">formula =</span> <span class="st">"DSXOS_recoded_num ~ CMXCLD + CMXCPD"</span>, </span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>                   <span class="at">dataName =</span> <span class="st">"data"</span>, </span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>                   <span class="at">family =</span> <span class="st">"binomial"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 
 SAVING SERVERSIDE glm OBJECT AS: &lt; new.glm.obj &gt;</code></pre>
 </div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>mod1<span class="sc">$</span>output.summary<span class="sc">$</span>study1<span class="sc">$</span>coefficients</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>              Estimate Std. Error    z value     Pr(&gt;|z|)
-(Intercept) -2.0743671  0.2180173 -9.5146899 1.822557e-21
-CMXCLDYes    0.4811639  0.5395643  0.8917638 3.725195e-01
-RFXONCYes    1.3471273  0.5861394  2.2983052 2.154443e-02</code></pre>
+(Intercept) -1.9692942  0.2151323 -9.1538757 5.492676e-20
+CMXCLDYes    0.4102159  0.5341748  0.7679432 4.425209e-01
+CMXCPDYes    0.1766349  0.5276192  0.3347771 7.377932e-01</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>mod1<span class="sc">$</span>output.summary<span class="sc">$</span>study2<span class="sc">$</span>coefficients</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>              Estimate   Std. Error      z value     Pr(&gt;|z|)
+(Intercept) -2.1873606   0.04432877 -49.34404098 0.000000e+00
+CMXCLDYes   -9.3786929 196.96768400  -0.04761539 9.620228e-01
+CMXCPDYes    0.5902685   0.09665529   6.10694500 1.015562e-09</code></pre>
 </div>
 </div>
-<div class="cell" data-hash="workshop_part5_cache/html/model2meta_29057de50ff5a3cf473ba441377d8b42">
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.glmSLMA</span>(<span class="at">formula =</span> <span class="st">"DSXOS_recoded_num ~ CMXCOM"</span>, </span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>           <span class="at">dataName =</span> <span class="st">"data"</span>, </span>
-<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">family =</span> <span class="st">"binomial"</span>)<span class="sc">$</span>output.summary<span class="sc">$</span>study1<span class="sc">$</span>coefficients</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-hash="workshop_part5_cache/html/model2meta_a74446e89bd47e8111fe7b8b52a4d3bf">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>mod2 <span class="ot">&lt;-</span> <span class="fu">ds.glmSLMA</span>(<span class="at">formula =</span> <span class="st">"DSXOS_recoded_num ~ CMXCOM"</span>, </span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>                   <span class="at">dataName =</span> <span class="st">"data"</span>, </span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>                   <span class="at">family =</span> <span class="st">"binomial"</span>)<span class="sc">$</span>output.summary<span class="sc">$</span>study1<span class="sc">$</span>coefficients</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 
 SAVING SERVERSIDE glm OBJECT AS: &lt; new.glm.obj &gt;</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>              Estimate Std. Error    z value     Pr(&gt;|z|)
-(Intercept) -2.4680995  0.4657778 -5.2988776 1.165167e-07
-CMXCOM1      0.3731538  0.5977738  0.6242391 5.324706e-01
-CMXCOM2      0.5709795  0.5871343  0.9724853 3.308092e-01
-CMXCOM3+     1.2824759  0.5793409  2.2136810 2.685073e-02</code></pre>
 </div>
 </div>
 <p>At this moment, the consortia is using dsBaseClient 6.1.1. In the new version 6.2, there is a function to visualize the meta-analyzed coefficients using forestplots.</p>
 </section>
 </section>
 </section>
-<section id="piecewise-exponential-regression" class="level2">
-<h2 class="anchored" data-anchor-id="piecewise-exponential-regression">Piecewise Exponential Regression</h2>
-<p>The same functions we just used to fit logistical regressions, can also fit piecewise exponential regressions. This is achieved by selecting the output family to be of type <code>poisson</code>. For the variable <code>DATLGT</code> (Length of stay in hospital), we can check that it does follow a poisson distribution.</p>
+<section id="poisson-regression" class="level2">
+<h2 class="anchored" data-anchor-id="poisson-regression">Poisson Regression</h2>
+<p>a veces el outcome no es binario sino que es una variable de conteo</p>
+<p>The same functions we just used to fit logistical regressions, can also fit piecewise exponential regressions. This is achieved by selecting the output family to be of type <code>poisson</code>. For the variable <code>DATLGT</code> (Length of stay in hospital), we can check that it does follow a Poisson distribution.</p>
 <div class="cell" data-hash="workshop_part5_cache/html/histoDATLGT_14043d0611806ec279cb28fff528f22b">
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>histogram <span class="ot">&lt;-</span> <span class="fu">ds.histogram</span>(<span class="st">"data$DATLGT"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>histogram <span class="ot">&lt;-</span> <span class="fu">ds.histogram</span>(<span class="st">"data$DATLGT"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Warning: umf_cluj: 2 invalid cells</code></pre>
+<pre><code>Warning: umf_cluj: 1 invalid cells</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: hm_hospitales: 0 invalid cells</code></pre>
 </div>
 <div class="cell-output-display">
 <p><img src="workshop_part5_files/figure-html/histoDATLGT-1.png" class="img-fluid" width="672"></p>
@@ -483,23 +522,374 @@ CMXCOM3+     1.2824759  0.5793409  2.2136810 2.685073e-02</code></pre>
 </div>
 <p>And we can fit the model.</p>
 <div class="cell" data-hash="workshop_part5_cache/html/modelpoisson_0e139f7bee42f37b642b0b04d9bc9ef7">
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.glm</span>(<span class="at">formula =</span> <span class="st">"DATLGT ~ CMXCOM"</span>, </span>
-<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>       <span class="at">data =</span> <span class="st">"data"</span>, </span>
-<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>       <span class="at">family =</span> <span class="st">"poisson"</span>)<span class="sc">$</span>coefficients</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.glm</span>(<span class="at">formula =</span> <span class="st">"DATLGT ~ CMXCOM"</span>, </span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>       <span class="at">data =</span> <span class="st">"data"</span>, </span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>       <span class="at">family =</span> <span class="st">"poisson"</span>)<span class="sc">$</span>coefficients</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>             Estimate Std. Error   z-value      p-value low0.95CI.LP
-(Intercept) 2.2363785 0.04085889 54.734193 0.000000e+00   2.15629656
-CMXCOM1     0.1885454 0.05368026  3.512379 4.441138e-04   0.08333405
-CMXCOM2     0.2703472 0.05355828  5.047719 4.471156e-07   0.16537487
-CMXCOM3+    0.1459219 0.06028338  2.420599 1.549495e-02   0.02776865
+<pre><code>             Estimate  Std. Error   z-value      p-value low0.95CI.LP
+(Intercept) 2.2098088 0.005767066 383.17728 0.000000e+00    2.1985056
+CMXCOM1     0.1682207 0.008383213  20.06637 1.452320e-89    0.1517899
+CMXCOM2     0.2119990 0.010975000  19.31654 3.899437e-83    0.1904884
+CMXCOM3+    0.2149337 0.018283395  11.75568 6.602924e-32    0.1790989
             high0.95CI.LP EXPONENTIATED RR low0.95CI.EXP high0.95CI.EXP
-(Intercept)     2.3164605         9.359375      8.639084      10.139721
-CMXCOM1         0.2937568         1.207492      1.086905       1.341458
-CMXCOM2         0.3753195         1.310419      1.179835       1.455456
-CMXCOM3+        0.2640751         1.157106      1.028158       1.302226</code></pre>
+(Intercept)     2.2211121         9.113974      9.011537       9.217576
+CMXCOM1         0.1846515         1.183198      1.163916       1.202799
+CMXCOM2         0.2335096         1.236147      1.209840       1.263025
+CMXCOM3+        0.2507685         1.239780      1.196139       1.285013</code></pre>
 </div>
 </div>
-<div class="cell" data-hash="workshop_part5_cache/html/unnamed-chunk-4_3dc870a847fa7271efc40789eded1c15">
+</section>
+<section id="survival-analysis" class="level2">
+<h2 class="anchored" data-anchor-id="survival-analysis">Survival analysis</h2>
+<div class="callout-note callout callout-style-simple">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>The variable selection and survival analysis sections will only use the HM Hospitals study server. This is due because at the time of writting this material it is the only study server with the <code>dsSurvival</code> and <code>dsMTLBase</code> packages installed.</p>
+</div>
+</div>
+</div>
+<div class="cell" data-hash="workshop_part5_cache/html/q_2a92aaecc8119d3058c606053358944e">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">datashield.logout</span>(connections<span class="sc">$</span>umf_cluj)</span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>connections<span class="sc">$</span>umf_cluj <span class="ot">&lt;-</span> <span class="cn">NULL</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>It is expected that the survival rate of patients is lower as the stay at hospital is increased. Here we will check this argument.</p>
+<p>First, we will prepare our data. For the <code>dsSurvival</code> package, we have to separate into different objects the event variable (<code>DSXOS_recoded_num</code>) and the survival time variable (<code>DATLGT</code>). Both variables have to be numeric.</p>
+<div class="cell" data-hash="workshop_part5_cache/html/getsvars_d44753bfd458f4c87aba28805f01e6cb">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.make</span>(<span class="at">toAssign =</span> <span class="st">"data$DSXOS_recoded_num"</span>, <span class="at">newobj =</span> <span class="st">"EVENT"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$is.object.created
+[1] "A data object &lt;EVENT&gt; has been created in all specified data sources"
+
+$validity.check
+[1] "&lt;EVENT&gt; appears valid in all sources"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.make</span>(<span class="at">toAssign =</span> <span class="st">"data$DATLGT"</span>, <span class="at">newobj =</span> <span class="st">"SURVTIME"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$is.object.created
+[1] "A data object &lt;SURVTIME&gt; has been created in all specified data sources"
+
+$validity.check
+[1] "&lt;SURVTIME&gt; appears valid in all sources"</code></pre>
+</div>
+</div>
+<p>And now we can perform the survival analysis using Cox proportional hazards model.</p>
+<div class="cell" data-hash="workshop_part5_cache/html/coxhz_d9c32ece2528d3710106d63bbfb317e6">
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>dsSurvivalClient<span class="sc">::</span><span class="fu">ds.coxph.SLMA</span>(<span class="at">formula =</span> <span class="st">'survival::Surv(time=SURVTIME,event=EVENT)~data$DMRGENDR'</span>,</span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>                                               <span class="at">dataName =</span> <span class="st">'data'</span>,</span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>                                               <span class="at">datasources =</span> connections)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>ssssstimelllSURVTIMErrreventlllEVENTzzz~data$DMRGENDR</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$hm_hospitales
+$call
+survival::coxph(formula = formula, data = dataTable, weights = weights, 
+    ties = ties, singular.ok = singular.ok, model = model, x = x, 
+    y = y)
+
+$fail
+NULL
+
+$na.action
+  18   57  139  268  313  336  356  364  370  371  382  394  432  475  487  513 
+  18   57  139  268  313  336  356  364  370  371  382  394  432  475  487  513 
+ 515  528  555  565  577  578  601  629  634  638  656  682  688  691  694  705 
+ 515  528  555  565  577  578  601  629  634  638  656  682  688  691  694  705 
+ 709  721  733  736  751  847  854  864  926  973 1157 1332 1365 1417 1419 1420 
+ 709  721  733  736  751  847  854  864  926  973 1157 1332 1365 1417 1419 1420 
+1443 1516 1526 1551 1604 1616 1626 1649 1650 1718 1756 1763 1802 1810 1829 1835 
+1443 1516 1526 1551 1604 1616 1626 1649 1650 1718 1756 1763 1802 1810 1829 1835 
+1858 1870 2119 2120 2174 2221 2294 2387 2401 2402 2412 2416 2420 2421 2424 2440 
+1858 1870 2119 2120 2174 2221 2294 2387 2401 2402 2412 2416 2420 2421 2424 2440 
+2444 2458 2460 2470 2489 2495 2521 2528 2532 2538 2547 2548 2551 2564 2571 2572 
+2444 2458 2460 2470 2489 2495 2521 2528 2532 2538 2547 2548 2551 2564 2571 2572 
+2584 2585 2597 2600 2602 2603 2628 2631 2652 2671 2675 2677 2688 2726 2761 2783 
+2584 2585 2597 2600 2602 2603 2628 2631 2652 2671 2675 2677 2688 2726 2761 2783 
+2811 2829 2882 2883 3029 3093 3145 3326 3436 3444 3445 3449 3458 3460 3475 3485 
+2811 2829 2882 2883 3029 3093 3145 3326 3436 3444 3445 3449 3458 3460 3475 3485 
+3502 3509 3520 3528 3531 3535 3548 3549 3557 3576 3579 3584 3630 3632 3644 3645 
+3502 3509 3520 3528 3531 3535 3548 3549 3557 3576 3579 3584 3630 3632 3644 3645 
+3647 3704 3723 3728 3745 3749 3750 3751 3775 3776 3794 3805 3813 3814 3854 3856 
+3647 3704 3723 3728 3745 3749 3750 3751 3775 3776 3794 3805 3813 3814 3854 3856 
+3866 3871 3930 3956 4196 4224 4246 4256 4328 4336 4342 4347 4381 4387 4411 4430 
+3866 3871 3930 3956 4196 4224 4246 4256 4328 4336 4342 4347 4381 4387 4411 4430 
+4461 4487 4502 4555 4557 4558 4564 4567 4587 4594 4626 4656 4670 4676 4697 4758 
+4461 4487 4502 4555 4557 4558 4564 4567 4587 4594 4626 4656 4670 4676 4697 4758 
+4792 4861 4869 4870 4883 4933 4958 4975 5118 5137 5171 5173 5207 5208 5212 5311 
+4792 4861 4869 4870 4883 4933 4958 4975 5118 5137 5171 5173 5207 5208 5212 5311 
+5323 5344 5345 5354 5394 5400 5404 5410 5411 5455 5462 5468 5469 5479 5488 5489 
+5323 5344 5345 5354 5394 5400 5404 5410 5411 5455 5462 5468 5469 5479 5488 5489 
+5553 5560 5587 5627 5629 5722 5732 5740 5741 5742 5743 5748 5751 5756 5762 5773 
+5553 5560 5587 5627 5629 5722 5732 5740 5741 5742 5743 5748 5751 5756 5762 5773 
+5774 5785 5805 5833 5860 5907 5978 6003 6007 6076 6096 6117 6179 6276 6303 6304 
+5774 5785 5805 5833 5860 5907 5978 6003 6007 6076 6096 6117 6179 6276 6303 6304 
+6307 6326 6333 6357 6358 6372 6384 6405 6428 6440 6442 6443 6491 6505 6528 6530 
+6307 6326 6333 6357 6358 6372 6384 6405 6428 6440 6442 6443 6491 6505 6528 6530 
+6553 6559 6579 6585 6641 6696 6751 6790 6805 6808 6848 6849 
+6553 6559 6579 6585 6641 6696 6751 6790 6805 6808 6848 6849 
+attr(,"class")
+[1] "omit"
+
+$n
+[1] 6580
+
+$loglik
+[1] -5491.543 -5491.536
+
+$nevent
+[1] 729
+
+$coefficients
+                         coef exp(coef)   se(coef)         z Pr(&gt;|z|)
+data$DMRGENDRMale 0.008906727  1.008947 0.07672496 0.1160864 0.907584
+
+$conf.int
+                  exp(coef) exp(-coef) lower .95 upper .95
+data$DMRGENDRMale  1.008947  0.9911328   0.86808  1.172672
+
+$logtest
+      test         df     pvalue 
+0.01348575 1.00000000 0.90755097 
+
+$sctest
+      test         df     pvalue 
+0.01347615 1.00000000 0.90758374 
+
+$rsq
+         rsq       maxrsq 
+2.049504e-06 8.115951e-01 
+
+$waldtest
+    test       df   pvalue 
+0.010000 1.000000 0.907584 
+
+$used.robust
+[1] FALSE
+
+$concordance
+         C      se(C) 
+0.49383283 0.01135604 
+
+attr(,"class")
+[1] "summary.coxph"</code></pre>
+</div>
+</div>
+<p>Also, we can visualize the survival curves.</p>
+<div class="cell" data-hash="workshop_part5_cache/html/scurves_4addfa74ce84120ac824ed78369d1aff">
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>dsSurvivalClient<span class="sc">::</span><span class="fu">ds.survfit</span>(<span class="at">formula =</span> <span class="st">"survival::Surv(time=SURVTIME,event=EVENT)~data$DMRGENDR"</span>, <span class="at">objectname =</span> <span class="st">"test2"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>NULL</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(survival)</span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>dsSurvivalClient<span class="sc">::</span><span class="fu">ds.plotsurvfit</span>(<span class="at">formula =</span> <span class="st">"test2"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="workshop_part5_files/figure-html/scurves-1.png" class="img-fluid" width="672"></p>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$hm_hospitales
+Call: survfit(formula = formula)
+
+   284 observations deleted due to missingness </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in max(n.risk): ningun argumento finito para max; retornando -Inf</code></pre>
+</div>
+<div class="cell-output cell-output-error">
+<pre><code>Error in out[i, ] &lt;- pfun(x$n[i], stime[who], surv[who], x$n.risk[who], : número de items para para sustituir no es un múltiplo de la longitud del reemplazo</code></pre>
+</div>
+</div>
+<p>In the near future, the survival curves will have the options to be visualized by a categorical variables (gender, for example). Also the error will be fixed, we are working with the developer of the package (Soumya Banerjee) on new features and bug fixes.</p>
+</section>
+<section id="variable-selection-lasso" class="level2">
+<h2 class="anchored" data-anchor-id="variable-selection-lasso">Variable selection: Lasso</h2>
+<p>We have seen with the survival analysis how the variable <code>DATLGT</code> (Length of stay in hospital) affects the mortality. Now we will use a Lasso regression to analyze which other variables affect the mortality.</p>
+<p>Before, we have to work a little bit with our data. The inputs to the Lasso regression have to be numerical variables without missings.</p>
+<p>We will begin by removing all the missings in our dataset.</p>
+<div class="cell" data-hash="workshop_part5_cache/html/rmiss_c2c2d23d95b639fd21933305688e5a61">
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.completeCases</span>(<span class="at">x1 =</span> <span class="st">"data"</span>, <span class="at">newobj =</span> <span class="st">"data_complete"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$is.object.created
+[1] "A data object &lt;data_complete&gt; has been created in all specified data sources"
+
+$validity.check
+[1] "&lt;data_complete&gt; appears valid in all sources"</code></pre>
+</div>
+</div>
+<p>Now, we will create a subset with all the numeric variables.</p>
+<div class="cell" data-hash="workshop_part5_cache/html/numvar_0c2c2af6c740e084826a78273aebe3b5">
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a>types <span class="ot">&lt;-</span> <span class="fu">lapply</span>(<span class="fu">ds.colnames</span>(<span class="st">"data_complete"</span>)[[<span class="dv">1</span>]], <span class="cf">function</span>(x){</span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ds.class</span>(<span class="fu">paste0</span>(<span class="st">"data_complete$"</span>, x))[[<span class="dv">1</span>]][<span class="dv">1</span>]</span>
+<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb51-4"><a href="#cb51-4" aria-hidden="true" tabindex="-1"></a>types <span class="ot">&lt;-</span> <span class="fu">unlist</span>(types)</span>
+<span id="cb51-5"><a href="#cb51-5" aria-hidden="true" tabindex="-1"></a><span class="st">`</span><span class="at">%notin%</span><span class="st">`</span> <span class="ot">&lt;-</span> <span class="fu">Negate</span>(<span class="st">`</span><span class="at">%in%</span><span class="st">`</span>)</span>
+<span id="cb51-6"><a href="#cb51-6" aria-hidden="true" tabindex="-1"></a>indexes_to_remove <span class="ot">&lt;-</span> <span class="fu">which</span>(types <span class="sc">%notin%</span> <span class="st">"numeric"</span>)</span>
+<span id="cb51-7"><a href="#cb51-7" aria-hidden="true" tabindex="-1"></a>times <span class="ot">&lt;-</span> <span class="fu">ds.dim</span>(<span class="st">"data_complete"</span>)[[<span class="dv">1</span>]][<span class="dv">1</span>]</span>
+<span id="cb51-8"><a href="#cb51-8" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.rep</span>(<span class="at">x1 =</span> <span class="dv">1</span>,</span>
+<span id="cb51-9"><a href="#cb51-9" aria-hidden="true" tabindex="-1"></a>            <span class="at">times =</span> times,</span>
+<span id="cb51-10"><a href="#cb51-10" aria-hidden="true" tabindex="-1"></a>            <span class="at">source.times =</span> <span class="st">"c"</span>,</span>
+<span id="cb51-11"><a href="#cb51-11" aria-hidden="true" tabindex="-1"></a>            <span class="at">source.each =</span> <span class="st">"c"</span>,</span>
+<span id="cb51-12"><a href="#cb51-12" aria-hidden="true" tabindex="-1"></a>            <span class="at">newobj =</span> <span class="st">"ONES"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$is.object.created
+[1] "A data object &lt;ONES&gt; has been created in all specified data sources"
+
+$validity.check
+[1] "&lt;ONES&gt; appears valid in all sources"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.dataFrameSubset</span>(<span class="at">df.name =</span> <span class="st">'data_complete'</span>,  <span class="at">V1.name =</span> <span class="st">"ONES"</span>,  <span class="at">V2.name =</span> <span class="st">"ONES"</span>,  <span class="at">Boolean.operator =</span> <span class="st">"=="</span>,<span class="at">keep.cols =</span> <span class="cn">NULL</span>,  <span class="at">rm.cols =</span> indexes_to_remove,  <span class="at">keep.NAs =</span> <span class="cn">NULL</span>,  <span class="at">newobj =</span> <span class="st">'data_complete_numeric'</span>,  <span class="at">datasources =</span> connections, <span class="at">notify.of.progress =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$is.object.created
+[1] "A data object &lt;data_complete_numeric&gt; has been created in all specified data sources"
+
+$validity.check
+[1] "&lt;data_complete_numeric&gt; appears valid in all sources"</code></pre>
+</div>
+</div>
+<p>Now we have all the variables (objective variables and covariates) in a single <code>data.frame</code>, we have to split it in two different objects. To drop columns, we have to know the column positions; we will drop the objective variable as well as the IDs variable.</p>
+<div class="cell" data-hash="workshop_part5_cache/html/cols_a82f178ea59de9ab3b7bcc1cb0f226bf">
+<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.colnames</span>(<span class="st">"data_complete_numeric"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$hm_hospitales
+  [1] "X"                 "IDINGRESO"         "DMRAGEYR"         
+  [4] "DMRGENDR_numeric"  "DATLGT"            "DATLGTI"          
+  [7] "DSXHO_numeric"     "DSXIC_numeric"     "DSXOS_numeric"    
+ [10] "CMXPRG_numeric"    "CMXCVD_numeric"    "CMXCMP_numeric"   
+ [13] "CMXHT_numeric"     "CMXDI_numeric"     "CMXCKD_numeric"   
+ [16] "CMXCLD_numeric"    "CMXCPD_numeric"    "CMXASM_numeric"   
+ [19] "CMXCND_numeric"    "CMXRHE_numeric"    "CMXCBD_numeric"   
+ [22] "CMXDE_numeric"     "CMXPU_numeric"     "CMXST_numeric"    
+ [25] "CMXLY_numeric"     "CMXAP_numeric"     "RFXSM_numeric"    
+ [28] "RFXFSM_numeric"    "RFXOB_numeric"     "RFXTB_numeric"    
+ [31] "RFXIMD_numeric"    "RFXHIV_numeric"    "RFXAIDS_numeric"  
+ [34] "RFXUI_numeric"     "RFXHC_numeric"     "RFXMN_numeric"    
+ [37] "CMXCHF_numeric"    "CMXVDP_numeric"    "CMXCA_numeric"    
+ [40] "CMXVD_numeric"     "CMXABL_numeric"    "CMXAD_numeric"    
+ [43] "CMXNDP_numeric"    "CMXNDD_numeric"    "CMXCOPD_numeric"  
+ [46] "CMXPCD_numeric"    "CMXRI_numeric"     "CMXMLD_numeric"   
+ [49] "CMXNPM_numeric"    "CMXCLH_numeric"    "CMXMET_numeric"   
+ [52] "CMXTU_numeric"     "CMXMY_numeric"     "CMXNP_numeric"    
+ [55] "RFXMD_numeric"     "CMXANX_numeric"    "CMXOAR_numeric"   
+ [58] "CMXSOT_numeric"    "CMXUTI_numeric"    "CMXINC_numeric"   
+ [61] "CMXHGL_numeric"    "RFXPM_numeric"     "RFXAP_numeric"    
+ [64] "CMXIHD_numeric"    "COXRD_numeric"     "COXAR_numeric"    
+ [67] "COXPM_numeric"     "COXMOD_numeric"    "COXPT_numeric"    
+ [70] "COXEC_numeric"     "COXSH_numeric"     "COXIO_numeric"    
+ [73] "COXPE_numeric"     "COXST_numeric"     "COXDIC_numeric"   
+ [76] "COXRIO_numeric"    "COXKF_numeric"     "COXHF_numeric"    
+ [79] "COXRF_numeric"     "COXLF_numeric"     "COXADE_numeric"   
+ [82] "COXSTN_numeric"    "COXNOC_numeric"    "TRXHEP_numeric"   
+ [85] "TRXAV_numeric"     "TRXLR_numeric"     "TRXRM_numeric"    
+ [88] "TRXIB_numeric"     "TRXCH_numeric"     "TRXAB_numeric"    
+ [91] "TRXCS_numeric"     "TRXAF_numeric"     "TRXNO_numeric"    
+ [94] "TRXOX_numeric"     "TRXVA_numeric"     "TRXNMB_numeric"   
+ [97] "TRXAC_numeric"     "TRXIS_numeric"     "TRXIM_numeric"    
+[100] "TRXVC_numeric"     "TRXVD_numeric"     "TRXZN_numeric"    
+[103] "TRXOT_numeric"     "TRXECM_numeric"    "TRXIV_numeric"    
+[106] "TRXRR_numeric"     "TRXTR_numeric"     "TRXPE_numeric"    
+[109] "TRXIT_numeric"     "DATAD_year"        "DATAD_year_day"   
+[112] "DSXOS_recoded_num"</code></pre>
+</div>
+</div>
+<p>The columns we want to remove are the <code>1</code>, <code>2</code>, <code>9</code> and <code>112</code>.</p>
+<div class="cell" data-hash="workshop_part5_cache/html/separ_2af84ca7642022276d0e6b8347a01d09">
+<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.assign</span>(<span class="at">toAssign=</span><span class="st">'data_complete_numeric$DSXOS_recoded_num'</span>, <span class="at">newobj=</span><span class="st">'Y'</span>, <span class="at">datasources =</span> connections)</span>
+<span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-3"><a href="#cb57-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.dataFrameSubset</span>(<span class="at">df.name =</span> <span class="st">'data_complete_numeric'</span>,  <span class="at">V1.name =</span> <span class="st">"ONES"</span>,  <span class="at">V2.name =</span> <span class="st">"ONES"</span>,  <span class="at">Boolean.operator =</span> <span class="st">"=="</span>,<span class="at">keep.cols =</span> <span class="cn">NULL</span>,  <span class="at">rm.cols =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">9</span>, <span class="dv">112</span>),  <span class="at">keep.NAs =</span> <span class="cn">NULL</span>,  <span class="at">newobj =</span> <span class="st">'X'</span>,  <span class="at">datasources =</span> connections, <span class="at">notify.of.progress =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$is.object.created
+[1] "A data object &lt;X&gt; has been created in all specified data sources"
+
+$validity.check
+[1] "&lt;X&gt; appears valid in all sources"</code></pre>
+</div>
+</div>
+<p>Finally, the Lasso regression expects to recieve <code>matrix</code> objects instead of <code>data.frame</code>. We convert them.</p>
+<div class="cell" data-hash="workshop_part5_cache/html/matrix_63de6d77d529f6c92ca9e9a2e8a246e5">
+<div class="sourceCode cell-code" id="cb59"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.asMatrix</span>(<span class="at">x.name =</span> <span class="st">'Y'</span>, <span class="at">newobj =</span> <span class="st">'Y'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in is.null(object.info[[j]]$test.obj.class) || object.info[[j]]
+$test.obj.class == : 'length(x) = 2 &gt; 1' in coercion to 'logical(1)'</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$is.object.created
+[1] "A data object &lt;Y&gt; has been created in all specified data sources"
+
+$validity.check
+[1] "&lt;Y&gt; appears valid in all sources"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb62"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.asMatrix</span>(<span class="at">x.name =</span> <span class="st">'X'</span>, <span class="at">newobj =</span> <span class="st">'X'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in is.null(object.info[[j]]$test.obj.class) || object.info[[j]]
+$test.obj.class == : 'length(x) = 2 &gt; 1' in coercion to 'logical(1)'</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$is.object.created
+[1] "A data object &lt;X&gt; has been created in all specified data sources"
+
+$validity.check
+[1] "&lt;X&gt; appears valid in all sources"</code></pre>
+</div>
+</div>
+<p>We are now in the position to successfully perform the variable selection. Before, we have to setup some configuration parameters. There is an argument called <code>C</code>, which is the hyperparameter for the Ridge regression L2 penalty. Thus, by tuning both the L1 penalty and the C argument (L2 term), one would be able to chose between a Lasso, Ridge or Elastic-Net regression. Likewise, there is an argument called <code>opts</code>, which allow controlling the optimization algorithm employed to minimize the sum of squared errors (SSE) (objective function). Additional details regarding the loss function implemented in these models can be found in the supplementary material of <a href="https://www.biorxiv.org/content/10.1101/2021.08.26.457778v1">Cao et. al.</a>. Within the <code>opts</code> argument we find:</p>
+<ul>
+<li><p><code>init</code>: It determines the starting point.</p></li>
+<li><p><code>maxIter</code>: It is the maximized iteration number.</p></li>
+<li><p><code>ter</code>: It refers to the termination rule used to determine the convergence of the algorithm. There are three termination rules available for <em>ds.lasso</em>. The first rule checks whether the current objective value was close enough to 0. The second rule investigates the last two objective values and checks whether the decline was close enough to 0. The third rule allowed the optimization to be performed for a certain maximum number of iterations.</p></li>
+<li><p><code>tol</code>: It refers to the precision of the convergence and determines the termination of the program.</p></li>
+</ul>
+<p>We will use the default parameters.</p>
+<div class="cell" data-hash="workshop_part5_cache/html/param_a9a023cdc31e0726e7b2ca518c2201ad">
+<div class="sourceCode cell-code" id="cb65"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a>opts<span class="ot">=</span><span class="fu">list</span>();opts<span class="sc">$</span>init<span class="ot">=</span><span class="dv">0</span>; opts<span class="sc">$</span>maxIter<span class="ot">=</span><span class="dv">10</span>; opts<span class="sc">$</span>tol<span class="ot">=</span><span class="fl">0.01</span>; opts<span class="sc">$</span>ter<span class="ot">=</span><span class="dv">2</span>;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Finally we can fit the Lasso regression.</p>
+<div class="cell" data-hash="workshop_part5_cache/html/lasso_f4e9d8e48d4e50fee459c3e8d11a9145">
+<div class="sourceCode cell-code" id="cb66"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb66-2"><a href="#cb66-2" aria-hidden="true" tabindex="-1"></a>m1<span class="ot">=</span>dsMTLClient<span class="sc">::</span><span class="fu">ds.LS_Lasso</span>(<span class="at">X=</span><span class="st">'X'</span>, <span class="at">Y=</span><span class="st">'Y'</span>, <span class="at">lam=</span><span class="fl">0.5</span>, <span class="at">C=</span><span class="dv">0</span>, opts, <span class="at">datasources=</span>connections, <span class="at">nDigits=</span><span class="dv">15</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We can show the number of selected variables.</p>
+<div class="cell" data-hash="workshop_part5_cache/html/numvars_0c749ce4706c1f822b604084348c9e5c">
+<div class="sourceCode cell-code" id="cb67"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(m1<span class="sc">$</span>w<span class="sc">!=</span><span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 5</code></pre>
+</div>
+</div>
+<p>Visually, the variable selection looks like this.</p>
+<div class="cell" data-hash="workshop_part5_cache/html/plot_5694386b80224d8ba5e6b2f6ea8cf19c">
+<div class="sourceCode cell-code" id="cb69"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(m1<span class="sc">$</span>w, <span class="at">xlab=</span><span class="st">"index of coefficients"</span>, <span class="at">ylab=</span><span class="st">"values"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="workshop_part5_files/figure-html/plot-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>And, to conclude, to know which are the variables that the Lasso regression has selected.</p>
+<div class="cell" data-hash="workshop_part5_cache/html/sel_af33c0b93218e83572b2c5b6cf1d7452">
+<div class="sourceCode cell-code" id="cb70"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.colnames</span>(<span class="st">"X"</span>)[[<span class="dv">1</span>]][<span class="fu">which</span>(m1<span class="sc">$</span>w<span class="sc">!=</span><span class="dv">0</span>)]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "DMRAGEYR"       "DATLGT"         "DATLGTI"        "DATAD_year"    
+[5] "DATAD_year_day"</code></pre>
+</div>
+</div>
+<div class="callout-note callout callout-style-simple">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>Please, note that input variables are not standardized previous to the modeling.</p>
+</div>
+</div>
+</div>
+<p>It is important to remember that the <code>dsMTLClient</code> package has more capabilities than the one illustrated:</p>
+<ul>
+<li><code>ds.LS_Lasso()</code>: Solver of regression with Lasso.</li>
+<li><code>ds.LR_Lasso()</code>: Solver of logistic regression with Lasso.<br>
+</li>
+<li><code>ds.Lasso_Train()</code>: Train a regularization tree with Lasso for a sequence of penalty values (than can be either provided by the user, or directly estimated from the data).</li>
+<li><code>ds.Lasso_CVInSite()</code>: In-site cross-validation procedure for selecting the optimal penalty.</li>
+</ul>
+<div class="cell" data-hash="workshop_part5_cache/html/unnamed-chunk-2_fcca9bbf540261f28195841094356c4b">
 
 </div>
 

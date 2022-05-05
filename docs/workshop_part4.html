@@ -145,7 +145,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <div class="sidebar-title mb-0 py-0">
       <a href="./">DataSHIELD Workshop</a> 
         <div class="sidebar-tools-main">
-    <a href="https://github.com/ESCRI11/Workshop_uncover_06_05_22" title="Source Code" class="sidebar-tool px-1"><i class="bi bi-github"></i></a>
+    <a href="https://github.com/isglobal-brge/UnCoVer_workshop" title="Source Code" class="sidebar-tool px-1"><i class="bi bi-github"></i></a>
     <a href="" title="Share" id="sidebar-tool-dropdown-0" class="sidebar-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-share"></i></a>
     <ul class="dropdown-menu" aria-labelledby="sidebar-tool-dropdown-0">
         <li>
@@ -255,7 +255,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <li><a href="#complete-cases" id="toc-complete-cases" class="nav-link" data-scroll-target="#complete-cases">Complete cases</a></li>
   <li><a href="#dates-what-to-do" id="toc-dates-what-to-do" class="nav-link" data-scroll-target="#dates-what-to-do">Dates: What to do…</a></li>
   </ul>
-<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/ESCRI11/Workshop_uncover_06_05_22/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
+<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/isglobal-brge/UnCoVer_workshop/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -278,7 +278,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 </header>
 
-<div class="cell" data-hash="workshop_part4_cache/html/unnamed-chunk-2_4cc1a68e861e1466d8d30b9c93778e77">
+<div class="cell" data-hash="workshop_part4_cache/html/unnamed-chunk-1_499c694b2c07b0ed57849dc06a924955">
 
 </div>
 <p>We are now in the position to start working with the data. The first step is to learn how to manipulate it.</p>
@@ -457,7 +457,7 @@ $return.message
 </div>
 <p>We can see that when we call the function <code>ds.asFactor</code> we receive the actual levels of the variable. We have said that the levels we actually want are <code>0, 1, 2, 3+</code>.</p>
 <p>To achieve this we just have to re-code the levels.</p>
-<div class="cell" data-hash="workshop_part4_cache/html/unnamed-chunk-4_41bfedfbd11a54b6699667505184e090">
+<div class="cell" data-hash="workshop_part4_cache/html/unnamed-chunk-2_f96b5c6dcd8fdd6e834967b090616314">
 <div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.recodeValues</span>(<span class="at">var.name =</span> <span class="st">"new_variable_factor"</span>, </span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>                <span class="at">values2replace.vector =</span> <span class="fu">c</span>(<span class="st">"0"</span>, <span class="st">"1"</span>, <span class="st">"2"</span>, <span class="st">"3"</span>, <span class="st">"4"</span>, <span class="st">"5"</span>, <span class="st">"6"</span>),</span>
 <span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>                <span class="at">new.values.vector =</span> <span class="fu">c</span>(<span class="st">"0"</span>, <span class="st">"1"</span>, <span class="st">"2"</span>,<span class="st">"3+"</span>, <span class="st">"3+"</span>, <span class="st">"3+"</span>,<span class="st">"3+"</span>), </span>
@@ -528,7 +528,7 @@ $`dimensions of data_subset_ccases in combined studies`
 <section id="dates-what-to-do" class="level2">
 <h2 class="anchored" data-anchor-id="dates-what-to-do">Dates: What to do…</h2>
 <p>The unCoVer consortia have many variables that correspond to dates. At the moment DataSHIELD has no functions to work with dates. We could develop a package to work with them if researchers can benefit from that.</p>
-<div class="cell" data-hash="workshop_part4_cache/html/unnamed-chunk-6_595f69b1bf9774a695a788907ef5802e">
+<div class="cell" data-hash="workshop_part4_cache/html/unnamed-chunk-3_e442990405db07ba65b49108603c4999">
 
 </div>
 
