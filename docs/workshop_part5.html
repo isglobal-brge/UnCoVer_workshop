@@ -668,27 +668,15 @@ attr(,"class")
 </div>
 </div>
 <p>Also, we can visualize the survival curves.</p>
-<div class="cell" data-hash="workshop_part5_cache/html/scurves_4addfa74ce84120ac824ed78369d1aff">
-<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>dsSurvivalClient<span class="sc">::</span><span class="fu">ds.survfit</span>(<span class="at">formula =</span> <span class="st">"survival::Surv(time=SURVTIME,event=EVENT)~data$DMRGENDR"</span>, <span class="at">objectname =</span> <span class="st">"test2"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>NULL</code></pre>
+<div class="cell" data-hash="workshop_part5_cache/html/scurves_b563b2503a489bcf8beff8eb11cfdeb9">
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>dsSurvivalClient<span class="sc">::</span><span class="fu">ds.survfit</span>(<span class="at">formula =</span> <span class="st">"survival::Surv(time=SURVTIME,event=EVENT)~data$DMRGENDR"</span>, <span class="at">objectname =</span> <span class="st">"scurves"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-error">
+<pre><code>Error: There are some DataSHIELD errors, list them with datashield.errors()</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(survival)</span>
-<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>dsSurvivalClient<span class="sc">::</span><span class="fu">ds.plotsurvfit</span>(<span class="at">formula =</span> <span class="st">"test2"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<p><img src="workshop_part5_files/figure-html/scurves-1.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>$hm_hospitales
-Call: survfit(formula = formula)
-
-   284 observations deleted due to missingness </code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in max(n.risk): ningun argumento finito para max; retornando -Inf</code></pre>
-</div>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>dsSurvivalClient<span class="sc">::</span><span class="fu">ds.plotsurvfit</span>(<span class="at">formula =</span> <span class="st">"scurves"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-error">
-<pre><code>Error in out[i, ] &lt;- pfun(x$n[i], stime[who], surv[who], x$n.risk[who], : número de items para para sustituir no es un múltiplo de la longitud del reemplazo</code></pre>
+<pre><code>Error: There are some DataSHIELD errors, list them with datashield.errors()</code></pre>
 </div>
 </div>
 <p>In the near future, the survival curves will have the options to be visualized by a categorical variables (gender, for example). Also the error will be fixed, we are working with the developer of the package (Soumya Banerjee) on new features and bug fixes.</p>
@@ -699,7 +687,7 @@ Call: survfit(formula = formula)
 <p>Before, we have to work a little bit with our data. The inputs to the Lasso regression have to be numerical variables without missings.</p>
 <p>We will begin by removing all the missings in our dataset.</p>
 <div class="cell" data-hash="workshop_part5_cache/html/rmiss_c2c2d23d95b639fd21933305688e5a61">
-<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.completeCases</span>(<span class="at">x1 =</span> <span class="st">"data"</span>, <span class="at">newobj =</span> <span class="st">"data_complete"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.completeCases</span>(<span class="at">x1 =</span> <span class="st">"data"</span>, <span class="at">newobj =</span> <span class="st">"data_complete"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>$is.object.created
 [1] "A data object &lt;data_complete&gt; has been created in all specified data sources"
@@ -710,18 +698,18 @@ $validity.check
 </div>
 <p>Now, we will create a subset with all the numeric variables.</p>
 <div class="cell" data-hash="workshop_part5_cache/html/numvar_0c2c2af6c740e084826a78273aebe3b5">
-<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a>types <span class="ot">&lt;-</span> <span class="fu">lapply</span>(<span class="fu">ds.colnames</span>(<span class="st">"data_complete"</span>)[[<span class="dv">1</span>]], <span class="cf">function</span>(x){</span>
-<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ds.class</span>(<span class="fu">paste0</span>(<span class="st">"data_complete$"</span>, x))[[<span class="dv">1</span>]][<span class="dv">1</span>]</span>
-<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a>})</span>
-<span id="cb51-4"><a href="#cb51-4" aria-hidden="true" tabindex="-1"></a>types <span class="ot">&lt;-</span> <span class="fu">unlist</span>(types)</span>
-<span id="cb51-5"><a href="#cb51-5" aria-hidden="true" tabindex="-1"></a><span class="st">`</span><span class="at">%notin%</span><span class="st">`</span> <span class="ot">&lt;-</span> <span class="fu">Negate</span>(<span class="st">`</span><span class="at">%in%</span><span class="st">`</span>)</span>
-<span id="cb51-6"><a href="#cb51-6" aria-hidden="true" tabindex="-1"></a>indexes_to_remove <span class="ot">&lt;-</span> <span class="fu">which</span>(types <span class="sc">%notin%</span> <span class="st">"numeric"</span>)</span>
-<span id="cb51-7"><a href="#cb51-7" aria-hidden="true" tabindex="-1"></a>times <span class="ot">&lt;-</span> <span class="fu">ds.dim</span>(<span class="st">"data_complete"</span>)[[<span class="dv">1</span>]][<span class="dv">1</span>]</span>
-<span id="cb51-8"><a href="#cb51-8" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.rep</span>(<span class="at">x1 =</span> <span class="dv">1</span>,</span>
-<span id="cb51-9"><a href="#cb51-9" aria-hidden="true" tabindex="-1"></a>            <span class="at">times =</span> times,</span>
-<span id="cb51-10"><a href="#cb51-10" aria-hidden="true" tabindex="-1"></a>            <span class="at">source.times =</span> <span class="st">"c"</span>,</span>
-<span id="cb51-11"><a href="#cb51-11" aria-hidden="true" tabindex="-1"></a>            <span class="at">source.each =</span> <span class="st">"c"</span>,</span>
-<span id="cb51-12"><a href="#cb51-12" aria-hidden="true" tabindex="-1"></a>            <span class="at">newobj =</span> <span class="st">"ONES"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a>types <span class="ot">&lt;-</span> <span class="fu">lapply</span>(<span class="fu">ds.colnames</span>(<span class="st">"data_complete"</span>)[[<span class="dv">1</span>]], <span class="cf">function</span>(x){</span>
+<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ds.class</span>(<span class="fu">paste0</span>(<span class="st">"data_complete$"</span>, x))[[<span class="dv">1</span>]][<span class="dv">1</span>]</span>
+<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb49-4"><a href="#cb49-4" aria-hidden="true" tabindex="-1"></a>types <span class="ot">&lt;-</span> <span class="fu">unlist</span>(types)</span>
+<span id="cb49-5"><a href="#cb49-5" aria-hidden="true" tabindex="-1"></a><span class="st">`</span><span class="at">%notin%</span><span class="st">`</span> <span class="ot">&lt;-</span> <span class="fu">Negate</span>(<span class="st">`</span><span class="at">%in%</span><span class="st">`</span>)</span>
+<span id="cb49-6"><a href="#cb49-6" aria-hidden="true" tabindex="-1"></a>indexes_to_remove <span class="ot">&lt;-</span> <span class="fu">which</span>(types <span class="sc">%notin%</span> <span class="st">"numeric"</span>)</span>
+<span id="cb49-7"><a href="#cb49-7" aria-hidden="true" tabindex="-1"></a>times <span class="ot">&lt;-</span> <span class="fu">ds.dim</span>(<span class="st">"data_complete"</span>)[[<span class="dv">1</span>]][<span class="dv">1</span>]</span>
+<span id="cb49-8"><a href="#cb49-8" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.rep</span>(<span class="at">x1 =</span> <span class="dv">1</span>,</span>
+<span id="cb49-9"><a href="#cb49-9" aria-hidden="true" tabindex="-1"></a>            <span class="at">times =</span> times,</span>
+<span id="cb49-10"><a href="#cb49-10" aria-hidden="true" tabindex="-1"></a>            <span class="at">source.times =</span> <span class="st">"c"</span>,</span>
+<span id="cb49-11"><a href="#cb49-11" aria-hidden="true" tabindex="-1"></a>            <span class="at">source.each =</span> <span class="st">"c"</span>,</span>
+<span id="cb49-12"><a href="#cb49-12" aria-hidden="true" tabindex="-1"></a>            <span class="at">newobj =</span> <span class="st">"ONES"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>$is.object.created
 [1] "A data object &lt;ONES&gt; has been created in all specified data sources"
@@ -729,7 +717,7 @@ $validity.check
 $validity.check
 [1] "&lt;ONES&gt; appears valid in all sources"</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.dataFrameSubset</span>(<span class="at">df.name =</span> <span class="st">'data_complete'</span>,  <span class="at">V1.name =</span> <span class="st">"ONES"</span>,  <span class="at">V2.name =</span> <span class="st">"ONES"</span>,  <span class="at">Boolean.operator =</span> <span class="st">"=="</span>,<span class="at">keep.cols =</span> <span class="cn">NULL</span>,  <span class="at">rm.cols =</span> indexes_to_remove,  <span class="at">keep.NAs =</span> <span class="cn">NULL</span>,  <span class="at">newobj =</span> <span class="st">'data_complete_numeric'</span>,  <span class="at">datasources =</span> connections, <span class="at">notify.of.progress =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.dataFrameSubset</span>(<span class="at">df.name =</span> <span class="st">'data_complete'</span>,  <span class="at">V1.name =</span> <span class="st">"ONES"</span>,  <span class="at">V2.name =</span> <span class="st">"ONES"</span>,  <span class="at">Boolean.operator =</span> <span class="st">"=="</span>,<span class="at">keep.cols =</span> <span class="cn">NULL</span>,  <span class="at">rm.cols =</span> indexes_to_remove,  <span class="at">keep.NAs =</span> <span class="cn">NULL</span>,  <span class="at">newobj =</span> <span class="st">'data_complete_numeric'</span>,  <span class="at">datasources =</span> connections, <span class="at">notify.of.progress =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>$is.object.created
 [1] "A data object &lt;data_complete_numeric&gt; has been created in all specified data sources"
@@ -740,7 +728,7 @@ $validity.check
 </div>
 <p>Now we have all the variables (objective variables and covariates) in a single <code>data.frame</code>, we have to split it in two different objects. To drop columns, we have to know the column positions; we will drop the objective variable as well as the IDs variable.</p>
 <div class="cell" data-hash="workshop_part5_cache/html/cols_a82f178ea59de9ab3b7bcc1cb0f226bf">
-<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.colnames</span>(<span class="st">"data_complete_numeric"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.colnames</span>(<span class="st">"data_complete_numeric"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>$hm_hospitales
   [1] "X"                 "IDINGRESO"         "DMRAGEYR"         
@@ -785,9 +773,9 @@ $validity.check
 </div>
 <p>The columns we want to remove are the <code>1</code>, <code>2</code>, <code>9</code> and <code>112</code>.</p>
 <div class="cell" data-hash="workshop_part5_cache/html/separ_2af84ca7642022276d0e6b8347a01d09">
-<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.assign</span>(<span class="at">toAssign=</span><span class="st">'data_complete_numeric$DSXOS_recoded_num'</span>, <span class="at">newobj=</span><span class="st">'Y'</span>, <span class="at">datasources =</span> connections)</span>
-<span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb57-3"><a href="#cb57-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.dataFrameSubset</span>(<span class="at">df.name =</span> <span class="st">'data_complete_numeric'</span>,  <span class="at">V1.name =</span> <span class="st">"ONES"</span>,  <span class="at">V2.name =</span> <span class="st">"ONES"</span>,  <span class="at">Boolean.operator =</span> <span class="st">"=="</span>,<span class="at">keep.cols =</span> <span class="cn">NULL</span>,  <span class="at">rm.cols =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">9</span>, <span class="dv">112</span>),  <span class="at">keep.NAs =</span> <span class="cn">NULL</span>,  <span class="at">newobj =</span> <span class="st">'X'</span>,  <span class="at">datasources =</span> connections, <span class="at">notify.of.progress =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.assign</span>(<span class="at">toAssign=</span><span class="st">'data_complete_numeric$DSXOS_recoded_num'</span>, <span class="at">newobj=</span><span class="st">'Y'</span>, <span class="at">datasources =</span> connections)</span>
+<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb55-3"><a href="#cb55-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.dataFrameSubset</span>(<span class="at">df.name =</span> <span class="st">'data_complete_numeric'</span>,  <span class="at">V1.name =</span> <span class="st">"ONES"</span>,  <span class="at">V2.name =</span> <span class="st">"ONES"</span>,  <span class="at">Boolean.operator =</span> <span class="st">"=="</span>,<span class="at">keep.cols =</span> <span class="cn">NULL</span>,  <span class="at">rm.cols =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">9</span>, <span class="dv">112</span>),  <span class="at">keep.NAs =</span> <span class="cn">NULL</span>,  <span class="at">newobj =</span> <span class="st">'X'</span>,  <span class="at">datasources =</span> connections, <span class="at">notify.of.progress =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>$is.object.created
 [1] "A data object &lt;X&gt; has been created in all specified data sources"
@@ -798,7 +786,7 @@ $validity.check
 </div>
 <p>Finally, the Lasso regression expects to recieve <code>matrix</code> objects instead of <code>data.frame</code>. We convert them.</p>
 <div class="cell" data-hash="workshop_part5_cache/html/matrix_63de6d77d529f6c92ca9e9a2e8a246e5">
-<div class="sourceCode cell-code" id="cb59"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.asMatrix</span>(<span class="at">x.name =</span> <span class="st">'Y'</span>, <span class="at">newobj =</span> <span class="st">'Y'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.asMatrix</span>(<span class="at">x.name =</span> <span class="st">'Y'</span>, <span class="at">newobj =</span> <span class="st">'Y'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Warning in is.null(object.info[[j]]$test.obj.class) || object.info[[j]]
 $test.obj.class == : 'length(x) = 2 &gt; 1' in coercion to 'logical(1)'</code></pre>
@@ -810,7 +798,7 @@ $test.obj.class == : 'length(x) = 2 &gt; 1' in coercion to 'logical(1)'</code></
 $validity.check
 [1] "&lt;Y&gt; appears valid in all sources"</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb62"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.asMatrix</span>(<span class="at">x.name =</span> <span class="st">'X'</span>, <span class="at">newobj =</span> <span class="st">'X'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.asMatrix</span>(<span class="at">x.name =</span> <span class="st">'X'</span>, <span class="at">newobj =</span> <span class="st">'X'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Warning in is.null(object.info[[j]]$test.obj.class) || object.info[[j]]
 $test.obj.class == : 'length(x) = 2 &gt; 1' in coercion to 'logical(1)'</code></pre>
@@ -832,30 +820,30 @@ $validity.check
 </ul>
 <p>We will use the default parameters.</p>
 <div class="cell" data-hash="workshop_part5_cache/html/param_a9a023cdc31e0726e7b2ca518c2201ad">
-<div class="sourceCode cell-code" id="cb65"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a>opts<span class="ot">=</span><span class="fu">list</span>();opts<span class="sc">$</span>init<span class="ot">=</span><span class="dv">0</span>; opts<span class="sc">$</span>maxIter<span class="ot">=</span><span class="dv">10</span>; opts<span class="sc">$</span>tol<span class="ot">=</span><span class="fl">0.01</span>; opts<span class="sc">$</span>ter<span class="ot">=</span><span class="dv">2</span>;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb63"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a>opts<span class="ot">=</span><span class="fu">list</span>();opts<span class="sc">$</span>init<span class="ot">=</span><span class="dv">0</span>; opts<span class="sc">$</span>maxIter<span class="ot">=</span><span class="dv">10</span>; opts<span class="sc">$</span>tol<span class="ot">=</span><span class="fl">0.01</span>; opts<span class="sc">$</span>ter<span class="ot">=</span><span class="dv">2</span>;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Finally we can fit the Lasso regression.</p>
 <div class="cell" data-hash="workshop_part5_cache/html/lasso_f4e9d8e48d4e50fee459c3e8d11a9145">
-<div class="sourceCode cell-code" id="cb66"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
-<span id="cb66-2"><a href="#cb66-2" aria-hidden="true" tabindex="-1"></a>m1<span class="ot">=</span>dsMTLClient<span class="sc">::</span><span class="fu">ds.LS_Lasso</span>(<span class="at">X=</span><span class="st">'X'</span>, <span class="at">Y=</span><span class="st">'Y'</span>, <span class="at">lam=</span><span class="fl">0.5</span>, <span class="at">C=</span><span class="dv">0</span>, opts, <span class="at">datasources=</span>connections, <span class="at">nDigits=</span><span class="dv">15</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb64"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb64-2"><a href="#cb64-2" aria-hidden="true" tabindex="-1"></a>m1<span class="ot">=</span>dsMTLClient<span class="sc">::</span><span class="fu">ds.LS_Lasso</span>(<span class="at">X=</span><span class="st">'X'</span>, <span class="at">Y=</span><span class="st">'Y'</span>, <span class="at">lam=</span><span class="fl">0.5</span>, <span class="at">C=</span><span class="dv">0</span>, opts, <span class="at">datasources=</span>connections, <span class="at">nDigits=</span><span class="dv">15</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>We can show the number of selected variables.</p>
 <div class="cell" data-hash="workshop_part5_cache/html/numvars_0c749ce4706c1f822b604084348c9e5c">
-<div class="sourceCode cell-code" id="cb67"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(m1<span class="sc">$</span>w<span class="sc">!=</span><span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb65"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(m1<span class="sc">$</span>w<span class="sc">!=</span><span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 5</code></pre>
 </div>
 </div>
 <p>Visually, the variable selection looks like this.</p>
 <div class="cell" data-hash="workshop_part5_cache/html/plot_5694386b80224d8ba5e6b2f6ea8cf19c">
-<div class="sourceCode cell-code" id="cb69"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(m1<span class="sc">$</span>w, <span class="at">xlab=</span><span class="st">"index of coefficients"</span>, <span class="at">ylab=</span><span class="st">"values"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb67"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(m1<span class="sc">$</span>w, <span class="at">xlab=</span><span class="st">"index of coefficients"</span>, <span class="at">ylab=</span><span class="st">"values"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="workshop_part5_files/figure-html/plot-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <p>And, to conclude, to know which are the variables that the Lasso regression has selected.</p>
 <div class="cell" data-hash="workshop_part5_cache/html/sel_af33c0b93218e83572b2c5b6cf1d7452">
-<div class="sourceCode cell-code" id="cb70"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.colnames</span>(<span class="st">"X"</span>)[[<span class="dv">1</span>]][<span class="fu">which</span>(m1<span class="sc">$</span>w<span class="sc">!=</span><span class="dv">0</span>)]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb68"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.colnames</span>(<span class="st">"X"</span>)[[<span class="dv">1</span>]][<span class="fu">which</span>(m1<span class="sc">$</span>w<span class="sc">!=</span><span class="dv">0</span>)]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "DMRAGEYR"       "DATLGT"         "DATLGTI"        "DATAD_year"    
 [5] "DATAD_year_day"</code></pre>
