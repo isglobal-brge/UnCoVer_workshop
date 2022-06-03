@@ -243,7 +243,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <li><a href="#data-classes" id="toc-data-classes" class="nav-link active" data-scroll-target="#data-classes">Data classes</a></li>
   <li><a href="#complex-recoding.-number-of-comorbidities" id="toc-complex-recoding.-number-of-comorbidities" class="nav-link" data-scroll-target="#complex-recoding.-number-of-comorbidities">Complex recoding. Number of comorbidities</a></li>
   <li><a href="#complete-cases" id="toc-complete-cases" class="nav-link" data-scroll-target="#complete-cases">Complete cases</a></li>
-  <li><a href="#dates-what-to-do" id="toc-dates-what-to-do" class="nav-link" data-scroll-target="#dates-what-to-do">Dates: What to do…</a></li>
+  <li><a href="#dates" id="toc-dates" class="nav-link" data-scroll-target="#dates">Dates</a></li>
   </ul>
 <div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/isglobal-brge/UnCoVer_workshop/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
@@ -515,10 +515,101 @@ $`dimensions of data_subset_ccases in combined studies`
 </div>
 </div>
 </section>
-<section id="dates-what-to-do" class="level2">
-<h2 class="anchored" data-anchor-id="dates-what-to-do">Dates: What to do…</h2>
-<p>The unCoVer consortia have many variables that correspond to dates. At the moment DataSHIELD has no functions to work with dates. We could develop a package to work with them if researchers can benefit from that.</p>
+<section id="dates" class="level2">
+<h2 class="anchored" data-anchor-id="dates">Dates</h2>
+<p>For this section we will use the HM Hospitales server, as it is the only one that has the prototype package installed.</p>
 <div class="cell" data-hash="workshop_part4_cache/html/unnamed-chunk-3_e442990405db07ba65b49108603c4999">
+
+</div>
+<div class="cell" data-hash="workshop_part4_cache/html/unnamed-chunk-4_6005d3cce3fe6af98e115d13260743c3">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(DSI)</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(DSOpal)</span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dsBaseClient)</span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dsDatesClient)</span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>builder <span class="ot">&lt;-</span> DSI<span class="sc">::</span><span class="fu">newDSLoginBuilder</span>()</span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>builder<span class="sc">$</span><span class="fu">append</span>(<span class="at">server =</span> <span class="st">"hm_hospitales"</span>,</span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>               <span class="at">url =</span> <span class="st">"https://192.168.1.50:9002"</span>,</span>
+<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a>               <span class="at">user =</span> <span class="st">"user_analisis"</span>, <span class="at">password =</span> <span class="st">"Ekfl07UUgz"</span>)</span>
+<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a>logindata <span class="ot">&lt;-</span> builder<span class="sc">$</span><span class="fu">build</span>()</span>
+<span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(httr);<span class="fu">set_config</span>(<span class="fu">config</span>(<span class="at">ssl_verifypeer =</span> 0L))</span>
+<span id="cb31-11"><a href="#cb31-11" aria-hidden="true" tabindex="-1"></a>connections <span class="ot">&lt;-</span> DSI<span class="sc">::</span><span class="fu">datashield.login</span>(<span class="at">logins =</span> logindata, <span class="at">failSafe =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Logging into the collaborating servers</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>DSI<span class="sc">::</span><span class="fu">datashield.assign.resource</span>(connections, <span class="st">"resource"</span>, <span class="st">"FiHM.harmonized_data"</span>)</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>DSI<span class="sc">::</span><span class="fu">datashield.assign.expr</span>(<span class="at">conns =</span> connections, <span class="at">symbol =</span> <span class="st">"data"</span>, <span class="at">expr =</span> <span class="st">"as.resource.data.frame(resource)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>To begin working with dates, first we have to convert the columns that have the dates to the appropiate class. On the unCoVer codebook, the dates are encoded as strings with the structure <code>yyyy-mm-dd</code>, this does not hold for the HM Hospitales server, which has the dates encoded as <code>POSIXct</code>, for that reason first we will convert them to characters. In future versions this will be solved and we will be able to work with <code>POSIXct</code> data. We convert the columns using the <code>ds.asDate</code> function,</p>
+<div class="cell" data-hash="workshop_part4_cache/html/unnamed-chunk-5_4e2e25eb1cc5360be8a00a9f90c218be">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.asCharacter</span>(<span class="st">"data$DATAD"</span>, <span class="st">"DATD_chr"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$is.object.created
+[1] "A data object &lt;DATD_chr&gt; has been created in all specified data sources"
+
+$validity.check
+[1] "&lt;DATD_chr&gt; appears valid in all sources"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>DSI<span class="sc">::</span><span class="fu">datashield.assign.expr</span>(connections, <span class="st">"data"</span>, <span class="st">"cbind(data, DATD_chr)"</span>)</span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.asCharacter</span>(<span class="st">"data$DATDS"</span>, <span class="st">"DATDS_chr"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$is.object.created
+[1] "A data object &lt;DATDS_chr&gt; has been created in all specified data sources"
+
+$validity.check
+[1] "&lt;DATDS_chr&gt; appears valid in all sources"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>DSI<span class="sc">::</span><span class="fu">datashield.assign.expr</span>(connections, <span class="st">"data"</span>, <span class="st">"cbind(data, DATDS_chr)"</span>)</span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.asDate</span>(<span class="at">x.name =</span> <span class="st">"data$DATD_chr"</span>, <span class="at">newobj =</span> <span class="st">"DATD_converted"</span>, <span class="at">datasources =</span> connections)</span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.asDate</span>(<span class="at">x.name =</span> <span class="st">"data$DATDS_chr"</span>, <span class="at">newobj =</span> <span class="st">"DATDS_converted"</span>, <span class="at">datasources =</span> connections)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We can now see that we have a column with the <code>Date</code> class.</p>
+<div class="cell" data-hash="workshop_part4_cache/html/unnamed-chunk-6_7e8de73ba7452dc04bf24de59e15552f">
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.class</span>(<span class="st">"data$DATD_converted"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$hm_hospitales
+[1] "Date"</code></pre>
+</div>
+</div>
+<p>Now we have two columns that contain dates in the correct class. With that, we can create a new column with the difference in days between the two dates.</p>
+<div class="cell" data-hash="workshop_part4_cache/html/unnamed-chunk-7_2a5f2b275a83950b893ba22d0660a4c0">
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.dateDiff</span>(<span class="st">"data$DATD_converted"</span>, <span class="st">"data$DATDS_converted"</span>, <span class="st">"difference"</span>)</span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.dateDiff</span>(<span class="st">"data$DATD_converted"</span>, <span class="st">"data$DATDS_converted"</span>, <span class="st">"difference"</span>)</span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.quantileMean</span>(<span class="st">"data$difference"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code> Quantiles of the pooled data</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     5%     10%     25%     50%     75%     90%     95%    Mean 
+ 1.0000  2.0000  4.0000  7.0000 12.0000 20.0000 28.0000 10.0701 </code></pre>
+</div>
+</div>
+<p>Also, we can perform subsets of the dataframe using dates.</p>
+<div class="cell" data-hash="workshop_part4_cache/html/unnamed-chunk-8_593cda1f4e8115385a5e5f8ce004bb96">
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.subsetByDate</span>(<span class="st">"data"</span>, <span class="st">"DATD_converted"</span>, <span class="at">year =</span> <span class="dv">2022</span>, <span class="at">newobj =</span> <span class="st">"data_subset"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$is.object.created
+[1] "A data object &lt;data_subset&gt; has been created in all specified data sources"
+
+$validity.check
+[1] "&lt;data_subset&gt; appears valid in all sources"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.dim</span>(<span class="st">"data_subset"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$`dimensions of data_subset in hm_hospitales`
+[1] 549 225
+
+$`dimensions of data_subset in combined studies`
+[1] 549 225</code></pre>
+</div>
+</div>
+<p>The subset function can be used for more complex queries.</p>
+<div class="cell" data-hash="workshop_part4_cache/html/unnamed-chunk-9_cafb00d381c68105dc9da150f7db6cea">
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.subsetByDate</span>(<span class="st">"data"</span>, <span class="st">"DATD_converted"</span>, <span class="at">year =</span> <span class="dv">2022</span>, <span class="at">month =</span> <span class="dv">4</span>, <span class="at">newobj =</span> <span class="st">"data_subset"</span>)</span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.subsetByDate</span>(<span class="st">"data"</span>, <span class="st">"DATD_converted"</span>, <span class="fu">range</span>(<span class="st">"2021-05-23"</span>, <span class="st">"2021-09-25"</span>), <span class="at">newobj =</span> <span class="st">"data_subset"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-hash="workshop_part4_cache/html/unnamed-chunk-10_045c1e62f9efbe3a83fdbbe8ed786cca">
 
 </div>
 

@@ -310,8 +310,10 @@ Logging into the collaborating servers</code></pre>
 </div>
 <p>The error we are getting is due the study server having no SSL certificate, by default R refuses to connect to endpoints without SSL certificates. We do not need to know what an SSL certificate is or why is it important.</p>
 <p>We can maually disable this limitation of R so that it accepts to connect.</p>
-<div class="cell" data-hash="workshop_part0_cache/html/disable_ssl_7503839b66a30e8cd2161133fe7d1452">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(httr);<span class="fu">set_config</span>(<span class="fu">config</span>(<span class="at">ssl_verifypeer =</span> 0L))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-hash="workshop_part0_cache/html/disable_ssl_a6fe3a64acd8eeb4bb390234f7727b39">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(httr)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set_config</span>(<span class="fu">config</span>(<span class="at">ssl_verifypeer =</span> 0L, </span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>                  <span class="at">ssl_verifyhost =</span> 0L))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>And now we successfully connect to the study servers.</p>
 <div class="cell" data-hash="workshop_part0_cache/html/server_login2_5e515e33743ae2da6031f3d2243c2aa1">
